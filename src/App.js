@@ -1,14 +1,13 @@
 import React from 'react';
+import ChatList from './ChatList';
+import AppBar from './AppBar';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-      </header>
+    <div>
+	<AppBar/>
+	<ChatList/>
     </div>
-  );
+  )
 }
 
 export default App;

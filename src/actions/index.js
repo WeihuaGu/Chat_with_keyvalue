@@ -6,5 +6,15 @@ module.exports.pushMessage = (text) => {
   }
   return action
 }
+module.exports.subscribeChannel  = (channel) => {
+  const action = { 
+  type: 'Subscribe_Channel ',
+  time: new Date().toLocaleTimeString(),
+  channel
+  }
+  return action
+}
+
+
 
 
