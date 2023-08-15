@@ -1,3 +1,23 @@
+const usrInfo = (info) =>{
+	const action = {
+		type: 'usrinfo',
+		info
+	}
+	return action;
+}
+
+const newUsrInfo = (info) =>{
+	const action = {
+		type: 'newusrinfo',
+		info
+	}
+	return action;
+}
+
+export { usrInfo , newUsrInfo }
+
+
+/*
 module.exports.pushMessage = (text) => {
   const action = { 
   type: 'PUSH_MESSAGE',
@@ -14,7 +34,7 @@ module.exports.subscribeChannel  = (channel) => {
   }
   return action
 }
-
+*/
 
 
 

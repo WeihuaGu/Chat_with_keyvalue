@@ -1,20 +1,33 @@
 import React,{ useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import ChatList from './ChatList';
 import AppBar from './AppBar';
+import { usrInfo, newUsrInfo } from './actions/index';
+import { genuserinfo } from './genuserinfo';
 function App() {
+  const dispatch = useDispatch();
   const [userId, setUserId] = useState('');
   const [publicKey, setPublicKey] = useState('');
   useEffect(() => {
-    localStorage.setItem('userId','1234');
-    localStorage.setItem('publicKey','hafafj');
-    const storedUserId = localStorage.getItem('userId');
-    const storedPublicKey = localStorage.getItem('publicKey');
-
+    var storedUserId = localStorage.getItem('userId');
+    var storedPublicKey = localStorage.getItem('publicKey');
     if (storedUserId && storedPublicKey) {
+      dispatch(new usrInfo(storedUserId)); 
       setUserId(storedUserId);
       setPublicKey(storedPublicKey);
     }
-  }, []);
+    else{
+	    const info = genuserinfo();
+	    storedUserId = info.id;
+	    storedPublicKey =info.keypair.publickey;
+    	    localStorage.setItem('userId',storedUserId);
+    	    localStorage.setItem('publicKey',storedPublicKey);
+	    dispatch(new newUsrInfo(storedUserId));
+    }
+    setUserId(storedUserId);
+    setPublicKey(storedPublicKey);
+
+  }, [userId,publicKey]);
 
   useEffect(() => {
     // 在这里执行轮询逻辑，使用 userId 和 publicKey
@@ -29,7 +42,7 @@ function App() {
   }, [userId, publicKey]);
   return (
     <div>
-	<AppBar/>
+	<AppBar usrid={userId}/>
 	<ChatList/>
     </div>
   )

@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import HomeIcon from '@mui/icons-material/Home';
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar({usrid}) {
   return (
       <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -17,7 +17,7 @@ export default function ButtonAppBar() {
 	  	<HomeIcon />
           </IconButton>
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
-            News
+	    你的聊天id: {usrid}
           </Typography>
 	  <IconButton color="inherit">
 	  	<MoreVertIcon />

@@ -1,3 +1,4 @@
-var {pushMessage} = require('./index')
-console.log(pushMessage('你好'))
+//var {pushMessage} = require('./index')
+import { usrInfo } from './index.js';
+console.log(usrInfo('hi'))
 
