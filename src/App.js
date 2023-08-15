@@ -4,15 +4,17 @@ import ChatList from './ChatList';
 import AppBar from './AppBar';
 function App() {
   const dispatch = useDispatch();
-  const [userId, setUserId] = useState('');
+  const userId = useSelector((state)=>{return state.usrinfo.id});
+  /**
   const [publicKey, setPublicKey] = useState('');
   useEffect(() => {
 
   }, [userId,publicKey]);
+  **/
 
   return (
     <div>
-	<AppBar usrid={userId}/>
+	<AppBar />
 	<ChatList/>
     </div>
   )

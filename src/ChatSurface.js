@@ -9,8 +9,15 @@ import Stack from '@mui/material/Stack';
 import ChatingList from './ChatingList';
 import { position } from '@material-ui/system';
 import { bottom } from '@material-ui/system';
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export default function ButtonAppBar() {
+  const { channelid } = useParams();
+  useEffect(() => {
+	  console.log(channelid);
+
+  }, []);
   return (
       <Box>
       <AppBar />

@@ -1,7 +1,14 @@
+const commonaction = (type,info) =>{
+	const action = {
+		type: type,
+		info: info
+	}
+	return action;
+}
 const usrInfo = (info) =>{
 	const action = {
 		type: 'usrinfo',
-		info
+		info: info
 	}
 	return action;
 }
@@ -9,12 +16,24 @@ const usrInfo = (info) =>{
 const newUsrInfo = (info) =>{
 	const action = {
 		type: 'newusrinfo',
-		info
+		info: info
 	}
 	return action;
 }
 
-export { usrInfo , newUsrInfo }
+/*
+ * info = {
+ * 	toid:toid,
+ * 	text:text
+ * 	}
+ *
+ */
+const sendedMsg = (info) =>{
+	return commonaction('sendedmsg',info);
+}
+
+
+export { usrInfo , newUsrInfo, sendedMsg }
 
 
 /*
