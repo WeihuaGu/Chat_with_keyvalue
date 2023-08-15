@@ -5,6 +5,8 @@ function App() {
   const [userId, setUserId] = useState('');
   const [publicKey, setPublicKey] = useState('');
   useEffect(() => {
+    localStorage.setItem('userId','1234');
+    localStorage.setItem('publicKey','hafafj');
     const storedUserId = localStorage.getItem('userId');
     const storedPublicKey = localStorage.getItem('publicKey');
 

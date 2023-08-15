@@ -2,6 +2,7 @@ import { genkeypair } from './key.js'
 import { encrypt, decrypt} from './encrypt.js';
 // 生成密钥对
 const keyPair = genkeypair();
+console.log(keyPair);
 
 // 要加密的原始数据
 const originalData = 'Hello, world!';
