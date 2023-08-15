@@ -1,11 +1,7 @@
 import stringRandom from 'string-random';
 import CryptoJS from 'crypto-js';
+import NodeRSA  from 'node-rsa';
 import { genkeypair, pubKey, privKey } from './key.js';
-
-const aesEncrypt = (text, key, iv) => {
-  const encrypted = CryptoJS.AES.encrypt(text, key, { iv: iv });
-  return encrypted.toString();
-};
 
 const genPass = () => {
   const pass = stringRandom(32);
@@ -15,14 +11,26 @@ const genPass = () => {
     iv: iv
   };
 };
-
+const aesEncrypt = (text, key, iv) => {
+  const encrypted = CryptoJS.AES.encrypt(text, key, { iv: iv });
+  return encrypted.toString();
+};
 const getEncryptedPass = (pass, iv) => {
   const passAndIv = pass + iv;
-  const encryptedPass = CryptoJS.AES.encrypt(passAndIv, pubKey).toString();
+  const rsa = new NodeRSA();
+  rsa.importKey(pubKey(), 'pkcs8-public-pem');
+  const encryptedPass = rsa.encrypt(passAndIv,'base64');
   return encryptedPass;
 };
+const getDecryptedPass = (encryptedPass) => {
+  const rsa = new NodeRSA();
+  rsa.importKey(privKey(), 'pkcs8-private-pem');
+  const decryptedPass = rsa.decrypt(encryptedPass).toString();
+  return decryptedPass;
+}
 
-export const encrypt = (data) => {
+
+const encrypt = (data) => {
   const passAndIv = genPass();
   const encryptedPass = getEncryptedPass(passAndIv.pass, passAndIv.iv);
   const encryptedContent = aesEncrypt(data, passAndIv.pass, passAndIv.iv);
@@ -39,7 +47,7 @@ const aesDecrypt = (encrypted, key, iv) => {
 };
 
 const getDecryptedMessage = (encryptedPass, encryptedContent) => {
-  const decryptedPass = CryptoJS.AES.decrypt(encryptedPass, privKey).toString(CryptoJS.enc.Utf8);
+  const decryptedPass = getDecryptedPass(encryptedPass);
   const passAndIv = decryptedPass.split('');
   const key = passAndIv.slice(0, 32).join('');
   const iv = passAndIv.slice(32).join('');
@@ -47,8 +55,9 @@ const getDecryptedMessage = (encryptedPass, encryptedContent) => {
   return decryptedContent;
 };
 
-export const decrypt = (encryptedData) => {
+const decrypt = (encryptedData) => {
   const { encryptedpass, encryptedcontent } = encryptedData;
   const decryptedMessage = getDecryptedMessage(encryptedpass, encryptedcontent);
   return decryptedMessage;
 };
+export { encrypt, decrypt, getEncryptedPass , getDecryptedPass }

@@ -11,7 +11,8 @@ const genkeypair = ()=>{
 }
 
 
-const pubKey = '-----BEGIN PUBLIC KEY-----\n' +
+const pubKey = () => {
+  const testkey = '-----BEGIN PUBLIC KEY-----\n' +
     'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6SEqCG9NSrgHGAyyTZfZ\n' +
     'ObXc/+6eJEjUKaglMvUiSbMdYT5qeCPzD0j7U57DcE0tn8BeLCL1HjOCGfPoKiWG\n' +
     'fwUOBstJvW7sqlQefBnPTy+07h6WKF/2H8J/6hInCRmopFn9x9cLaj4ce/dh+0cI\n' +
@@ -20,7 +21,18 @@ const pubKey = '-----BEGIN PUBLIC KEY-----\n' +
     'ycriBUZj39HgotmpG5qZG0fHt0B6aXMJwYVE504uNobmKrYinhixXd4D2zX03rEZ\n' +
     '5wIDAQAB\n' +
     '-----END PUBLIC KEY-----\n';
-const privKey = '-----BEGIN PRIVATE KEY-----\n' +
+    if(typeof localStorage == "undefined")
+	return testkey;
+    var storedPublicKey = localStorage.getItem('publicKey');
+    if(storedPublicKey)
+	return storedPublicKey;
+    else
+	return testkey;
+	
+
+}
+const privKey = () => {
+  const testkey = '-----BEGIN PRIVATE KEY-----\n' +
     'MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDpISoIb01KuAcY\n' +
     'DLJNl9k5tdz/7p4kSNQpqCUy9SJJsx1hPmp4I/MPSPtTnsNwTS2fwF4sIvUeM4IZ\n' +
     '8+gqJYZ/BQ4Gy0m9buyqVB58Gc9PL7TuHpYoX/Yfwn/qEicJGaikWf3H1wtqPhx7\n' +
@@ -48,5 +60,14 @@ const privKey = '-----BEGIN PRIVATE KEY-----\n' +
     'vPXfeSnHMI56FXxN9QzeLDEDOSdD0jlW/b+L71gEvXzydD0pkmz8lZ0B6dPpt/zI\n' +
     '8NDzM2jMbFTTg5ps6EcVk9c=\n' +
     '-----END PRIVATE KEY-----\n';
+    if(typeof localStorage == "undefined")
+	return testkey;
+    var storedPrivateKey = localStorage.getItem('privateKey');
+    if(storedPrivateKey)
+	return storedPrivateKey;
+    else
+	return testkey;
+
+}
 
 export { genkeypair, pubKey, privKey}
