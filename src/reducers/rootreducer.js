@@ -39,11 +39,34 @@ const sended = (state = {},action)=>{
 	}
 	return state;
 }
+const sending = (state = {},action)=>{
+	if(action.type == 'sendingmsg'){
+		const newstate = cloneDeep(state);
+		const thesenddic = {
+			fromid:action.info.fromid,
+ 			time:action.info.time,
+			toid:action.info.toid,
+			text:action.info.text
+		}
+		if(action.info.toid in newstate){
+			const list = newstate[action.info.toid];
+			list.push(thesenddic);
+		}
+		else{
+			newstate[action.info.toid] = [];
+			newstate[action.info.toid].push(thesenddic);
+		}
+		return newstate;
+
+	}
+	return state;
+}
 	
 
 const rootReducer = combineReducers({
 	usrinfo:usrinfo,
-	sended:sended
+	sended:sended,
+	sending:sending
 });
 
 export default rootReducer;

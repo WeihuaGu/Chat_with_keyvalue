@@ -32,28 +32,22 @@ const sendedMsg = (info) =>{
 	return commonaction('sendedmsg',info);
 }
 
-
-export { usrInfo , newUsrInfo, sendedMsg }
-
-
 /*
-module.exports.pushMessage = (text) => {
-  const action = { 
-  type: 'PUSH_MESSAGE',
-  time: new Date().toLocaleTimeString(),
-  text
-  }
-  return action
+ * info = {
+ * 	fromid:fromid,
+ * 	toid:toid,
+ * 	time:time,
+ * 	text:text
+ * 	}
+ *
+ */
+const sendingMsg = (info) =>{
+	return commonaction('sendingmsg',info);
 }
-module.exports.subscribeChannel  = (channel) => {
-  const action = { 
-  type: 'Subscribe_Channel ',
-  time: new Date().toLocaleTimeString(),
-  channel
-  }
-  return action
-}
-*/
+
+export { usrInfo , newUsrInfo, sendedMsg, sendingMsg }
+
+
 
 
 

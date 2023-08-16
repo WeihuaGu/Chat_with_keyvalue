@@ -8,23 +8,36 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { sendingMsg, sendedMsg } from './actions/index';
 
-export default function ChatingList() {
+
+export default function ChatingList({ channelid }) {
+  const sendinglist = useSelector((state)=>{
+	  if(channelid in state.sending){
+	  	return state.sending[channelid]
+	  }
+	  else
+		return [];
+  });
+  const SendingItems = sendinglist.map((sendingitem) => {
+   return (
+          <ListItem disablePadding>
+	   <ListItemButton>
+	     <ListItemText>
+	   	{sendingitem.text}
+	     </ListItemText>
+	   </ListItemButton>
+          </ListItem>
+   );
+  });
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <Divider />
       <nav aria-label="secondary mailbox folders">
         <List>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="One" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="#simple-list">
-              <ListItemText primary="Two" />
-            </ListItemButton>
-          </ListItem>
+	  {SendingItems}
         </List>
       </nav>
     </Box>
