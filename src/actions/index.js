@@ -44,8 +44,20 @@ const sendedMsg = (info) =>{
 const sendingMsg = (info) =>{
 	return commonaction('sendingmsg',info);
 }
+/*
+ * info = {
+ * 	fromid:fromid,
+ * 	toid:toid,
+ * 	time:time,
+ * 	text:text
+ * 	}
+ *
+ */
+const receivedMsg = (info) =>{
+	return commonaction('receivedmsg',info);
+}
 
-export { usrInfo , newUsrInfo, sendedMsg, sendingMsg }
+export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg }
 
 
 

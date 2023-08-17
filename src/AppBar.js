@@ -21,7 +21,7 @@ export default function ButtonAppBar({}) {
 	  	<HomeIcon />
           </IconButton>
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
-	    你的聊天id: {userId}
+	    你的id: {userId}
           </Typography>
 	  <IconButton color="inherit">
 	  	<MoreVertIcon />
