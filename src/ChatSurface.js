@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { sendingMsg, sendedMsg } from './actions/index';
+import { publisheChannel } from './subscriber-publisher.js';
 
 export default function ButtonAppBar() {
   const dispatch = useDispatch();
@@ -24,10 +25,22 @@ export default function ButtonAppBar() {
      const sendinginfo = {
        fromid:fromId,
        toid:channelid,
-       text:parentInputText
+       text:parentInputText,
+       msgstatus:'sending'
        }
      const sendingaction = sendingMsg(sendinginfo);
      dispatch(sendingaction);
+     let sendresult;
+     if(sendingaction.toid==='public')
+     	sendresult = publisheChannel(sendinginfo.toid,sendinginfo,'pub');
+     else
+     	sendresult = publisheChannel(sendinginfo.toid,sendinginfo,'secret');
+     sendresult.then((result)=>{
+	     console.log('send sucess'+result);
+     }
+     );
+
+     
      
   }
   useEffect(() => {

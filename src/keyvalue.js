@@ -1,9 +1,17 @@
+import { redismethod } from './keyvalueimplement.js';
 const pushKeyValue = (key,value)=>{
-	console.log('push value to key');
-	console.log('key is: '+key);
-	console.log('value is: '+value);
-	return value;
+	const haha = JSON.stringify(value);
+	return value.id;
+
+}
+const pushToList = (key,value)=>{
+	const pushstr = JSON.stringify(value);
+	return new Promise((resolve,reject)=>{
+		const result = redismethod.pushtolist(key,pushstr);
+		result.then((result)=>resolve(value.id)).catch((err)=>reject(err));
+	});
 
 }
 
-export { pushKeyValue }
+
+export { pushKeyValue,pushToList  }

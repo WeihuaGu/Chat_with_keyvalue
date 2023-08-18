@@ -14,7 +14,7 @@ import { createSelector } from 'reselect';
 
 export default function BasicList() {
   const selectSendingReceived = createSelector(
-  	state => {console.log('main list');console.log(state);return state.sending;},
+  	state => {return state.sending;},
   	state => state.received,
   	(sending, received) => {
     	// 在这里组合和转换数组
@@ -27,34 +27,32 @@ export default function BasicList() {
   	}
   );
   const chatinglist = useSelector(selectSendingReceived); 
+
+  //handle 
   const handleTouchStart = (event,touchStartX ) => {
-  touchStartX = event.touches[0].clientX; // 记录触摸起始位置的X坐标
-};
-
-const handleTouchEnd = (event, touchStartX, channelid) => {
-  if (touchStartX !== null) {
-    const touchEndX = event.changedTouches[0].clientX; // 获取触摸结束时的X坐标
-    const deltaX = touchEndX - touchStartX; // 计算滑动的水平距离
-
-    if (deltaX < -50) {
-      // 水平距离小于-50时，认为是向左滑动，执行长按事件的处理逻辑
-      // 在这里编写处理长按事件的逻辑
-      console.log('向左滑动，channelid:', channelid);
-    }
-  }
-
-  touchStartX = null; // 重置触摸起始位置的X坐标
-};
-  const handleLongPressChannelid = (event,channelid) => {
-	event.preventDefault();
-  // 在这里编写处理长按事件的逻辑
-  	console.log('长按事件被触发'+channelid);
+  	touchStartX = event.touches[0].clientX; // 记录触摸起始位置的X坐标
   };
+  const handleTouchEnd = (event, touchStartX, channelid) => {
+  	if (touchStartX !== null) {
+    		const touchEndX = event.changedTouches[0].clientX; // 获取触摸结束时的X坐标
+    		const deltaX = touchEndX - touchStartX; // 计算滑动的水平距离
+		console.log(deltaX);
+
+    		if (deltaX < -50) {
+      			// 水平距离小于-50时，认为是向左滑动，执行长按事件的处理逻辑
+      			// 在这里编写处理长按事件的逻辑
+      		  console.log('向左滑动，channelid:', channelid);
+    		}
+  	}
+
+  	touchStartX = null; // 重置触摸起始位置的X坐标
+  };
+  const chatinglistwithnopublic = chatinglist.filter((channelid) => channelid !== 'public');
 
 
-  const ChatingItems = chatinglist.map((channelid) => {
-	  let touchStartX = null;
-   return (
+  const ChatingItems = chatinglistwithnopublic.map((channelid) => {
+     let touchStartX = null;
+     return (
           <ListItem key={channelid} disablePadding>
            <ListItemButton component="a" href={"/chat/"+channelid}  onTouchStart={(event)=>{handleTouchStart(event,touchStartX)} } onTouchEnd={(event)=>{ handleTouchEnd(event,touchStartX ,channelid)}} >
              <ListItemText>
@@ -62,7 +60,7 @@ const handleTouchEnd = (event, touchStartX, channelid) => {
              </ListItemText>
            </ListItemButton>
           </ListItem>
-   );
+    );
   });
 
 
