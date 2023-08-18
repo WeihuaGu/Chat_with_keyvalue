@@ -1,4 +1,12 @@
+import { v4 as uuidv4 } from 'uuid';
+
+// 将消息保存在你的应用中
 const commonaction = (type,info) =>{
+	const messageId = uuidv4();
+	const currentTime = new Date();
+	info['id'] = messageId;
+	info['time'] = currentTime;
+
 	const action = {
 		type: type,
 		info: info
@@ -57,7 +65,17 @@ const receivedMsg = (info) =>{
 	return commonaction('receivedmsg',info);
 }
 
-export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg }
+
+const testAction = () =>{
+	const info = {
+		hint:'a test to redux action'
+	}
+
+	const testaction = commonaction('testaction',info);
+	return testaction;
+}
+
+export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction }
 
 
 

@@ -24,7 +24,6 @@ export default function ButtonAppBar() {
      const sendinginfo = {
        fromid:fromId,
        toid:channelid,
-       time:new Date().getTime(),
        text:parentInputText
        }
      const sendingaction = sendingMsg(sendinginfo);

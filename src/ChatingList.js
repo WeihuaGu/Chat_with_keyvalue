@@ -10,20 +10,26 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
+import { createSelector } from 'reselect';
 import { sendingMsg, sendedMsg } from './actions/index';
 
 
 export default function ChatingList({ channelid }) {
-  const sendinglist = useSelector((state)=>{
-	  if(channelid in state.sending){
-	  	return state.sending[channelid]
-	  }
-	  else
-		return [];
-  });
+   const selectSending = createSelector(
+        state => {return state.sending[channelid]},
+        (sending) => {
+        // 在这里组合和转换数组
+		    if(typeof sending === 'undefined')
+			return [];
+		    else
+			return sending;
+        }
+  );
+  const sendinglist = useSelector(selectSending);
+
   const SendingItems = sendinglist.map((sendingitem) => {
    return (
-          <ListItem disablePadding>
+          <ListItem key={sendingitem.id} disablePadding>
 	   <ListItemButton>
 	     <ListItemText>
 	   	{sendingitem.text}

@@ -37,9 +37,9 @@ useEffect(() => {
     var times = 0;
     const interval = setInterval(() => {
       // 在这里执行接收消息的逻辑
-     times=times+1;
+       times=times+1;
 
-      console.log('loop ...'+times);
+      //console.log('loop ...'+times);
     }, 6000); // 每5秒轮询一次
 
     return () => {
