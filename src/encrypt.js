@@ -15,10 +15,10 @@ const aesEncrypt = (text, key, iv) => {
   const encrypted = CryptoJS.AES.encrypt(text, key, { iv: iv });
   return encrypted.toString();
 };
-const getEncryptedPass = (pass, iv) => {
+const getEncryptedPass = (pass, iv,youpubkey) => {
   const passAndIv = pass + iv;
   const rsa = new NodeRSA();
-  rsa.importKey(pubKey(), 'pkcs8-public-pem');
+  rsa.importKey(youpubkey, 'pkcs8-public-pem');
   const encryptedPass = rsa.encrypt(passAndIv,'base64');
   return encryptedPass;
 };
@@ -30,9 +30,9 @@ const getDecryptedPass = (encryptedPass) => {
 }
 
 
-const encrypt = (data) => {
+const encrypt = (data,youpubkey=pubKey()) => {
   const passAndIv = genPass();
-  const encryptedPass = getEncryptedPass(passAndIv.pass, passAndIv.iv);
+  const encryptedPass = getEncryptedPass(passAndIv.pass, passAndIv.iv,youpubkey);
   const encryptedContent = aesEncrypt(data, passAndIv.pass, passAndIv.iv);
   return {
     encryptedpass: encryptedPass,

@@ -27,9 +27,6 @@ const redismethod = {
 	pushtolist:redislpush
 }
 
-const restfulapimethod = {
-
-}
 
 
-export { redismethod,restfulapimethod  }
+export { redismethod  }

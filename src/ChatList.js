@@ -7,6 +7,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
+import ChatWith from './ChatWith';
 import { useState } from 'react';
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect';
@@ -75,6 +76,9 @@ export default function BasicList() {
               </ListItemIcon>
               <ListItemText primary="公共聊天室" />
             </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+	  	<ChatWith />
           </ListItem>
         </List>
       </nav>

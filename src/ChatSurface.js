@@ -36,7 +36,9 @@ export default function ButtonAppBar() {
      else
      	sendresult = publisheChannel(sendinginfo.toid,sendinginfo,'secret');
      sendresult.then((result)=>{
-	     console.log('send sucess'+result);
+	     console.log('send sucess');
+	     console.log(result.id);
+	     console.log(result.listnum);
      }
      );
 

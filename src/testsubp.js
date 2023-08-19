@@ -1,27 +1,31 @@
-import { publisheChannel } from './subscriber-publisher.js';
-import { decrypt } from './encrypt.js';
+import { publisheChannel,subscribeChannel, publisheInfo2Channel,subscribeChannelInfo } from './subscriber-publisher.js';
 const info = {
 	 id: 'jJljajfajfjaskfjlakjflj',
 	 toid:3344,
 	 text:'hi world'
 }
-const hahaha = publisheChannel(1111,info,'pub');
-hahaha.then((haha)=>{
-console.log(haha)
+const cinfo = {
+	id:1111,
+	pubkey:'alfjajfjakakdjfakfjafj',
+	lasttime: '2023-12-22'
+}
+const pub = publisheChannel(1111,info,'pub');
+const getlist = subscribeChannel(1111);
+const pubinfo = publisheInfo2Channel(1111,cinfo);
+const getinfo = subscribeChannelInfo(1111);
+
+pub.then((haha)=>{
+	console.log(haha)
 });
-	/*
-console.log('解密');
-const pinfo = JSON.parse(haha);
-if(pinfo.type == 'secret'){
-	const dmsg = decrypt(pinfo.msg);
-	console.log(dmsg);
-	console.log(typeof dmsg === 'string');
-}
-else{
-	console.log(pinfo.msg);
-	console.log(typeof pinfo.msg === 'string');
-}
-*/
+getlist.then((haha)=>{
+	console.log(haha)
+});
+pubinfo.then((haha)=>{
+	console.log(haha)
+});
+getinfo.then((haha)=>{
+	console.log(haha)
+});
 	
 
 
