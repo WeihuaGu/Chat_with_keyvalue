@@ -81,6 +81,25 @@ const received = (state = {},action)=>{
 		return newstate;
 
 	}
+	if(action.type === 'receivedpubmsg'){
+		const newstate = cloneDeep(state);
+		const thesenddic = {
+			fromid:action.info.fromid,
+ 			time:action.info.time,
+			toid:action.info.toid,
+			text:action.info.text
+		}
+		if('public' in newstate){
+			const list = newstate['public'];
+			list.push(thesenddic);
+		}
+		else{
+			newstate['public'] = [];
+			newstate['public'].push(thesenddic);
+		}
+		return newstate;
+
+	}
 	return state;
 }
 const test = (state = '',action)=>{

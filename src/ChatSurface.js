@@ -12,13 +12,14 @@ import { bottom } from '@material-ui/system';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { sendingMsg, sendedMsg } from './actions/index';
+import { sendingMsg, sendedMsg ,receivedPubMsg } from './actions/index';
 import { publisheChannel } from './subscriber-publisher.js';
 import { subscribeChannel } from './subscriber-publisher.js';
 
 export default function ButtonAppBar() {
   const dispatch = useDispatch();
   const { channelid } = useParams();
+  const userId = useSelector((state)=>{return state.usrinfo.id});
   const fromId = useSelector((state)=>{return state.usrinfo.id});
   const [parentInputText, setParentInputText] = useState('');
 
@@ -54,6 +55,10 @@ export default function ButtonAppBar() {
       const mymsglist = subscribeChannel(channelid);
       mymsglist.then((list)=>{
 	      //过滤掉fromid=usrid的就行
+	      const receivedlistwithpublic = list.filter((msg) => msg.fromid !==userId );
+	      receivedlistwithpublic.map((msg)=>{
+		dispatch(new receivedPubMsg(msg));
+	      });
               console.log(list);
       });
     }, 6000); // 每5秒轮询一次

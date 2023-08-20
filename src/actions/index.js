@@ -65,6 +65,13 @@ const receivedMsg = (info) =>{
 	return commonaction('receivedmsg',info);
 }
 
+const receivedPubMsg = (info) =>{
+	const action = {
+		type: 'receivedpubmsg',
+		info: info
+	}
+	return action;
+}
 
 const testAction = () =>{
 	const info = {
@@ -75,7 +82,7 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction }
+export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg }
 
 
 
