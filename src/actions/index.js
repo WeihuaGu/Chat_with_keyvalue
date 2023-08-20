@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 // 将消息保存在你的应用中
 const commonaction = (type,info) =>{
 	const messageId = uuidv4();
-	const currentTime = new Date();
+	const currentTime = new Date().toISOString();
 	info['id'] = messageId;
 	info['time'] = currentTime;
 

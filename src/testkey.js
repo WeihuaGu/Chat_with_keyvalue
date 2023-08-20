@@ -5,7 +5,11 @@ import { encrypt, decrypt, getEncryptedPass , getDecryptedPass} from './encrypt.
 //console.log(keyPair);
 
 // 要加密的原始数据
-const originalData = 'Hello, world!';
+const info = {
+	id:1123,
+	test:'hi,this is a test to encrypt'
+}
+const originalData = JSON.stringify(info);
 
 // 加密数据
 const encryptedData = encrypt(originalData);

@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { sendingMsg, sendedMsg } from './actions/index';
 import { publisheChannel } from './subscriber-publisher.js';
+import { subscribeChannel } from './subscriber-publisher.js';
 
 export default function ButtonAppBar() {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ export default function ButtonAppBar() {
      const sendingaction = sendingMsg(sendinginfo);
      dispatch(sendingaction);
      let sendresult;
-     if(sendingaction.toid==='public')
+     if(sendinginfo.toid==='public')
      	sendresult = publisheChannel(sendinginfo.toid,sendinginfo,'pub');
      else
      	sendresult = publisheChannel(sendinginfo.toid,sendinginfo,'secret');
@@ -39,13 +40,33 @@ export default function ButtonAppBar() {
 	     console.log('send sucess');
 	     console.log(result.id);
 	     console.log(result.listnum);
-     }
-     );
-
-     
+     });
      
   }
   useEffect(() => {
+    if(channelid==='public'){
+      var times = 0;
+      const interval = setInterval(() => {
+      // 在这里执行接收public消息的逻辑
+       times=times+1;
+
+      console.log('loop ...pub'+times);
+      const mymsglist = subscribeChannel(channelid);
+      mymsglist.then((list)=>{
+	      //过滤掉fromid=usrid的就行
+              console.log(list);
+      });
+    }, 6000); // 每5秒轮询一次
+
+    return () => {
+      // 清理函数在组件卸载时会被调用
+      // 在这里清除轮询定时器或取消其他轮询相关的操作
+            console.log('Stop polling');
+            clearInterval(interval);
+    };
+   }
+
+
 
   }, []);
   return (

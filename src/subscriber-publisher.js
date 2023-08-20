@@ -5,16 +5,28 @@ import { pushKeyValue ,pushToList,getKeyValue,getList } from './keyvalue.js';
 const subscribeChannel = (channel)=>{
 	return new Promise(async(resolve, reject) => {
 		const clist = await getList(channel);
-		const infolist = clist[Number(channel)];
+		let infolist;
+		if(channel!='public')
+			infolist = clist[Number(channel)];
+		else
+			infolist = clist[channel];
 		const decryptlist = infolist.map((itemstr)=>{
-			const haha = itemstr.replace(/\\"/g, '"').slice(1, -1).slice(1, -1);
-			console.log(haha);
-			console.log(typeof haha);
-			const item = JSON.parse(haha);
-			const itemmsg = item['msg'];
-			const pass = itemmsg['encryptedpass'];
-			const content = decrypt(itemmsg['encryptedcontent']);
-			return content;
+			const item = JSON.parse(itemstr);
+			const type = item.type;
+			if(type === 'secret'){
+				const enmsg = item.msg;
+				const pass = item.encryptedpass;
+				const enmsgobj = { 
+					encryptedpass:pass, 
+					encryptedcontent:enmsg
+				}
+				const decryptedmsg = decrypt(enmsgobj);
+				return JSON.parse(decryptedmsg);
+			}
+			if(type === 'pub'){
+				return item.msg;
+			}
+
 		});
 		resolve(decryptlist);
 	});
@@ -25,22 +37,29 @@ const getchannelpubkey = async(channel) =>{
 	return cinfo.pubkey;
 
 }
-const publisheChannel = async(channel,msg,type)=>{
-	const pubkey = await getchannelpubkey(channel);
+const publisheChannel = async(channel,msg,type,pubkey)=>{
 	let premsg;
+	if(type === 'pub'){
+		premsg = {
+			type:'pub',
+			msg:msg,
+			time: msg.time
+		}
+	}
 	if(type === 'secret'){
-		// 加密数据
+	  if(pubkey===undefined)
+		pubkey = await getchannelpubkey(channel);
+	  // 加密数据
 	  const encryptedData = encrypt(JSON.stringify (msg),pubkey);
 	  premsg = {
 		  type:'secret',
-		  msg: encryptedData
+		  msg: encryptedData.encryptedcontent,
+		  encryptedpass: encryptedData.encryptedpass,
+		  time: msg.time
+
 	  }
-	}else{
-		premsg = {
-			type:'pub',
-			msg:msg
-		}
 	}
+
 	premsg['id'] = msg.id;
 	return new Promise((resolve, reject) => {
 		const pushresult = pushToList(channel,premsg);
@@ -67,5 +86,5 @@ const publisheInfo2Channel = (channel,msg)=>{
 	});
 
 }
-export { publisheChannel,subscribeChannel, publisheInfo2Channel,subscribeChannelInfo }
+export { publisheChannel,subscribeChannel, publisheInfo2Channel,subscribeChannelInfo,getchannelpubkey }
 
