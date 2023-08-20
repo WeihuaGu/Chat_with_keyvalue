@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import  CryptoJS from 'crypto-js';
 
 // 将消息保存在你的应用中
 const commonaction = (type,info) =>{
@@ -72,6 +73,17 @@ const receivedPubMsg = (info) =>{
 	}
 	return action;
 }
+const genMd5 = (id,object) =>{
+	const str = object.toString();
+	const md5Hash = CryptoJS.MD5(str).toString();
+	const action = {
+		type: 'genmd5',
+		md5str: md5Hash,
+		id: id
+	}
+	return action;
+
+}
 
 const testAction = () =>{
 	const info = {
@@ -82,7 +94,7 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg }
+export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5 }
 
 
 

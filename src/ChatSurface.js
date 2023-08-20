@@ -12,15 +12,19 @@ import { bottom } from '@material-ui/system';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { sendingMsg, sendedMsg ,receivedPubMsg } from './actions/index';
+import { sendingMsg, sendedMsg ,receivedPubMsg ,genMd5} from './actions/index';
 import { publisheChannel } from './subscriber-publisher.js';
 import { subscribeChannel } from './subscriber-publisher.js';
+import  CryptoJS from 'crypto-js';
+
 
 export default function ButtonAppBar() {
   const dispatch = useDispatch();
   const { channelid } = useParams();
   const userId = useSelector((state)=>{return state.usrinfo.id});
   const fromId = useSelector((state)=>{return state.usrinfo.id});
+  const receivedList = useSelector((state)=>{return state.received});
+  const pubcomparemd5 = useSelector((state)=>{return state.comparemd5.publicmd5});
   const [parentInputText, setParentInputText] = useState('');
 
   const handleClick = () => {
@@ -34,9 +38,9 @@ export default function ButtonAppBar() {
      dispatch(sendingaction);
      let sendresult;
      if(sendinginfo.toid==='public')
-     	sendresult = publisheChannel(sendinginfo.toid,sendinginfo,'pub');
+     	sendresult = publisheChannel(sendinginfo.toid,sendingaction.info,'pub');
      else
-     	sendresult = publisheChannel(sendinginfo.toid,sendinginfo,'secret');
+     	sendresult = publisheChannel(sendinginfo.toid,sendingaction.info,'secret');
      sendresult.then((result)=>{
 	     console.log('send sucess');
 	     console.log(result.id);
@@ -54,12 +58,36 @@ export default function ButtonAppBar() {
       console.log('loop ...pub'+times);
       const mymsglist = subscribeChannel(channelid);
       mymsglist.then((list)=>{
-	      //过滤掉fromid=usrid的就行
+	      //过滤掉fromid=usrid的就行,这样就不显示自己已经发过了的
 	      const receivedlistwithpublic = list.filter((msg) => msg.fromid !==userId );
-	      receivedlistwithpublic.map((msg)=>{
-		dispatch(new receivedPubMsg(msg));
-	      });
-              console.log(list);
+	      const receivedstr = receivedlistwithpublic.toString();
+              const md5Hash = CryptoJS.MD5(receivedstr).toString();
+	      if(pubcomparemd5!=md5Hash){
+		      const listB = receivedList['public'];
+		      if(listB===undefined){
+	      	        receivedlistwithpublic.map((msg)=>{
+			  dispatch(new receivedPubMsg(msg));
+	      	        });
+		      }else{
+			      //只接受没接收过的
+		       const filterednewList = receivedlistwithpublic.filter((itemA) =>{
+			       const bhasa = listB.some((itemB) => {
+				       if(itemB.id === itemA.id)
+					       return true;
+				       else
+					       return false;
+			       });
+			       if(bhasa)
+				       console.log(itemA);
+			       return !bhasa
+		       });
+	      	       filterednewList.map((msg)=>{
+                	//console.log(msg);
+			dispatch(new receivedPubMsg(msg));
+	      	      });
+		      }
+	              dispatch(new genMd5('pub',receivedlistwithpublic));
+	      }
       });
     }, 6000); // 每5秒轮询一次
 

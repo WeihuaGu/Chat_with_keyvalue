@@ -47,10 +47,10 @@ useEffect(() => {
        times=times+1;
       
 
-      console.log('loop ...'+times);
+      //console.log('loop ...'+times);
       const mymsglist = subscribeChannel(userId); 
       mymsglist.then((list)=>{ 
-	      console.log(list);
+	      //console.log(list);
       });
 	    
 

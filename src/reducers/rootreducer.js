@@ -43,6 +43,7 @@ const sending = (state = {},action)=>{
 	if(action.type === 'sendingmsg'){
 		const newstate = cloneDeep(state);
 		const thesenddic = {
+			id:action.info.id,
 			fromid:action.info.fromid,
  			time:action.info.time,
 			toid:action.info.toid,
@@ -65,6 +66,7 @@ const received = (state = {},action)=>{
 	if(action.type === 'receivedmsg'){
 		const newstate = cloneDeep(state);
 		const thesenddic = {
+			id:action.info.id,
 			fromid:action.info.fromid,
  			time:action.info.time,
 			toid:action.info.toid,
@@ -84,23 +86,36 @@ const received = (state = {},action)=>{
 	if(action.type === 'receivedpubmsg'){
 		const newstate = cloneDeep(state);
 		const thesenddic = {
+			id:action.info.id,
 			fromid:action.info.fromid,
  			time:action.info.time,
 			toid:action.info.toid,
 			text:action.info.text
 		}
-		if('public' in newstate){
-			const list = newstate['public'];
+		if(action.info.toid in newstate){
+			const list = newstate[action.info.toid];
 			list.push(thesenddic);
 		}
 		else{
-			newstate['public'] = [];
-			newstate['public'].push(thesenddic);
+			newstate[action.info.toid] = [];
+			newstate[action.info.toid].push(thesenddic);
 		}
 		return newstate;
 
 	}
 	return state;
+}
+const comparemd5 = (state = {publicmd5:"",memd5:""},action)=>{
+	if(action.type==='genmd5'){
+		const newstate = cloneDeep(state);
+		if(action.id === 'pub')
+			newstate['publicmd5'] = action.md5str;
+		if(action.id === 'me')
+			newstate['memd5'] = action.md5str;
+		return newstate;
+	}
+	return state;
+
 }
 const test = (state = '',action)=>{
 	if(action.type==='testaction'){
@@ -118,6 +133,7 @@ const rootReducer = combineReducers({
 	sended:sended,
 	sending:sending,
 	received:received,
+	comparemd5:comparemd5,
 	test:test
 });
 

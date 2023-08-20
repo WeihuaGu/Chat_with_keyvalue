@@ -15,19 +15,23 @@ import { sendingMsg, sendedMsg } from './actions/index';
 
 
 export default function ChatingList({ channelid }) {
-   const selectSending = createSelector(
+   const selectSendingAndReceived = createSelector(
         state => {return state.sending[channelid]},
-        (sending) => {
+        state => {return state.received[channelid]},
+        (sending,received) => {
         // 在这里组合和转换数组
-		    if(typeof sending === 'undefined')
-			return [];
-		    else
-			return sending;
-        }
+		const mergedList = [];
+    		if (sending) 
+    		  mergedList.push(...sending);
+   		if (received) 
+      		  mergedList.push(...received);
+		return mergedList;
+       }
   );
-  const sendinglist = useSelector(selectSending);
+  const sendingandreceivedlist = useSelector(selectSendingAndReceived);
+  
 
-  const SendingItems = sendinglist.map((sendingitem) => {
+  const SendingItems = sendingandreceivedlist.map((sendingitem) => {
    return (
           <ListItem key={sendingitem.id} disablePadding>
 	   <ListItemButton>
