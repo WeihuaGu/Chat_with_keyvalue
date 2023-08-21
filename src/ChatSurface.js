@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { sendingMsg, sendedMsg ,receivedPubMsg ,genMd5} from './actions/index';
 import { publisheChannel } from './subscriber-publisher.js';
 import { subscribeChannel } from './subscriber-publisher.js';
+import { getA_not_in_B, printList,itemInList } from './util';
 import  CryptoJS from 'crypto-js';
 
 
@@ -23,7 +24,7 @@ export default function ButtonAppBar() {
   const { channelid } = useParams();
   const userId = useSelector((state)=>{return state.usrinfo.id});
   const fromId = useSelector((state)=>{return state.usrinfo.id});
-  const receivedList = useSelector((state)=>{return state.received});
+  const receivedList = useSelector((state)=>{return state.received.channelid});
   const pubcomparemd5 = useSelector((state)=>{return state.comparemd5.publicmd5});
   const [parentInputText, setParentInputText] = useState('');
 
@@ -49,52 +50,50 @@ export default function ButtonAppBar() {
      
   }
   useEffect(() => {
+    var times = 0;
+
     if(channelid==='public'){
-      var times = 0;
       const interval = setInterval(() => {
       // 在这里执行接收public消息的逻辑
-       times=times+1;
-
+      times=times+1;
       console.log('loop ...pub'+times);
+
       const mymsglist = subscribeChannel(channelid);
       mymsglist.then((list)=>{
+	      console.log('haha get public list');
 	      //过滤掉fromid=usrid的就行,这样就不显示自己已经发过了的
 	      const receivedlistwithpublic = list.filter((msg) => msg.fromid !==userId );
 	      const receivedstr = receivedlistwithpublic.toString();
               const md5Hash = CryptoJS.MD5(receivedstr).toString();
 	      if(pubcomparemd5!=md5Hash){
-		      const listB = receivedList['public'];
-		      if(listB===undefined){
+		      console.log('haha in handle public list');
+		      if(receivedList===undefined){
 	      	        receivedlistwithpublic.map((msg)=>{
 			  dispatch(new receivedPubMsg(msg));
 	      	        });
 		      }else{
-			      //只接受没接收过的
-		       const filterednewList = receivedlistwithpublic.filter((itemA) =>{
-			       const bhasa = listB.some((itemB) => {
-				       if(itemB.id === itemA.id)
-					       return true;
-				       else
-					       return false;
-			       });
-			       if(bhasa)
-				       console.log(itemA);
-			       return !bhasa
-		       });
+		       const filterednewList =  getA_not_in_B(receivedlistwithpublic,receivedList,'id');
+		       console.log('pring raw receive list,then local receivelist,then new list');
+			  printList(receivedlistwithpublic);
+			  console.log('-------------------------------------------');
+			  printList(receivedList);
+			  console.log('-------------------------------------------');
+			  printList(filterednewList);
+		
 	      	       filterednewList.map((msg)=>{
-                	//console.log(msg);
-			dispatch(new receivedPubMsg(msg));
-	      	      });
+			    if(!itemInList(msg,receivedList,'id'))
+				dispatch(new receivedPubMsg(msg));
+	      	       });
+
 		      }
 	              dispatch(new genMd5('pub',receivedlistwithpublic));
 	      }
       });
-    }, 6000); // 每5秒轮询一次
+    }, 20000); // 每5秒轮询一次
 
     return () => {
-      // 清理函数在组件卸载时会被调用
-      // 在这里清除轮询定时器或取消其他轮询相关的操作
-            console.log('Stop polling');
+      // 清除轮询定时器
+            console.log('Stop public channel polling');
             clearInterval(interval);
     };
    }

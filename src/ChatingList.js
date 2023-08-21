@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { createSelector } from 'reselect';
 import { sendingMsg, sendedMsg } from './actions/index';
+import { getA_not_in_B, printList } from './util';
 
 
 export default function ChatingList({ channelid }) {

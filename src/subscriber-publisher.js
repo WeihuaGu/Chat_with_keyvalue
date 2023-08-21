@@ -10,6 +10,10 @@ const subscribeChannel = (channel)=>{
 			infolist = clist[Number(channel)];
 		else
 			infolist = clist[channel];
+		if(infolist == undefined){
+			reject();
+			return;
+		}
 		const decryptlist = infolist.map((itemstr)=>{
 			const item = JSON.parse(itemstr);
 			const type = item.type;
