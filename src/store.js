@@ -8,7 +8,10 @@ const persistConfig = {
   key: 'root',
   storage,
 };
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer ,
+  {
+    blacklist: ['received']
+  });
 
 
 const store = createStore(persistedReducer);

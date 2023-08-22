@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { sendingMsg, sendedMsg ,receivedPubMsg ,genMd5} from './actions/index';
 import { publisheChannel } from './subscriber-publisher.js';
 import { subscribeChannel } from './subscriber-publisher.js';
-import { getA_not_in_B, printList,itemInList } from './util';
+import { getA_not_in_B, printList,itemInList,printState,getState } from './util';
 import  CryptoJS from 'crypto-js';
 
 
@@ -24,7 +24,6 @@ export default function ButtonAppBar() {
   const { channelid } = useParams();
   const userId = useSelector((state)=>{return state.usrinfo.id});
   const fromId = useSelector((state)=>{return state.usrinfo.id});
-  const receivedList = useSelector((state)=>{return state.received.channelid});
   const pubcomparemd5 = useSelector((state)=>{return state.comparemd5.publicmd5});
   const [parentInputText, setParentInputText] = useState('');
 
@@ -59,37 +58,30 @@ export default function ButtonAppBar() {
       console.log('loop ...pub'+times);
 
       const mymsglist = subscribeChannel(channelid);
+	      //很大的坑 上面useSelector获取的状态不是新的，时常获取到undefined
+      const localList = getState().received[channelid];
       mymsglist.then((list)=>{
-	      console.log('haha get public list');
 	      //过滤掉fromid=usrid的就行,这样就不显示自己已经发过了的
 	      const receivedlistwithpublic = list.filter((msg) => msg.fromid !==userId );
-	      const receivedstr = receivedlistwithpublic.toString();
-              const md5Hash = CryptoJS.MD5(receivedstr).toString();
-	      if(pubcomparemd5!=md5Hash){
-		      console.log('haha in handle public list');
-		      if(receivedList===undefined){
+	      if(true){
+		      if(localList===undefined){
+			console.log('received list get null');
+			printState();
 	      	        receivedlistwithpublic.map((msg)=>{
 			  dispatch(new receivedPubMsg(msg));
 	      	        });
 		      }else{
-		       const filterednewList =  getA_not_in_B(receivedlistwithpublic,receivedList,'id');
-		       console.log('pring raw receive list,then local receivelist,then new list');
-			  printList(receivedlistwithpublic);
-			  console.log('-------------------------------------------');
-			  printList(receivedList);
-			  console.log('-------------------------------------------');
-			  printList(filterednewList);
-		
+		       const filterednewList =  getA_not_in_B(receivedlistwithpublic,localList,'id');
 	      	       filterednewList.map((msg)=>{
-			    if(!itemInList(msg,receivedList,'id'))
+			    printState();
+			    if(!itemInList(msg,localList,'id'))
 				dispatch(new receivedPubMsg(msg));
 	      	       });
 
 		      }
-	              dispatch(new genMd5('pub',receivedlistwithpublic));
 	      }
       });
-    }, 20000); // 每5秒轮询一次
+    }, 10000); // 每5秒轮询一次
 
     return () => {
       // 清除轮询定时器

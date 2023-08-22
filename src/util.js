@@ -1,3 +1,9 @@
+import { store } from './store'
+
+const printState = () => {
+  console.log('Current Store State:', store.getState());
+}
+
 const getA_not_in_B = (A, B, keyname) => {
   const resultlist = A.filter((itemA) => {
     const isItemAinB = B.some((itemB) => itemB[keyname] === itemA[keyname]);
@@ -16,5 +22,14 @@ const itemInList = (theitem,list,keyname)=>{
     return isItemInlist;
 }
 
+function printStoreState() {
+  console.log('Current Store State:', store.getState())
+}
+function getState(){
+	return store.getState();
+}
 
-export { getA_not_in_B, printList,itemInList  };
+export default printStoreState
+
+
+export { getA_not_in_B, printList,itemInList,printState,getState };
