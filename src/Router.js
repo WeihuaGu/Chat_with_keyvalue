@@ -2,11 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch ,useSelector} from 'react-redux'
-import { usrInfo, newUsrInfo } from './actions/index';
+import { usrInfo, newUsrInfo,receivedMsg } from './actions/index';
 import { genuserinfo } from './genuserinfo';
 import { publisheInfo2Channel,subscribeChannel } from './subscriber-publisher.js';
 import App from './App';
 import ChatSurface from './ChatSurface';
+import { printList,getState, getA_not_in_B,itemInList } from './util.js';
+import { cloneDeep } from 'lodash';
+
 function router(){
 const dispatch = useDispatch();
 const userId = useSelector((state)=>{return state.usrinfo.id});
@@ -44,14 +47,42 @@ useEffect(() => {
     var times = 0;
     const interval = setInterval(() => {
       // 在这里执行接收消息的逻辑
-       times=times+1;
-      
+      times=times+1;
+      console.log('loop ...'+times);
 
-      //console.log('loop ...'+times);
-      const mymsglist = subscribeChannel(userId); 
-      mymsglist.then((list)=>{ 
-	      //console.log(list);
-      });
+      const mymsglist = subscribeChannel(userId);
+              //很大的坑 上面useSelector获取的状态不是新的，时常获取到undefined
+        const rawlocalList = getState().received;
+        const localList = cloneDeep(rawlocalList);
+	delete localList.public;
+
+	
+        mymsglist.then((list)=>{
+              //过滤掉fromid=usrid的就行,这样就不显示自己已经发过了的
+              const receivedlist = list.filter((msg) => msg.fromid !==userId );
+              if(true){
+		      const mergedLocal = [].concat(...Object.values(localList));
+		      if(localList===undefined){
+                        console.log('received list get null');
+                        receivedlist.map((msg)=>{
+                          dispatch(new receivedMsg(msg));
+                        });
+                      }else{
+                       const filterednewList =  getA_not_in_B(receivedlist,mergedLocal,'id');
+                       filterednewList.map((msg)=>{
+                            if(!itemInList(msg,mergedLocal,'id'))
+                                dispatch(new receivedMsg(msg));
+                       });
+
+                      }
+
+
+
+              }
+        });
+
+	    
+
 	    
 
 

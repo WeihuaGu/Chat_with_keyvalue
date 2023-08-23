@@ -19,12 +19,16 @@ const usrinfo = (state = {},action)=> {
 	}
 	return state;
 }
-const sended = (state = {},action)=>{
-	if(action.type === 'sendedmsg'){
+const sending = (state = {},action)=>{
+	if(action.type === 'sendingmsg'){
 		const newstate = cloneDeep(state);
 		const thesenddic = {
+			id:action.info.id,
+			fromid:action.info.fromid,
+ 			time:action.info.time,
 			toid:action.info.toid,
-			text:action.info.text
+			text:action.info.text,
+			msgstatus:action.info.msgstatus
 		}
 		if(action.info.toid in newstate){
 			const list = newstate[action.info.toid];
@@ -37,25 +41,14 @@ const sended = (state = {},action)=>{
 		return newstate;
 
 	}
-	return state;
-}
-const sending = (state = {},action)=>{
-	if(action.type === 'sendingmsg'){
+	if(action.type === 'sendedmsg'){
 		const newstate = cloneDeep(state);
-		const thesenddic = {
-			id:action.info.id,
-			fromid:action.info.fromid,
- 			time:action.info.time,
-			toid:action.info.toid,
-			text:action.info.text
-		}
-		if(action.info.toid in newstate){
-			const list = newstate[action.info.toid];
-			list.push(thesenddic);
-		}
-		else{
-			newstate[action.info.toid] = [];
-			newstate[action.info.toid].push(thesenddic);
+		if(action.toid in newstate){
+			const list = newstate[action.toid];
+			list.forEach((item) => {
+				if(item['id']===action.msgid)
+					item['msgstatus'] = action.result
+  			});
 		}
 		return newstate;
 
@@ -130,7 +123,6 @@ const test = (state = '',action)=>{
 
 const rootReducer = combineReducers({
 	usrinfo:usrinfo,
-	sended:sended,
 	sending:sending,
 	received:received,
 	comparemd5:comparemd5,

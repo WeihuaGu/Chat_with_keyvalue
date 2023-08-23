@@ -19,14 +19,18 @@ export default function InputText({ onClick, setInputText }) {
 	setInputTextLocal('');
 };
   return (
-      <Box sx={{
-          bgcolor: 'background.paper',
-          positon: bottom,
-          Width: "100%",
-          display: 'grid',
-          gridAutoColumns: '1fr',
-          gap: 1,
-        }}>
+      <Box 
+	sx={{
+        position: 'fixed',
+        bottom: 0,
+        width: '100%',
+        bgcolor: 'background.paper',
+        alignItems: 'center',
+        padding: '10px',
+	display: 'grid',
+        gridAutoColumns: '1fr',
+        gap: 1,
+      }}>
 	  <TextField id="sendtext" variant="outlined" value={inputText} onChange={handleInputChange}  multiline sx={{ gridRow: '1', gridColumn: '1 / 6' }}/>
 
 	  <IconButton color="inherit" onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '6 / 7' }}>

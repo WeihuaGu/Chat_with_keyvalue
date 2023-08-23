@@ -37,8 +37,14 @@ const newUsrInfo = (info) =>{
  * 	}
  *
  */
-const sendedMsg = (info) =>{
-	return commonaction('sendedmsg',info);
+const sendedMsg = (toid,msgid,result) =>{
+	const action = {
+		type: 'sendedmsg',
+		toid: toid,
+		msgid: msgid,
+		result: result
+	}
+	return action;
 }
 
 /*
@@ -63,7 +69,11 @@ const sendingMsg = (info) =>{
  *
  */
 const receivedMsg = (info) =>{
-	return commonaction('receivedmsg',info);
+	const action = {
+		type: 'receivedmsg',
+		info: info
+	}
+	return action;
 }
 
 const receivedPubMsg = (info) =>{

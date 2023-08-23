@@ -14,7 +14,7 @@ export default function ButtonAppBar({}) {
   const userId = useSelector((state)=>{return state.usrinfo.id});
   
   return (
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1,width: '100%',position: 'fixed',top: 0 }}>
       <AppBar position="static">
         <Toolbar>
 	  <IconButton color="inherit" component="a" href="/">

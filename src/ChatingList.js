@@ -16,6 +16,7 @@ import { getA_not_in_B, printList } from './util';
 
 
 export default function ChatingList({ channelid }) {
+   const userId = useSelector((state)=>{return state.usrinfo.id});
    const selectSendingAndReceived = createSelector(
         state => {return state.sending[channelid]},
         state => {return state.received[channelid]},
@@ -26,6 +27,7 @@ export default function ChatingList({ channelid }) {
     		  mergedList.push(...sending);
    		if (received) 
       		  mergedList.push(...received);
+		mergedList.sort((a, b) => new Date(a.time) - new Date(b.time));
 		return mergedList;
        }
   );
@@ -33,10 +35,21 @@ export default function ChatingList({ channelid }) {
   
 
   const SendingItems = sendingandreceivedlist.map((sendingitem) => {
+   let textAlignment = '';
+   let listItemStyle = {};
+	  let listItemColor = '';
+   if (sendingitem.fromid === userId) {
+    textAlignment = 'right';
+    listItemStyle = { paddingLeft: '50px', paddingRight: '10px',
+    backgroundColor: sendingitem.msgstatus === 'sending' ? 'orange' : sendingitem.msgstatus === 'sended' ? '#eaeaea' : sendingitem.msgstatus === 'failed' ? '#ffcccc' : ''};
+   } else {
+    textAlignment = 'left';
+	   listItemStyle = { paddingLeft: '10px', paddingRight: '50px' };
+   }
    return (
-          <ListItem key={sendingitem.id} disablePadding>
+          <ListItem key={sendingitem.id} disablePadding style={listItemStyle}>
 	   <ListItemButton>
-	     <ListItemText>
+	     <ListItemText align={textAlignment}>
 	   	{sendingitem.text}
 	     </ListItemText>
 	   </ListItemButton>
@@ -44,7 +57,7 @@ export default function ChatingList({ channelid }) {
    );
   });
   return (
-    <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+    <Box sx={{ bottom: '60px' , top: '60px', width: '100%', bgcolor: 'background.paper' }}>
       <Divider />
       <nav aria-label="secondary mailbox folders">
         <List>

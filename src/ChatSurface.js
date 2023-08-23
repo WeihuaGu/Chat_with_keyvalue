@@ -11,10 +11,11 @@ import { position } from '@material-ui/system';
 import { bottom } from '@material-ui/system';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { sendingMsg, sendedMsg ,receivedPubMsg ,genMd5} from './actions/index';
 import { publisheChannel } from './subscriber-publisher.js';
-import { subscribeChannel } from './subscriber-publisher.js';
+import { subscribeChannel,subscribeChannelInfo } from './subscriber-publisher.js';
 import { getA_not_in_B, printList,itemInList,printState,getState } from './util';
 import  CryptoJS from 'crypto-js';
 import { cloneDeep } from 'lodash';
@@ -28,6 +29,7 @@ export default function ButtonAppBar() {
   const fromId = useSelector((state)=>{return state.usrinfo.id});
   const pubcomparemd5 = useSelector((state)=>{return state.comparemd5.publicmd5});
   const [parentInputText, setParentInputText] = useState('');
+  const channelInfo = useRef({});
 
   const handleClick = () => {
      const sendinginfo = {
@@ -44,28 +46,46 @@ export default function ButtonAppBar() {
      
      if(sendinginfo.toid==='public')
      	sendresult = publisheChannel(sendinginfo.toid,postinfo,'pub');
-     else
-     	sendresult = publisheChannel(sendinginfo.toid,postinfo,'secret');
+     else{
+	if(channelInfo.current['pubkey']!=undefined)
+     		sendresult = publisheChannel(sendinginfo.toid,postinfo,'secret');
+	else
+     		sendresult = publisheChannel(sendinginfo.toid,postinfo,'secret',channelInfo.current['pubkey']);
+     }
      sendresult.then((result)=>{
+	     const sended = sendedMsg(channelid,result.id,'sended');
+	     dispatch(sended);
 	     console.log('send sucess');
 	     console.log(result.id);
 	     console.log(result.listnum);
      });
+     sendresult.catch((err)=>{
+	     const sended = sendedMsg(channelid,postinfo.id,'failed');
+	     dispatch(sended);
+     });
+
      
   }
   useEffect(() => {
-    var times = 0;
+    if(channelid!='public'){
+    	const getchannelinfo = subscribeChannelInfo(channelid)
+    	getchannelinfo.then((result)=>{
+	    channelInfo.current = JSON.parse(result['info-'+channelid]);
+	    console.log(channelInfo.current['pubkey']);
+    	});
+    }
 
     if(channelid==='public'){
+      var times = 0;
       const interval = setInterval(() => {
-      // 在这里执行接收public消息的逻辑
-      times=times+1;
-      console.log('loop ...pub'+times);
+        // 在这里执行接收public消息的逻辑
+        times=times+1;
+        console.log('loop ...pub'+times);
 
-      const mymsglist = subscribeChannel(channelid);
+        const mymsglist = subscribeChannel(channelid);
 	      //很大的坑 上面useSelector获取的状态不是新的，时常获取到undefined
-      const localList = getState().received[channelid];
-      mymsglist.then((list)=>{
+        const localList = getState().received[channelid];
+        mymsglist.then((list)=>{
 	      //过滤掉fromid=usrid的就行,这样就不显示自己已经发过了的
 	      const receivedlistwithpublic = list.filter((msg) => msg.fromid !==userId );
 	      if(true){
@@ -83,15 +103,15 @@ export default function ButtonAppBar() {
 
 		      }
 	      }
-      });
-    }, 10000); // 每5秒轮询一次
+        });
 
-    return () => {
+      }, 10000); // 每5秒轮询一次
+      return () => {
       // 清除轮询定时器
             console.log('Stop public channel polling');
             clearInterval(interval);
-    };
-   }
+     };
+    }
 
 
 
@@ -99,7 +119,7 @@ export default function ButtonAppBar() {
   return (
       <Box>
       <AppBar />
-      <Stack spacing={2}>
+      <Stack spacing={2} sx={{ width: '100%', bgcolor: 'background.paper', height: '100%', overflowY: 'auto' }}>
   	<ChatingList channelid={channelid}/>
   	<InputText onClick={handleClick} setInputText={setParentInputText} sx={{bottom: bottom}} />
       </Stack>
