@@ -17,6 +17,8 @@ import { publisheChannel } from './subscriber-publisher.js';
 import { subscribeChannel } from './subscriber-publisher.js';
 import { getA_not_in_B, printList,itemInList,printState,getState } from './util';
 import  CryptoJS from 'crypto-js';
+import { cloneDeep } from 'lodash';
+
 
 
 export default function ButtonAppBar() {
@@ -37,10 +39,13 @@ export default function ButtonAppBar() {
      const sendingaction = sendingMsg(sendinginfo);
      dispatch(sendingaction);
      let sendresult;
+     const postinfo = cloneDeep(sendingaction.info);
+     delete postinfo.msgstatus
+     
      if(sendinginfo.toid==='public')
-     	sendresult = publisheChannel(sendinginfo.toid,sendingaction.info,'pub');
+     	sendresult = publisheChannel(sendinginfo.toid,postinfo,'pub');
      else
-     	sendresult = publisheChannel(sendinginfo.toid,sendingaction.info,'secret');
+     	sendresult = publisheChannel(sendinginfo.toid,postinfo,'secret');
      sendresult.then((result)=>{
 	     console.log('send sucess');
 	     console.log(result.id);
@@ -66,14 +71,12 @@ export default function ButtonAppBar() {
 	      if(true){
 		      if(localList===undefined){
 			console.log('received list get null');
-			printState();
 	      	        receivedlistwithpublic.map((msg)=>{
 			  dispatch(new receivedPubMsg(msg));
 	      	        });
 		      }else{
 		       const filterednewList =  getA_not_in_B(receivedlistwithpublic,localList,'id');
 	      	       filterednewList.map((msg)=>{
-			    printState();
 			    if(!itemInList(msg,localList,'id'))
 				dispatch(new receivedPubMsg(msg));
 	      	       });
