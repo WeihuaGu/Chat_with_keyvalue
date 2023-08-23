@@ -17,6 +17,7 @@ import { getA_not_in_B, printList } from './util';
 
 export default function ChatingList({ channelid }) {
    const userId = useSelector((state)=>{return state.usrinfo.id});
+   const view_cleanstr = useSelector((state)=>{return state.viewcleantime[channelid]});
    const selectSendingAndReceived = createSelector(
         state => {return state.sending[channelid]},
         state => {return state.received[channelid]},
@@ -33,8 +34,20 @@ export default function ChatingList({ channelid }) {
   );
   const sendingandreceivedlist = useSelector(selectSendingAndReceived);
   
+  let listcleantimed;
+  if(view_cleanstr!=undefined){
+             const cleanTime = new Date(view_cleanstr);
+             listcleantimed = sendingandreceivedlist.filter(obj => {
+                        const objTime = new Date(obj.time);
+                        return objTime > cleanTime;
+             });
+  }else{
+                 listcleantimed = sendingandreceivedlist;
+  }
 
-  const SendingItems = sendingandreceivedlist.map((sendingitem) => {
+  
+
+  const SendingItems = listcleantimed.map((sendingitem) => {
    let textAlignment = '';
    let listItemStyle = {};
 	  let listItemColor = '';

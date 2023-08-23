@@ -19,8 +19,10 @@ export default function ChatWith({}) {
   return (
       <Box sx={{
           bgcolor: 'background.paper',
-          Width: "100%",
+          width: "100%",
           display: 'grid',
+          alignItems: 'center',
+          padding: '10px',
           gridAutoColumns: '1fr',
           gap: 1,
         }}>

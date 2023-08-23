@@ -94,6 +94,23 @@ const genMd5 = (id,object) =>{
 	return action;
 
 }
+const inCleanTime = (id,time) =>{
+	const action = {
+		type: 'incleantime',
+		id: id,
+		time: time
+	}
+	return action;
+}
+
+const viewCleanTime = (id,time) =>{
+	const action = {
+		type: 'viewcleantime',
+		id: id,
+		time: time
+	}
+	return action;
+}
 
 const testAction = () =>{
 	const info = {
@@ -104,7 +121,7 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5 }
+export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
 
 
 

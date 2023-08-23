@@ -7,14 +7,40 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import HomeIcon from '@mui/icons-material/Home';
+import ClearIcon from '@mui/icons-material/Clear';
+import { Menu, MenuItem } from '@mui/material';
+import { useDispatch ,useSelector} from 'react-redux'
+import { viewCleanTime } from './actions/index';
 
-import { useSelector, useDispatch } from 'react-redux'
-
-export default function ButtonAppBar({}) {
+export default function ButtonAppBar({cleanwhat}) {
+  const dispatch = useDispatch();
   const userId = useSelector((state)=>{return state.usrinfo.id});
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClearClick = () => {
+    // 处理清除操作
+    if(cleanwhat!='all'){
+	    // cleantime
+      const currentDate = new Date();
+      const cleantimestr = currentDate.toISOString();
+      const cleantimeaction = new viewCleanTime(cleanwhat,cleantimestr);
+      dispatch(cleantimeaction);
+    }
+    if(cleanwhat==='all')
+	  alert('全部清楚功能我还没写呢，但是对话里的清除功能是可用的');
+    setAnchorEl(null);
+  };
   
   return (
-      <Box sx={{ flexGrow: 1,width: '100%',position: 'fixed',top: 0 }}>
+      <Box sx={{ flexGrow: 1,width: '100%',top: 0 }}>
       <AppBar position="static">
         <Toolbar>
 	  <IconButton color="inherit" component="a" href="/">
@@ -23,9 +49,28 @@ export default function ButtonAppBar({}) {
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
 	    你的id: {userId}
           </Typography>
-	  <IconButton color="inherit">
-	  	<MoreVertIcon />
-          </IconButton>
+	  <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="more-vert"
+          aria-controls="menu"
+          aria-haspopup="true"
+          onClick={handleMenuOpen}
+         >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleClearClick}>
+            <ClearIcon sx={{ marginRight: 1 }} />
+              清除 
+          </MenuItem>
+        </Menu>
 
         </Toolbar>
       </AppBar>

@@ -88,14 +88,25 @@ export default function ButtonAppBar() {
         mymsglist.then((list)=>{
 	      //过滤掉fromid=usrid的就行,这样就不显示自己已经发过了的
 	      const receivedlistwithpublic = list.filter((msg) => msg.fromid !==userId );
+	      const public_cleanstr = getState().incleantime[channelid];
+	      let receivedlist;
+	      if(public_cleanstr!=undefined){
+	        const public_cleanTime = new Date(public_cleanstr);
+	        receivedlist = receivedlistwithpublic.filter(obj => {
+  			const objTime = new Date(obj.time);
+  		        return objTime > public_cleanTime;
+		});
+	      }else{
+		receivedlist = receivedlistwithpublic;
+	      }
 	      if(true){
 		      if(localList===undefined){
 			console.log('received list get null');
-	      	        receivedlistwithpublic.map((msg)=>{
+	      	        receivedlist.map((msg)=>{
 			  dispatch(new receivedPubMsg(msg));
 	      	        });
 		      }else{
-		       const filterednewList =  getA_not_in_B(receivedlistwithpublic,localList,'id');
+		       const filterednewList =  getA_not_in_B(receivedlist,localList,'id');
 	      	       filterednewList.map((msg)=>{
 			    if(!itemInList(msg,localList,'id'))
 				dispatch(new receivedPubMsg(msg));
@@ -118,7 +129,7 @@ export default function ButtonAppBar() {
   }, []);
   return (
       <Box>
-      <AppBar />
+      <AppBar cleanwhat={channelid} />
       <Stack spacing={2} sx={{ width: '100%', bgcolor: 'background.paper', height: '100%', overflowY: 'auto' }}>
   	<ChatingList channelid={channelid}/>
   	<InputText onClick={handleClick} setInputText={setParentInputText} sx={{bottom: bottom}} />

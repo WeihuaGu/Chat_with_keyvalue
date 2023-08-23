@@ -1,18 +1,35 @@
 import React from 'react'; 
 import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
-import { useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { useDispatch ,useSelector} from 'react-redux'
-import { usrInfo, newUsrInfo,receivedMsg } from './actions/index';
+import { usrInfo, newUsrInfo,receivedMsg,inCleanTime } from './actions/index';
 import { genuserinfo } from './genuserinfo';
 import { publisheInfo2Channel,subscribeChannel } from './subscriber-publisher.js';
 import App from './App';
 import ChatSurface from './ChatSurface';
+import MyToast from './MyToast';
 import { printList,getState, getA_not_in_B,itemInList } from './util.js';
 import { cloneDeep } from 'lodash';
 
 function router(){
 const dispatch = useDispatch();
 const userId = useSelector((state)=>{return state.usrinfo.id});
+const [openToast, setOpenToast] = useState(false);
+const [toastMessage, setToastMessage] = useState('');
+const [toastSeverity, setToastSeverity] = useState('');
+
+const handleOpenToast = (message, severity) => {
+    setToastMessage(message);
+    setToastSeverity(severity);
+    setOpenToast(true);
+  };
+const handleCloseToast = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
+
 useEffect(() => {
     var storedUserId = localStorage.getItem('userId');
     var storedPublicKey = localStorage.getItem('publicKey');
@@ -44,6 +61,20 @@ useEffect(() => {
     const pubinfo = publisheInfo2Channel(channelinfo.id,channelinfo);
     pubinfo.then((result)=>console.log('update usrinfo to server'));
 
+    // cleantime
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - 1);
+    const public_cleantimestr = currentDate.toISOString();
+    const public_cleantime = new inCleanTime('public',public_cleantimestr);
+    dispatch(public_cleantime);
+
+    const curDate = new Date();
+    curDate.setDate(curDate.getDate() - 30);
+    const me_cleantimestr = curDate.toISOString();
+    const me_cleantime = new inCleanTime(userId,me_cleantimestr);
+    dispatch(me_cleantime);
+    
+
     var times = 0;
     const interval = setInterval(() => {
       // 在这里执行接收消息的逻辑
@@ -59,7 +90,19 @@ useEffect(() => {
 	
         mymsglist.then((list)=>{
               //过滤掉fromid=usrid的就行,这样就不显示自己已经发过了的
-              const receivedlist = list.filter((msg) => msg.fromid !==userId );
+              const rawreceivedlist = list.filter((msg) => msg.fromid !==userId );
+	      const time_cleanstr = getState().incleantime[userId];
+              let receivedlist;
+              if(time_cleanstr!=undefined){
+                const cleanTime = new Date(time_cleanstr);
+                receivedlist = rawreceivedlist.filter(obj => {
+                        const objTime = new Date(obj.time);
+                        return objTime > cleanTime;
+                });
+              }else{
+                receivedlist = rawreceivedlist;
+              }
+
               if(true){
 		      const mergedLocal = [].concat(...Object.values(localList));
 		      if(localList===undefined){
@@ -70,8 +113,10 @@ useEffect(() => {
                       }else{
                        const filterednewList =  getA_not_in_B(receivedlist,mergedLocal,'id');
                        filterednewList.map((msg)=>{
-                            if(!itemInList(msg,mergedLocal,'id'))
+                            if(!itemInList(msg,mergedLocal,'id')){
                                 dispatch(new receivedMsg(msg));
+				handleOpenToast('新消息从:'+msg.fromid,'success');
+			    }
                        });
 
                       }
@@ -102,6 +147,12 @@ return (
     <Route path="/" element={<App />} />
     <Route path="/chat/:channelid" element={<ChatSurface />} />
 </Routes>
+	<MyToast
+          open={openToast}
+          onClose={handleCloseToast}
+          message={toastMessage}
+          severity={toastSeverity}
+        />
 </Router>);
 }
 

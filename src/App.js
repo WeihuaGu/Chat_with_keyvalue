@@ -6,6 +6,7 @@ import AppBar from './AppBar';
 function App() {
   const dispatch = useDispatch();
   const userId = useSelector((state)=>{return state.usrinfo.id});
+  const cleanwhat = 'all';
   useEffect(() => {
     dispatch(new testAction());
 
@@ -13,7 +14,7 @@ function App() {
 
   return (
     <div>
-	<AppBar />
+	<AppBar cleanwhat={cleanwhat} />
 	<ChatList/>
     </div>
   )

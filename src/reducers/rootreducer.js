@@ -110,6 +110,23 @@ const comparemd5 = (state = {publicmd5:"",memd5:""},action)=>{
 	return state;
 
 }
+const incleantime = (state = {},action)=>{
+	if(action.type==='incleantime'){
+		const newstate = cloneDeep(state);
+		newstate[action.id] = action.time;
+		return newstate;
+	}
+	return state;
+}
+const viewcleantime = (state = {},action)=>{
+	if(action.type==='viewcleantime'){
+		const newstate = cloneDeep(state);
+		newstate[action.id] = action.time;
+		return newstate;
+	}
+	return state;
+}
+
 const test = (state = '',action)=>{
 	if(action.type==='testaction'){
 		const newstate = action.info;
@@ -126,6 +143,8 @@ const rootReducer = combineReducers({
 	sending:sending,
 	received:received,
 	comparemd5:comparemd5,
+	incleantime:incleantime,
+	viewcleantime:viewcleantime,
 	test:test
 });
 
