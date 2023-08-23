@@ -128,12 +128,10 @@ export default function ButtonAppBar() {
 
   }, []);
   return (
-      <Box>
+      <Box sx={{ display: 'flex',height: '100vh','flex-direction': 'column' }}>
       <AppBar cleanwhat={channelid} />
-      <Stack spacing={2} sx={{ width: '100%', bgcolor: 'background.paper', height: '100%', overflowY: 'auto' }}>
-  	<ChatingList channelid={channelid}/>
-  	<InputText onClick={handleClick} setInputText={setParentInputText} sx={{bottom: bottom}} />
-      </Stack>
+  	<ChatingList channelid={channelid} />
+  	<InputText onClick={handleClick} setInputText={setParentInputText} />
       </Box>
   );
 }

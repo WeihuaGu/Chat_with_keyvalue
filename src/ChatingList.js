@@ -8,7 +8,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
-import { useState, useEffect } from 'react';
+import Paper from '@mui/material/Paper';
+import { useState, useEffect,useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { createSelector } from 'reselect';
 import { sendingMsg, sendedMsg } from './actions/index';
@@ -18,6 +19,7 @@ import { getA_not_in_B, printList } from './util';
 export default function ChatingList({ channelid }) {
    const userId = useSelector((state)=>{return state.usrinfo.id});
    const view_cleanstr = useSelector((state)=>{return state.viewcleantime[channelid]});
+   const chatListContainerRef = useRef(null);
    const selectSendingAndReceived = createSelector(
         state => {return state.sending[channelid]},
         state => {return state.received[channelid]},
@@ -54,7 +56,7 @@ export default function ChatingList({ channelid }) {
    if (sendingitem.fromid === userId) {
     textAlignment = 'right';
     listItemStyle = { paddingLeft: '50px', paddingRight: '10px',
-    backgroundColor: sendingitem.msgstatus === 'sending' ? 'orange' : sendingitem.msgstatus === 'sended' ? '#eaeaea' : sendingitem.msgstatus === 'failed' ? '#ffcccc' : ''};
+    backgroundColor: sendingitem.msgstatus === 'sending' ? '#87CEFA' : sendingitem.msgstatus === 'sended' ? '#eaeaea' : sendingitem.msgstatus === 'failed' ? '#ffcccc' : ''};
    } else {
     textAlignment = 'left';
 	   listItemStyle = { paddingLeft: '10px', paddingRight: '50px' };
@@ -69,8 +71,17 @@ export default function ChatingList({ channelid }) {
           </ListItem>
    );
   });
+
+  const scrollToBottom = () => {
+    if (chatListContainerRef.current) {
+      chatListContainerRef.current.scrollTop = chatListContainerRef.current.scrollHeight;
+    }
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [selectSendingAndReceived]);
   return (
-    <Box sx={{ bottom: '60px' , top: '60px', width: '100%', bgcolor: 'background.paper' }}>
+    <Box ref={chatListContainerRef} sx={{ maxHeight: 'calc(100% - 120px)',width: '100%', bgcolor: 'background.paper', 'flex-grow': 1, overflowY: 'auto' }}>
       <Divider />
       <nav aria-label="secondary mailbox folders">
         <List>

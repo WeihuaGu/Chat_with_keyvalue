@@ -4,6 +4,8 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import SendIcon from '@mui/icons-material/Send';
 import { bottom } from '@material-ui/system';
 
@@ -21,7 +23,7 @@ export default function InputText({ onClick, setInputText }) {
   return (
       <Box 
 	sx={{
-        position: 'fixed',
+	position: 'fixed',
         bottom: 0,
         width: '100%',
         bgcolor: 'background.paper',
@@ -31,11 +33,14 @@ export default function InputText({ onClick, setInputText }) {
         gridAutoColumns: '1fr',
         gap: 1,
       }}>
-	  <TextField id="sendtext" variant="outlined" value={inputText} onChange={handleInputChange}  multiline sx={{ gridRow: '1', gridColumn: '1 / 6' }}/>
+	  <TextField id="sendtext" variant="outlined" value={inputText} onChange={handleInputChange}  multiline sx={{ gridRow: '1', gridColumn: '1/12' }}/>
 
-	  <IconButton color="inherit" onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '6 / 7' }}>
-	  	<SendIcon fontSize="large" />
-          </IconButton>
+	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '12/15',color:'#ab003c' }}>
+	     发送
+          </Button>
+	  <Box sx={{ gridRow: '1', gridColumn: '15/16' }}>
+          </Box>
+
       </Box>
   );
 }

@@ -35,12 +35,11 @@ export default function ButtonAppBar({cleanwhat}) {
       dispatch(cleantimeaction);
     }
     if(cleanwhat==='all')
-	  alert('全部清楚功能我还没写呢，但是对话里的清除功能是可用的');
+	  alert('全部清除功能我还没写呢，但是对话里的清除功能是可用的');
     setAnchorEl(null);
   };
   
   return (
-      <Box sx={{ flexGrow: 1,width: '100%',top: 0 }}>
       <AppBar position="static">
         <Toolbar>
 	  <IconButton color="inherit" component="a" href="/">
@@ -74,6 +73,5 @@ export default function ButtonAppBar({cleanwhat}) {
 
         </Toolbar>
       </AppBar>
-      </Box>
   );
 }
