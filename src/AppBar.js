@@ -10,7 +10,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Menu, MenuItem } from '@mui/material';
 import { useDispatch ,useSelector} from 'react-redux'
-import { viewCleanTime } from './actions/index';
+import { viewCleanTime,inCleanTime,cleanSending,cleanReceived  } from './actions/index';
 
 export default function ButtonAppBar({cleanwhat}) {
   const dispatch = useDispatch();
@@ -34,8 +34,16 @@ export default function ButtonAppBar({cleanwhat}) {
       const cleantimeaction = new viewCleanTime(cleanwhat,cleantimestr);
       dispatch(cleantimeaction);
     }
-    if(cleanwhat==='all')
-	  alert('全部清除功能我还没写呢，但是对话里的清除功能是可用的');
+    if(cleanwhat==='all'){
+	    // cleantime
+      const currentDate = new Date();
+      const cleantimestr = currentDate.toISOString();
+      dispatch(new inCleanTime('public',cleantimestr));
+      dispatch(new inCleanTime(userId,cleantimestr));
+      dispatch(new cleanSending());
+      dispatch(new cleanReceived());
+    }
+
     setAnchorEl(null);
   };
   

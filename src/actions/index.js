@@ -111,6 +111,19 @@ const viewCleanTime = (id,time) =>{
 	}
 	return action;
 }
+const cleanSending = () => {
+	const action = {
+		type: 'cleansending'
+	}
+	return action;
+}
+const cleanReceived = () => {
+	const action = {
+		type: 'cleanreceived'
+	}
+	return action;
+}
+
 
 const testAction = () =>{
 	const info = {
@@ -121,7 +134,7 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
+export { cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
 
 
 

@@ -18,7 +18,7 @@ const [openToast, setOpenToast] = useState(false);
 const [toastMessage, setToastMessage] = useState('');
 const [toastSeverity, setToastSeverity] = useState('');
 
-const handleOpenToast = (message, severity) => {
+const handleOpenToast = (message, severity='info') => {
     setToastMessage(message);
     setToastSeverity(severity);
     setOpenToast(true);
@@ -66,13 +66,15 @@ useEffect(() => {
     currentDate.setDate(currentDate.getDate() - 1);
     const public_cleantimestr = currentDate.toISOString();
     const public_cleantime = new inCleanTime('public',public_cleantimestr);
-    dispatch(public_cleantime);
+    if(getState().incleantime['public'] === undefined)
+      dispatch(public_cleantime);
 
     const curDate = new Date();
     curDate.setDate(curDate.getDate() - 30);
     const me_cleantimestr = curDate.toISOString();
     const me_cleantime = new inCleanTime(userId,me_cleantimestr);
-    dispatch(me_cleantime);
+    if(getState().incleantime[userId] === undefined)
+      dispatch(me_cleantime);
     
 
     var times = 0;

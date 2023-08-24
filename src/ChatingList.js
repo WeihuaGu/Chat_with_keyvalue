@@ -50,22 +50,29 @@ export default function ChatingList({ channelid }) {
   
 
   const SendingItems = listcleantimed.map((sendingitem) => {
+   const time = new Date(sendingitem.time);
    let textAlignment = '';
    let listItemStyle = {};
-	  let listItemColor = '';
+   let listItemColor = '';
    if (sendingitem.fromid === userId) {
     textAlignment = 'right';
     listItemStyle = { paddingLeft: '50px', paddingRight: '10px',
     backgroundColor: sendingitem.msgstatus === 'sending' ? '#87CEFA' : sendingitem.msgstatus === 'sended' ? '#eaeaea' : sendingitem.msgstatus === 'failed' ? '#ffcccc' : ''};
    } else {
     textAlignment = 'left';
-	   listItemStyle = { paddingLeft: '10px', paddingRight: '50px' };
+    listItemStyle = { paddingLeft: '10px', paddingRight: '50px' };
    }
    return (
           <ListItem key={sendingitem.id} disablePadding style={listItemStyle}>
 	   <ListItemButton>
 	     <ListItemText align={textAlignment}>
-	   	{sendingitem.text}
+	        <div style={{ display: 'block' }}>
+	   	<span>{sendingitem.text}</span>
+	        <span> </span>
+	        <Paper elevation={0} style={{ display: 'inline-block',padding: '5px',fontSize: '10px', color: 'gray',whiteSpace: 'nowrap' }}>
+          	 {time.toLocaleTimeString([],{hour: '2-digit',minute: '2-digit',hour12: false})}
+        	</Paper>
+	        </div>
 	     </ListItemText>
 	   </ListItemButton>
           </ListItem>

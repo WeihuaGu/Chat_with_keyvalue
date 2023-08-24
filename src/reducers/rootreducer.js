@@ -53,6 +53,9 @@ const sending = (state = {},action)=>{
 		return newstate;
 
 	}
+	if(action.type === 'cleansending'){
+		return {};
+	}
 	return state;
 }
 const received = (state = {},action)=>{
@@ -95,6 +98,9 @@ const received = (state = {},action)=>{
 		}
 		return newstate;
 
+	}
+	if(action.type === 'cleanreceived'){
+		return {};
 	}
 	return state;
 }

@@ -16,3 +16,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+document.title = '聊至'; // 设置应用的标题
