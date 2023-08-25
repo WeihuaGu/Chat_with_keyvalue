@@ -8,7 +8,7 @@ import { publisheInfo2Channel,subscribeChannel } from './subscriber-publisher.js
 import App from './App';
 import ChatSurface from './ChatSurface';
 import MyToast from './MyToast';
-import { printList,getState, getA_not_in_B,itemInList } from './util.js';
+import { getState, getA_not_in_B,itemInList } from './util.js';
 import { cloneDeep } from 'lodash';
 
 function router(){
@@ -95,7 +95,7 @@ useEffect(() => {
               const rawreceivedlist = list.filter((msg) => msg.fromid !==userId );
 	      const time_cleanstr = getState().incleantime[userId];
               let receivedlist;
-              if(time_cleanstr!=undefined){
+              if(time_cleanstr!==undefined){
                 const cleanTime = new Date(time_cleanstr);
                 receivedlist = rawreceivedlist.filter(obj => {
                         const objTime = new Date(obj.time);
@@ -111,6 +111,7 @@ useEffect(() => {
                         console.log('received list get null');
                         receivedlist.map((msg)=>{
                           dispatch(new receivedMsg(msg));
+			  return msg.id
                         });
                       }else{
                        const filterednewList =  getA_not_in_B(receivedlist,mergedLocal,'id');
@@ -119,6 +120,7 @@ useEffect(() => {
                                 dispatch(new receivedMsg(msg));
 				handleOpenToast('新消息从:'+msg.fromid,'success');
 			    }
+			    return msg.id
                        });
 
                       }

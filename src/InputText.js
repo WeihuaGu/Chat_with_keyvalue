@@ -1,16 +1,11 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import SendIcon from '@mui/icons-material/Send';
-import { bottom } from '@material-ui/system';
-
 import { useState, useEffect } from 'react';
+
 export default function InputText({ onClick, setInputText }) {
+  const boxid = "inputbox";
   const [inputText, setInputTextLocal] = useState('');
   const handleInputChange = (event) => {
     setInputTextLocal(event.target.value);
@@ -19,12 +14,21 @@ export default function InputText({ onClick, setInputText }) {
   const handleButtonClick = () => {
 	onClick();
 	setInputTextLocal('');
-};
+  };
+  const scrollToView = () => {
+    const curEl = document.getElementById(boxid)
+    curEl.style.overflow = 'auto';
+    curEl.scrollIntoView(false)
+  }
+  useEffect(()=>{
+	  scrollToView();
+  },[inputText]
+  );
   return (
       <Box 
 	sx={{
-	position: 'fixed',
-        bottom: 0,
+	position: 'sticky',
+        bottom: '20px',
         width: '100%',
         bgcolor: 'background.paper',
         alignItems: 'center',
@@ -32,7 +36,9 @@ export default function InputText({ onClick, setInputText }) {
 	display: 'grid',
         gridAutoColumns: '1fr',
         gap: 1,
-      }}>
+      }}
+	  id={boxid}
+	  >
 	  <TextField id="sendtext" variant="outlined" value={inputText} onChange={handleInputChange}  multiline sx={{ gridRow: '1', gridColumn: '1/12' }}/>
 
 	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '12/15',color:'#ab003c' }}>
