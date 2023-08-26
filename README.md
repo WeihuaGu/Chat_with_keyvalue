@@ -35,5 +35,5 @@ Friendly Chat is created with React and requires Node.js to run.
 - Start the app: `npm start`
 
 ## Licensing
-Friendly Chat is licensed under the MIT license to allow for open collaboration while avoiding mandatory source code disclosure requirements.
+Friendly Chat is licensed under the Apache-2.0 license to allow for open collaboration while avoiding mandatory source code disclosure requirements.
 
