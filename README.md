@@ -31,7 +31,7 @@ Friendly Chat is created with React and requires Node.js to run.
 
 - Clone the repo
 - Install dependencies: `npm install`
-- Set environment variables in .env file 
+- Set environment variables in .env file   This application uses a key-value database to store data. If you are using a RESTful API, please add the environment variables introduced in keyvalueimplementwithrestfulapi.js to your .env file. If you are using Redis, please add the environment variables introduced in keyvalueimplementwithredis.js to your .env file.
 - Start the app: `npm start`
 
 ## Licensing
