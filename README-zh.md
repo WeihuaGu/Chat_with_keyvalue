@@ -25,6 +25,7 @@
 - 克隆仓库
 - 安装依赖: `npm install`
 - 在.env文件设置环境变量
+  这个应用使用键值数据库存储数据.如果你使用restfulapi,请按照 keyvalueimplementwithrestfulapi.js里引入的环境变量添加到.env;如果你使用redis,请按照 keyvalueimplementwithredis.js里引入的环境变量添加到.env.你应该确保这些环境变量的设置正确。
 - 启动应用: `npm start`
 
 ## 开源协议
