@@ -1,4 +1,7 @@
+<!-- README.md -->
 ## Friendly Chat
+[中文README](README-zh.md)
+
 A simple open source chat app develeped by react for casual conversations.
 
 ## Purpose
@@ -11,12 +14,10 @@ This chat software is intended for non-commercial personal use only. It does not
 - protect private communications.
 
 ## Limitations
-- ** This software should only be used and accessed outside of mainland China due to regulatory constraints. We cannot provide downloads, deployment or support within China.
-No political, illegal or harmful content is allowed in conversations. **
+- This software should only be used and accessed outside of mainland China due to regulatory constraints. We cannot provide downloads, deployment or support within China.
+- No political, illegal or harmful content is allowed in conversations.
+- However, use of this software in China is at your own risk.
 
-
-## Compliance
-The developers have made efforts to ensure the software complies with relevant laws and regulations of the Chinese government, such as not involving in any organization activities or information control. However, use of this software in China is at your own risk.
 
 
 ## Disclaimer
