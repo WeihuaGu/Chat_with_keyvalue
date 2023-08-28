@@ -2,24 +2,26 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { debounce } from 'lodash';
 
 export default function InputText({ onClick, setInputText }) {
   const boxid = "inputbox";
   const [inputText, setInputTextLocal] = useState('');
-  const handleInputChange = (event) => {
+  const delayedSetInputText = debounce(setInputText, 300); // 延迟 500 毫秒
+  const handleInputChange = useCallback((event) => {
     setInputTextLocal(event.target.value);
-    setInputText(event.target.value); // 更新父组件的状态
-  };
-  const handleButtonClick = () => {
+    delayedSetInputText(event.target.value); // 更新父组件的状态
+  },[setInputTextLocal,delayedSetInputText]);
+  const handleButtonClick = useCallback(() => {
 	onClick();
 	setInputTextLocal('');
-  };
-  const scrollToView = () => {
+  },[onClick,setInputTextLocal]);
+  const scrollToView = useCallback(() => {
     const curEl = document.getElementById(boxid)
     curEl.style.overflow = 'auto';
     curEl.scrollIntoView(false)
-  }
+  },[]);
   useEffect(()=>{
 	  //scrollToView();
   },[inputText]
