@@ -21,7 +21,7 @@ export default function InputText({ onClick, setInputText }) {
     curEl.scrollIntoView(false)
   }
   useEffect(()=>{
-	  scrollToView();
+	  //scrollToView();
   },[inputText]
   );
   return (
