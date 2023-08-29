@@ -23,6 +23,8 @@ import { cloneDeep } from 'lodash';
 
 
 export default function ButtonAppBar() {
+  const [appHeight, setAppHeight] = useState(window.innerHeight);
+
   const dispatch = useDispatch();
   const { channelid } = useParams();
   const userId = useSelector((state)=>{return state.usrinfo.id});
@@ -133,8 +135,21 @@ export default function ButtonAppBar() {
 
 
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setAppHeight(window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+	
   return (
-      <Box sx={{ display: 'flex',height: '100vh','flex-direction': 'column' }}>
+      <Box sx={{ position: 'fixed',bottom: 0,left: 0,width: '100%',height: '100%',display: 'flex','flex-direction': 'column' }}>
       <AppBar cleanwhat={channelid} />
   	<ChatingList channelid={channelid} />
   	<InputText  setRandomText={setRandomText} setInputText={setParentInputText} />
