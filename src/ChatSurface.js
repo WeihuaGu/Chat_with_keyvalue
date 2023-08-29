@@ -29,6 +29,7 @@ export default function ButtonAppBar() {
   const fromId = useSelector((state)=>{return state.usrinfo.id});
   const pubcomparemd5 = useSelector((state)=>{return state.comparemd5.publicmd5});
   const [parentInputText, setParentInputText] = useState('');
+  const [randomText, setRandomText] = useState('');
   const channelInfo = useRef({});
 
   const handleClick = () => {
@@ -66,6 +67,11 @@ export default function ButtonAppBar() {
 
      
   }
+  useEffect(() => {
+    if(parentInputText!=='')
+    	handleClick();
+  }, [randomText,parentInputText]);
+
   useEffect(() => {
     if(channelid!='public'){
     	const getchannelinfo = subscribeChannelInfo(channelid)
@@ -131,7 +137,7 @@ export default function ButtonAppBar() {
       <Box sx={{ display: 'flex',height: '100vh','flex-direction': 'column' }}>
       <AppBar cleanwhat={channelid} />
   	<ChatingList channelid={channelid} />
-  	<InputText onClick={handleClick} setInputText={setParentInputText} />
+  	<InputText  setRandomText={setRandomText} setInputText={setParentInputText} />
       </Box>
   );
 }

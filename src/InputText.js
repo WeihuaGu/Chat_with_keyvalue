@@ -2,29 +2,25 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useState, useEffect, useCallback } from 'react';
-import { debounce } from 'lodash';
+import stringRandom from 'string-random';
+import { useEffect,useRef } from 'react';
 
-export default function InputText({ onClick, setInputText }) {
+export default function InputText({ setInputText,setRandomText }) {
   const boxid = "inputbox";
-  const [inputText, setInputTextLocal] = useState('');
-  const delayedSetInputText = debounce(setInputText, 300); // 延迟 500 毫秒
-  const handleInputChange = useCallback((event) => {
-    setInputTextLocal(event.target.value);
-    delayedSetInputText(event.target.value); // 更新父组件的状态
-  },[setInputTextLocal,delayedSetInputText]);
-  const handleButtonClick = useCallback(() => {
-	onClick();
-	setInputTextLocal('');
-  },[onClick,setInputTextLocal]);
-  const scrollToView = useCallback(() => {
+  const ref_input = useRef('');
+  const handleButtonClick = () => {
+	setRandomText(stringRandom(30));
+	setInputText(ref_input.current.value);
+	ref_input.current.value='';
+  }
+  const scrollToView = () => {
     const curEl = document.getElementById(boxid)
     curEl.style.overflow = 'auto';
     curEl.scrollIntoView(false)
-  },[]);
+  }
   useEffect(()=>{
 	  //scrollToView();
-  },[inputText]
+  },[]
   );
   return (
       <Box 
@@ -41,7 +37,7 @@ export default function InputText({ onClick, setInputText }) {
       }}
 	  id={boxid}
 	  >
-	  <TextField id="sendtext" variant="outlined" value={inputText} onChange={handleInputChange}  multiline sx={{ gridRow: '1', gridColumn: '1/12' }}/>
+	  <TextField inputRef={ref_input} variant="outlined"  multiline sx={{ gridRow: '1', gridColumn: '1/12' }}/>
 
 	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '12/15',color:'#ab003c' }}>
 	     发送
