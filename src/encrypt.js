@@ -1,7 +1,7 @@
 import stringRandom from 'string-random';
 import CryptoJS from 'crypto-js';
 import NodeRSA  from 'node-rsa';
-import { genkeypair, pubKey, privKey } from './key.js';
+import { pubKey, privKey } from './key.js';
 
 const genPass = () => {
   const pass = stringRandom(32);

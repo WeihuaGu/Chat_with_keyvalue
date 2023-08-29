@@ -8,12 +8,13 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
 import ChatWith from './ChatWith';
-import { useState } from 'react';
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect';
+import { useTranslation } from 'react-i18next';
 
 
 export default function BasicList() {
+  const { t } = useTranslation();
   const selectSendingReceived = createSelector(
   	state => {return state.sending;},
   	state => state.received,
@@ -74,7 +75,7 @@ export default function BasicList() {
               <ListItemIcon>
                 <InboxIcon />
               </ListItemIcon>
-              <ListItemText primary="公共聊天室" />
+              <ListItemText primary={t('publicchat')} />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>

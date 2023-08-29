@@ -3,9 +3,11 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import stringRandom from 'string-random';
-import { useEffect,useRef } from 'react';
+import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function InputText({ setInputText,setRandomText }) {
+  const { t } = useTranslation();
   const boxid = "inputbox";
   const ref_input = useRef('');
   const handleButtonClick = () => {
@@ -13,15 +15,6 @@ export default function InputText({ setInputText,setRandomText }) {
 	setInputText(ref_input.current.value);
 	ref_input.current.value='';
   }
-  const scrollToView = () => {
-    const curEl = document.getElementById(boxid)
-    curEl.style.overflow = 'auto';
-    curEl.scrollIntoView(false)
-  }
-  useEffect(()=>{
-	  //scrollToView();
-  },[]
-  );
   return (
       <Box 
 	sx={{
@@ -40,7 +33,7 @@ export default function InputText({ setInputText,setRandomText }) {
 	  <TextField inputRef={ref_input} variant="outlined"  multiline sx={{ gridRow: '1', gridColumn: '1/12' }}/>
 
 	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '12/15',color:'#ab003c' }}>
-	     发送
+	    {t('send')}
           </Button>
 	  <Box sx={{ gridRow: '1', gridColumn: '15/16' }}>
           </Box>

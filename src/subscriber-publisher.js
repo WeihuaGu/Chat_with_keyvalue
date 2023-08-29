@@ -1,4 +1,4 @@
-import { encrypt, decrypt, getEncryptedPass , getDecryptedPass} from './encrypt.js';
+import { encrypt, decrypt} from './encrypt.js';
 import { pushKeyValue ,pushToList,getKeyValue,getList } from './keyvalue.js';
 
 
@@ -6,11 +6,11 @@ const subscribeChannel = (channel)=>{
 	return new Promise(async(resolve, reject) => {
 		const clist = await getList(channel);
 		let infolist;
-		if(channel!='public')
+		if(channel!=='public')
 			infolist = clist[Number(channel)];
 		else
 			infolist = clist[channel];
-		if(infolist == undefined){
+		if(infolist === undefined){
 			reject();
 			return;
 		}

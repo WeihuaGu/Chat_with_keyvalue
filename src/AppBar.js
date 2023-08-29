@@ -9,8 +9,10 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Menu, MenuItem } from '@mui/material';
 import { useDispatch ,useSelector} from 'react-redux'
 import { viewCleanTime,inCleanTime,cleanSending,cleanReceived  } from './actions/index';
+import { useTranslation } from 'react-i18next';
 
 export default function ButtonAppBar({cleanwhat}) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const userId = useSelector((state)=>{return state.usrinfo.id});
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -53,7 +55,7 @@ export default function ButtonAppBar({cleanwhat}) {
           </IconButton>
 	  {cleanwhat === 'all' && (
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
-	    你的id: {userId}
+		  {t('your')} id: {userId}
           </Typography>)}
 	  <IconButton
           edge="end"
@@ -74,7 +76,7 @@ export default function ButtonAppBar({cleanwhat}) {
         >
           <MenuItem onClick={handleClearClick}>
             <ClearIcon sx={{ marginRight: 1 }} />
-              清除 
+	      {t('clear')} 
           </MenuItem>
         </Menu>
 

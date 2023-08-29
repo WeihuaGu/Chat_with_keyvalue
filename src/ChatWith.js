@@ -1,21 +1,16 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import SendIcon from '@mui/icons-material/Send';
-import { bottom } from '@material-ui/system';
+import { useTranslation } from 'react-i18next';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 export default function ChatWith({}) {
+  const { t } = useTranslation();
   const [inputText, setInputText] = useState('');
   const handleInputChange = (event) => {
     setInputText(event.target.value); 
   };
-  const handleButtonClick = () => {
-	setInputText('');
-};
   return (
       <Box sx={{
           bgcolor: 'background.paper',
@@ -29,7 +24,7 @@ export default function ChatWith({}) {
 	  <TextField id="channelid" variant="outlined" value={inputText} onChange={handleInputChange} sx={{ gridRow: '1', gridColumn: '1 / 6' }}/>
 
 	  <Button color="inherit" component="a" href={"/chat/"+inputText} sx={{ gridRow: '1', gridColumn: '6 / 7' }}>
-	  聊天
+	  {t('chat')}
           </Button>
       </Box>
   );

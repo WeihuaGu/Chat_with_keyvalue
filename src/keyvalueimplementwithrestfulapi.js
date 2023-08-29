@@ -4,10 +4,12 @@ const token = process.env.REACT_APP_TOKEN;
 const restfulurl = baseurl || 'https://test.com/xxx';
 
 // 准备要发送的 JSON 数据
+/*
 const data = {
   key1: 'value1',
   key2: 'value2',
 };
+*/
 // 设置自定义 Header
 const headers = {
   token: token
