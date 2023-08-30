@@ -1,17 +1,19 @@
 import React from 'react'; 
 import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useState,useEffect } from 'react';
 import { useDispatch ,useSelector} from 'react-redux'
 import { usrInfo, newUsrInfo,receivedMsg,inCleanTime } from './actions/index';
 import { genuserinfo } from './genuserinfo';
 import { publisheInfo2Channel,subscribeChannel } from './subscriber-publisher.js';
-import App from './App';
+import Home from './Home';
 import ChatSurface from './ChatSurface';
 import MyToast from './MyToast';
 import { getState, getA_not_in_B,itemInList } from './util.js';
 import { cloneDeep } from 'lodash';
 
 function router(){
+const { i18n } = useTranslation();
 const dispatch = useDispatch();
 const userId = useSelector((state)=>{return state.usrinfo.id});
 const [openToast, setOpenToast] = useState(false);
@@ -30,6 +32,8 @@ const handleCloseToast = (event, reason) => {
     setOpenToast(false);
   };
 
+
+//循环及初始化
 useEffect(() => {
     var storedUserId = localStorage.getItem('userId');
     var storedPublicKey = localStorage.getItem('publicKey');
@@ -129,12 +133,6 @@ useEffect(() => {
 
               }
         });
-
-	    
-
-	    
-
-
     }, 6000); // 每5秒轮询一次
 
     return () => {
@@ -144,14 +142,17 @@ useEffect(() => {
 	    clearInterval(interval);
     };
   }, []);
-
+//国际化
 useEffect(() => {
-
+    const systemLanguage = navigator.language; // 获取系统语言
+    i18n.changeLanguage(systemLanguage);
+    document.title = i18n.t('app'); // 设置应用的标题
   }, []);
+
 return (
 <Router>
 <Routes>
-    <Route path="/" element={<App />} />
+    <Route path="/" element={<Home />} />
     <Route path="/chat/:channelid" element={<ChatSurface />} />
 </Routes>
 	<MyToast

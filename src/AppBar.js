@@ -48,10 +48,10 @@ export default function ButtonAppBar({cleanwhat}) {
   };
   
   return (
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: 'black' }}>
         <Toolbar>
 	  <IconButton color="inherit" component="a" href="/">
-	  	<HomeIcon />
+	  	<HomeIcon sx={{ marginLeft: '-10px' }}/>
           </IconButton>
 	  {cleanwhat === 'all' && (
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>

@@ -56,9 +56,34 @@ export default function ChatingList({ channelid }) {
     textAlignment = 'left';
     listItemStyle = { paddingLeft: '10px', paddingRight: '50px' };
    }
+   let pressTimer = null;
+   const handleMouseDown = () => {
+  	pressTimer = setTimeout(() => {
+    	// 在长按事件触发时执行的逻辑
+    	handleCopyToClipboard();
+    }, 1000); // 设置长按的时间阈值，单位为毫秒
+   };
+
+   const handleMouseUp = () => {
+  	clearTimeout(pressTimer);
+   };
+   const handleCopyToClipboard = () => {
+     navigator.clipboard.writeText(sendingitem.text)
+    	.then(() => {
+        console.log('Text copied to clipboard');
+      // 在此处添加复制成功的逻辑
+        })
+        .catch((error) => {
+        console.error('Error copying text to clipboard:', error);
+      // 在此处添加复制失败的逻辑
+     });
+   };
+
    return (
           <ListItem key={sendingitem.id} disablePadding style={listItemStyle}>
-	   <ListItemButton>
+	   <ListItemButton 
+	   onMouseDown={handleMouseDown}
+           onMouseUp={handleMouseUp}>
 	     <ListItemText align={textAlignment}>
 	        <div style={{ display: 'block' }}>
 	   	<span>{sendingitem.text}</span>
