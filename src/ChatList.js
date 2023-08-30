@@ -11,6 +11,7 @@ import ChatWith from './ChatWith';
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect';
 import { useTranslation } from 'react-i18next';
+import { iconsArray } from './faceiconarray';
 
 
 export default function BasicList() {
@@ -29,7 +30,11 @@ export default function BasicList() {
   	}
   );
   const chatinglist = useSelector(selectSendingReceived); 
-
+  const getRandomIcon = () => {
+   const randomIndex = Math.floor(Math.random() * iconsArray.length);
+   const RandomIcon = iconsArray[randomIndex];
+   return <RandomIcon style={{ marginRight: '8px' }}/>;
+  };
   //handle 
   const handleTouchStart = (event,touchStartX ) => {
   	touchStartX = event.touches[0].clientX; // 记录触摸起始位置的X坐标
@@ -57,6 +62,7 @@ export default function BasicList() {
      return (
           <ListItem key={channelid} disablePadding>
            <ListItemButton component="a" href={"/chat/"+channelid}  onTouchStart={(event)=>{handleTouchStart(event,touchStartX)} } onTouchEnd={(event)=>{ handleTouchEnd(event,touchStartX ,channelid)}} >
+	     {getRandomIcon()}
              <ListItemText>
                 {channelid}
              </ListItemText>
