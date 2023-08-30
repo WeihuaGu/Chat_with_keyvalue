@@ -31,4 +31,3 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-document.title = i18n.t('app'); // 设置应用的标题

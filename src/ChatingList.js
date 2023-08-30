@@ -3,17 +3,12 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
 import Paper from '@mui/material/Paper';
-import { useState, useEffect,useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useEffect,useRef } from 'react';
+import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect';
-import { sendingMsg, sendedMsg } from './actions/index';
-import { getA_not_in_B, printList } from './util';
 
 
 export default function ChatingList({ channelid }) {
@@ -37,7 +32,7 @@ export default function ChatingList({ channelid }) {
   const sendingandreceivedlist = useSelector(selectSendingAndReceived);
   
   let listcleantimed;
-  if(view_cleanstr!=undefined){
+  if(view_cleanstr!==undefined){
              const cleanTime = new Date(view_cleanstr);
              listcleantimed = sendingandreceivedlist.filter(obj => {
                         const objTime = new Date(obj.time);
@@ -53,7 +48,6 @@ export default function ChatingList({ channelid }) {
    const time = new Date(sendingitem.time);
    let textAlignment = '';
    let listItemStyle = {};
-   let listItemColor = '';
    if (sendingitem.fromid === userId) {
     textAlignment = 'right';
     listItemStyle = { paddingLeft: '50px', paddingRight: '10px',
@@ -88,7 +82,7 @@ export default function ChatingList({ channelid }) {
     scrollToBottom();
   }, [selectSendingAndReceived]);
   return (
-    <Box ref={chatListContainerRef} sx={{ maxHeight: 'calc(100% - 120px)',width: '100%', bgcolor: 'background.paper', 'flex-grow': 1, overflowY: 'auto' }}>
+    <Box ref={chatListContainerRef} sx={{ maxHeight: 'calc(100vh - 150px)',width: '100%', bgcolor: 'background.paper', flexGrow: 1, overflowY: 'auto' }}>
       <Divider />
       <nav aria-label="secondary mailbox folders">
         <List>

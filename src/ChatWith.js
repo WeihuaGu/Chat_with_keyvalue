@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 
 import { useState } from 'react';
-export default function ChatWith({}) {
+export default function ChatWith() {
   const { t } = useTranslation();
   const [inputText, setInputText] = useState('');
   const handleInputChange = (event) => {

@@ -2,22 +2,15 @@ import * as React from 'react';
 import AppBar from './AppBar';
 import Box from '@mui/material/Box';
 import InputText from './InputText';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
 import ChatingList from './ChatingList';
-import { position } from '@material-ui/system';
-import { bottom } from '@material-ui/system';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { sendingMsg, sendedMsg ,receivedPubMsg ,genMd5} from './actions/index';
+import { sendingMsg, sendedMsg ,receivedPubMsg } from './actions/index';
 import { publisheChannel } from './subscriber-publisher.js';
 import { subscribeChannel,subscribeChannelInfo } from './subscriber-publisher.js';
-import { getA_not_in_B, printList,itemInList,printState,getState } from './util';
-import  CryptoJS from 'crypto-js';
+import { getA_not_in_B, itemInList,getState } from './util';
 import { cloneDeep } from 'lodash';
 
 
@@ -29,7 +22,6 @@ export default function ButtonAppBar() {
   const { channelid } = useParams();
   const userId = useSelector((state)=>{return state.usrinfo.id});
   const fromId = useSelector((state)=>{return state.usrinfo.id});
-  const pubcomparemd5 = useSelector((state)=>{return state.comparemd5.publicmd5});
   const [parentInputText, setParentInputText] = useState('');
   const [randomText, setRandomText] = useState('');
   const channelInfo = useRef({});
@@ -50,7 +42,7 @@ export default function ButtonAppBar() {
      if(sendinginfo.toid==='public')
      	sendresult = publisheChannel(sendinginfo.toid,postinfo,'pub');
      else{
-	if(channelInfo.current['pubkey']!=undefined)
+	if(channelInfo.current['pubkey']!==undefined)
      		sendresult = publisheChannel(sendinginfo.toid,postinfo,'secret');
 	else
      		sendresult = publisheChannel(sendinginfo.toid,postinfo,'secret',channelInfo.current['pubkey']);
@@ -75,7 +67,7 @@ export default function ButtonAppBar() {
   }, [randomText,parentInputText]);
 
   useEffect(() => {
-    if(channelid!='public'){
+    if(channelid!=='public'){
     	const getchannelinfo = subscribeChannelInfo(channelid)
     	getchannelinfo.then((result)=>{
 	    channelInfo.current = JSON.parse(result['info-'+channelid]);
@@ -98,7 +90,7 @@ export default function ButtonAppBar() {
 	      const receivedlistwithpublic = list.filter((msg) => msg.fromid !==userId );
 	      const public_cleanstr = getState().incleantime[channelid];
 	      let receivedlist;
-	      if(public_cleanstr!=undefined){
+	      if(public_cleanstr!==undefined){
 	        const public_cleanTime = new Date(public_cleanstr);
 	        receivedlist = receivedlistwithpublic.filter(obj => {
   			const objTime = new Date(obj.time);
@@ -112,12 +104,14 @@ export default function ButtonAppBar() {
 			console.log('received list get null');
 	      	        receivedlist.map((msg)=>{
 			  dispatch(new receivedPubMsg(msg));
+			  return msg.id;
 	      	        });
 		      }else{
 		       const filterednewList =  getA_not_in_B(receivedlist,localList,'id');
 	      	       filterednewList.map((msg)=>{
 			    if(!itemInList(msg,localList,'id'))
 				dispatch(new receivedPubMsg(msg));
+			    return msg.id;
 	      	       });
 
 		      }
@@ -142,14 +136,13 @@ export default function ButtonAppBar() {
     };
 
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 	
   return (
-      <Box sx={{ position: 'fixed',bottom: 0,left: 0,width: '100%',height: '100%',display: 'flex','flex-direction': 'column' }}>
+      <Box sx={{ position: 'fixed',top: 0,left: 0,width:'100%' ,height:{appHeight}, display: 'flex',flexDirection: 'column' }}>
       <AppBar cleanwhat={channelid} />
   	<ChatingList channelid={channelid} />
   	<InputText  setRandomText={setRandomText} setInputText={setParentInputText} />

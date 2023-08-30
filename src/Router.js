@@ -10,15 +10,13 @@ import ChatSurface from './ChatSurface';
 import MyToast from './MyToast';
 import { getState, getA_not_in_B,itemInList } from './util.js';
 import { cloneDeep } from 'lodash';
-import { useTranslation } from 'react-i18next';
 
 function router(){
-const { i18n } = useTranslation();
 const dispatch = useDispatch();
 const userId = useSelector((state)=>{return state.usrinfo.id});
 const [openToast, setOpenToast] = useState(false);
 const [toastMessage, setToastMessage] = useState('');
-const [toastSeverity, setToastSeverity] = useState('');
+const [toastSeverity, setToastSeverity] = useState('info');
 
 const handleOpenToast = (message, severity='info') => {
     setToastMessage(message);
@@ -148,11 +146,7 @@ useEffect(() => {
   }, []);
 
 useEffect(() => {
-    // 获取系统语言
-    const systemLanguage = navigator.language;
 
-    // 根据系统语言设置默认语言
-    i18n.changeLanguage(systemLanguage);
   }, []);
 return (
 <Router>

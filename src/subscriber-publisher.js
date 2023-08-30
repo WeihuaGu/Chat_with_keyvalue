@@ -30,6 +30,7 @@ const subscribeChannel = (channel)=>{
 			if(type === 'pub'){
 				return item.msg;
 			}
+			return {};
 
 		});
 		resolve(decryptlist);

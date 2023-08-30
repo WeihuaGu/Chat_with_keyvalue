@@ -14,7 +14,7 @@ var redislpush = async(key,list)=>{
         return await client.lpush(key,list)
 }
 
-var redislrange = async(key,start,end)=>{
+var redislrange = async(key,start=0,end=-1)=>{
         return await client.lrange(key,start,end)
 }
 
@@ -23,10 +23,9 @@ var redisdel = async(key)=>{
 }
 
 const redismethod = {
-	pushkeyvalue:redisset,
-	pushtolist:redislpush
+	setkeyjson:redisset,
+	pushtolist:redislpush,
+	getlist:redislrange,
+        getkeyvalue:redisget
 }
-
-
-
 export { redismethod  }

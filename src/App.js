@@ -1,13 +1,14 @@
 import React,{ useEffect } from 'react';
-import { useDispatch } from 'react-redux'
-import { testAction } from './actions/index.js';
 import ChatList from './ChatList';
 import AppBar from './AppBar';
+import { useTranslation } from 'react-i18next';
 function App() {
-  const dispatch = useDispatch();
+  const { i18n } = useTranslation();
   const cleanwhat = 'all';
   useEffect(() => {
-    dispatch(new testAction());
+    const systemLanguage = navigator.language; // 获取系统语言
+    i18n.changeLanguage(systemLanguage);
+    document.title = i18n.t('app'); // 设置应用的标题
 
   }, []);
 
