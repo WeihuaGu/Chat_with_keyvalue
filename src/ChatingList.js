@@ -82,10 +82,11 @@ export default function ChatingList({ channelid }) {
    return (
           <ListItem key={sendingitem.id} disablePadding style={listItemStyle}>
 	   <ListItemButton 
+	   disableRipple='true'
 	   onMouseDown={handleMouseDown}
            onMouseUp={handleMouseUp}>
 	     <ListItemText align={textAlignment}>
-	        <div style={{ display: 'block' }}>
+	        <div style={{ display: 'block',userSelect: 'text' }}>
 	   	<span>{sendingitem.text}</span>
 	        <span> </span>
 	        <Paper elevation={0} style={{ display: 'inline-block',padding: '5px',fontSize: '10px', color: 'gray',whiteSpace: 'nowrap' }}>
