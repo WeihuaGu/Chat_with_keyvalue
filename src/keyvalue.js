@@ -1,10 +1,11 @@
 const methodtype = process.env.REACT_APP_METHON;
 let apimethod;
+
 if (methodtype === 'redis') {
-  const { redismethod } = require('./keyvalueimplementwithredis.js');
+  const { redismethod } = await import('./keyvalueimplementwithredis.js');
   apimethod = redismethod;
 } else if (methodtype === 'restfulapi') {
-  const { restfulapimethod } = require('./keyvalueimplementwithrestfulapi.js');
+  const { restfulapimethod } = await import('./keyvalueimplementwithrestfulapi.js');
   apimethod = restfulapimethod;
 } else {
   console.error('Invalid method type');
