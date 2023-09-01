@@ -29,10 +29,22 @@ This is a draft translation focusing on minimizing legal risks when the chat sof
 ## Installation
 Friendly Chat is created with React and requires Node.js to run.
 
-- Clone the repo
-- Install dependencies: `npm install`
-- Set environment variables in .env file   This application uses a key-value database to store data. If you are using a RESTful API, please add the environment variables introduced in keyvalueimplementwithrestfulapi.js to your .env file. If you are using Redis, please add the environment variables introduced in keyvalueimplementwithredis.js to your .env file.
-- Start the app: `npm start`
+#### Clone the repo
+#### Install dependencies: `npm install`
+#### Set environment variables in .env file   
+This application uses a key-value database to store data. If you are using a RESTful API, please add the environment variables introduced in keyvalueimplementwithrestfulapi.js to your .env file. If you are using Redis, please add the environment variables introduced in keyvalueimplementwithredis.js to your .env file.
+##### example .env
+```
+REACT_APP_METHON="redis"
+REACT_APP_REDIS_URL="redis://haha1234@localhost"`
+```
+or
+```
+REACT_APP_METHON="restfulapi"
+REACT_APP_PUSH_URL="https://xxx.net"
+REACT_APP_TOKEN="xxxxx"
+```
+#### Start the app: `npm start`
 
 ## Licensing
 Friendly Chat is licensed under the Apache-2.0 license to allow for open collaboration while avoiding mandatory source code disclosure requirements.
