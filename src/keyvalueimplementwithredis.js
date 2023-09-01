@@ -18,10 +18,6 @@ var redislrange = async(key,start=0,end=-1)=>{
         return await client.lrange(key,start,end)
 }
 
-var redisdel = async(key)=>{
-	return await client.del(key)
-}
-
 const redismethod = {
 	setkeyjson:redisset,
 	pushtolist:redislpush,
