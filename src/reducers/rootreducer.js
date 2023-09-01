@@ -132,6 +132,12 @@ const viewcleantime = (state = {},action)=>{
 	}
 	return state;
 }
+const onchatingid = (state = 0,action)=>{
+	if(action.type === 'onchatingid')
+		return action.id;
+	return state
+}
+
 
 const test = (state = '',action)=>{
 	if(action.type==='testaction'){
@@ -151,6 +157,7 @@ const rootReducer = combineReducers({
 	comparemd5:comparemd5,
 	incleantime:incleantime,
 	viewcleantime:viewcleantime,
+	onchatingid:onchatingid,
 	test:test
 });
 

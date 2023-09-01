@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { sendingMsg, sendedMsg ,receivedPubMsg } from './actions/index';
+import { sendingMsg, sendedMsg ,receivedPubMsg, onChatingId } from './actions/index';
 import { publisheChannel } from './subscriber-publisher.js';
 import { subscribeChannel,subscribeChannelInfo } from './subscriber-publisher.js';
 import { getA_not_in_B, itemInList,getState } from './util';
@@ -67,6 +67,8 @@ export default function ButtonAppBar() {
   }, [randomText,parentInputText]);
 
   useEffect(() => {
+    dispatch(new onChatingId(channelid)); 
+
     if(channelid!=='public'){
     	const getchannelinfo = subscribeChannelInfo(channelid)
     	getchannelinfo.then((result)=>{

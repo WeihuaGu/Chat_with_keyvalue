@@ -123,6 +123,14 @@ const cleanReceived = () => {
 	}
 	return action;
 }
+const onChatingId = (id) => {
+	const action = {
+		type: 'onchatingid',
+		id: id
+	}
+	return action;
+}
+
 
 
 const testAction = () =>{
@@ -134,7 +142,7 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
+export { onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
 
 
 

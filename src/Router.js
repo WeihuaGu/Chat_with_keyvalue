@@ -16,6 +16,7 @@ function router(){
 const { i18n } = useTranslation();
 const dispatch = useDispatch();
 const userId = useSelector((state)=>{return state.usrinfo.id});
+const chatingid = useSelector((state)=>{return state.onchatingid});
 const [openToast, setOpenToast] = useState(false);
 const [toastMessage, setToastMessage] = useState('');
 const [toastSeverity, setToastSeverity] = useState('info');
@@ -122,7 +123,8 @@ useEffect(() => {
                        filterednewList.map((msg)=>{
                             if(!itemInList(msg,mergedLocal,'id')){
                                 dispatch(new receivedMsg(msg));
-				handleOpenToast('新消息从:'+msg.fromid,'success');
+				if(msg.fromid === chatingid)
+				   handleOpenToast('新消息从:'+msg.fromid,'success');
 			    }
 			    return msg.id
                        });
