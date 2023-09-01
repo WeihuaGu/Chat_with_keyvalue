@@ -1,5 +1,5 @@
 import Redis from 'ioredis';
-const redisurlenv = process.env.REDIS_URL;
+const redisurlenv = process.env.REACT_APP_REDIS_URL;
 const redisurl = redisurlenv || 'redis://192.168.9.2:6379';
 let client = new Redis(redisurl);
 var redisset = async(key,value)=>{

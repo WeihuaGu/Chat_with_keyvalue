@@ -73,7 +73,6 @@ export default function ButtonAppBar() {
     	const getchannelinfo = subscribeChannelInfo(channelid)
     	getchannelinfo.then((result)=>{
 	    channelInfo.current = JSON.parse(result['info-'+channelid]);
-	    console.log(channelInfo.current['pubkey']);
     	});
     }
 
