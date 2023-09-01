@@ -1,11 +1,15 @@
-import { redismethod } from './keyvalueimplementwithredis.js'; 如使用redis来存取key value
-import { restfulapimethod } from './keyvalueimplementwithrestfulapi.js';
 const methodtype = process.env.REACT_APP_METHON;
 let apimethod;
-if(methodtype === 'redis')
-	apimethod = redismethod;
-if(methodtype === 'restfulapi')
-	apimethod = restfulapimethod;
+if (methodtype === 'redis') {
+  const { redismethod } = require('./keyvalueimplementwithredis.js');
+  apimethod = redismethod;
+} else if (methodtype === 'restfulapi') {
+  const { restfulapimethod } = require('./keyvalueimplementwithrestfulapi.js');
+  apimethod = restfulapimethod;
+} else {
+  console.error('Invalid method type');
+}
+
 const pushKeyValue = (key,value)=>{
 	return new Promise((resolve,reject)=>{
 		const result = apimethod.setkeyjson(key,value);
