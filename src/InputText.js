@@ -11,7 +11,7 @@ export default function InputText({ setInputText,setRandomText }) {
   const boxid = "inputbox";
   const ref_input = useRef('');
   const handleButtonClick = () => {
-	setRandomText(stringRandom(30));
+	setRandomText(stringRandom(5));
 	setInputText(ref_input.current.value);
 	ref_input.current.value='';
   }
