@@ -82,7 +82,7 @@ export default function ChatingList({ channelid }) {
    return (
           <ListItem key={sendingitem.id} disablePadding style={listItemStyle}>
 	   <ListItemButton 
-	   disableRipple='true'
+	   disableRipple={true}
 	   onMouseDown={handleMouseDown}
            onMouseUp={handleMouseUp}>
 	     <ListItemText align={textAlignment}>

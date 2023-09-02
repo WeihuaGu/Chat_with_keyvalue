@@ -1,16 +1,5 @@
-const methodtype = process.env.REACT_APP_METHON;
-let apimethod;
-
-if (methodtype === 'redis') {
-  const { redismethod } = await import('./keyvalueimplementwithredis.js');
-  apimethod = redismethod;
-} else if (methodtype === 'restfulapi') {
-  const { restfulapimethod } = await import('./keyvalueimplementwithrestfulapi.js');
-  apimethod = restfulapimethod;
-} else {
-  console.error('Invalid method type');
-}
-
+import { restfulapimethod } from './keyvalueimplementwithrestfulapi.js';
+const  apimethod = restfulapimethod;
 const pushKeyValue = (key,value)=>{
 	return new Promise((resolve,reject)=>{
 		const result = apimethod.setkeyjson(key,value);

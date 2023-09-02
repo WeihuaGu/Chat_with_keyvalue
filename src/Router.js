@@ -86,7 +86,8 @@ useEffect(() => {
     const interval = setInterval(() => {
       // 在这里执行接收消息的逻辑
       times=times+1;
-      console.log('loop ...'+times);
+      if(times % 4 === 0)
+         console.log('loop ...'+times);
 
       const mymsglist = subscribeChannel(userId);
               //很大的坑 上面useSelector获取的状态不是新的，时常获取到undefined
@@ -123,8 +124,10 @@ useEffect(() => {
                        filterednewList.map((msg)=>{
                             if(!itemInList(msg,mergedLocal,'id')){
                                 dispatch(new receivedMsg(msg));
-				if(msg.fromid === chatingid)
+				if(msg.fromid === chatingid){
+				   console.log('新消息从:'+msg.fromid);
 				   handleOpenToast('新消息从:'+msg.fromid,'success');
+				}
 			    }
 			    return msg.id
                        });

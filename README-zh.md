@@ -22,11 +22,13 @@
 ## 安装
 基于React开发,需要Node.js运行。
 
-- 克隆仓库
-- 安装依赖: `npm install`
-- 在.env文件设置环境变量
-  这个应用使用键值数据库存储数据.如果你使用restfulapi,请按照 keyvalueimplementwithrestfulapi.js里引入的环境变量添加到.env;如果你使用redis,请按照 keyvalueimplementwithredis.js里引入的环境变量添加到.env.你应该确保这些环境变量的设置正确。
-- 启动应用: `npm start`
+#### 1.克隆仓库
+
+#### 2.在 .env 文件中设置环境变量
+- 要使用此应用程序，您需要一个键值数据库进行存储。您可以根据 keyvalue.js 中的接口定义实现自己的 keyvalueimplementrestfulapi.js 文件。
+- 或者，您可以使用我的项目，它已经提供了将 Redis 转换为 RESTful API 所需的功能。该项目 [redis-retfulapi](https://github.com/WeihuaGu/redis-restfulapi) ↗ 支持在 Vercel 上轻松部署，只需点击一次即可。
+#### 3.安装依赖: `npm install`
+#### 4.启动应用: `npm start`
 
 ## 开源协议
 采用Apache-2.0许可协议,允许开放协作同时避免强制公开源代码。

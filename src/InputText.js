@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import stringRandom from 'string-random';
-import { useRef } from 'react';
+import { useRef,useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function InputText({ setInputText,setRandomText }) {
@@ -15,6 +15,23 @@ export default function InputText({ setInputText,setRandomText }) {
 	setInputText(ref_input.current.value);
 	ref_input.current.value='';
   }
+	
+  const [isControlKeyPressed, setIsControlKeyPressed] = useState(false);
+  // 处理键盘按下事件
+  const handleKeyDown = (event) => {
+    if (event.key === 'Control') {
+    	setIsControlKeyPressed(true);
+    } else if (event.key === 'Enter' && isControlKeyPressed) {
+    	handleButtonClick(); // 调用发送消息的函数
+    }
+  };
+  // 处理键盘释放事件
+  const handleKeyUp = (event) => {
+    if (event.key === 'Control') {
+    	setIsControlKeyPressed(false);
+    }
+  };
+
   return (
       <Box 
 	sx={{
@@ -30,7 +47,7 @@ export default function InputText({ setInputText,setRandomText }) {
       }}
 	  id={boxid}
 	  >
-	  <TextField inputRef={ref_input} variant="outlined"  multiline sx={{ gridRow: '1', gridColumn: '1/12' }}/>
+	  <TextField inputRef={ref_input} variant="outlined" onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} multiline sx={{ gridRow: '1', gridColumn: '1/12' }}/>
 
 	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '12/15',color:'#ab003c' }}>
 	    {t('send')}
