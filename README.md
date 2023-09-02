@@ -34,6 +34,7 @@ Friendly Chat is created with React and requires Node.js to run.
 #### Set environment variables in .env file   
 - To use this application, you will need a key-value database for storage. You can implement your own keyvalueimplementrestfulapi.js file based on the interface definition in keyvalue.js.
 - Alternatively, you can use my project, which already provides the necessary functionality for converting Redis to a RESTful API.The project [redis-retfulapi](https://github.com/WeihuaGu/redis-restfulapi) supports easy deployment on Vercel with just one click.
+- the REACT_APP_PUSH_URL is the redis-retfulapi url;the REACT_APP_TOKEN is the base64 value of the TOKEN variable that has been set in redis-retfulapi TOKEN 
 
 ##### example .env
 ```
