@@ -130,20 +130,9 @@ export default function ButtonAppBar() {
 
 
   }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setAppHeight(window.innerHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 	
   return (
-      <Box sx={{ position: 'fixed',top: 0,left: 0,width:'100%' ,height:{appHeight}, display: 'flex',flexDirection: 'column' }}>
+      <Box sx={{ position: 'fixed',top: 0,left: 0,width:'100%' ,height:'100%', display: 'flex',flexDirection: 'column' }}>
       <AppBar cleanwhat={channelid} />
   	<ChatingList channelid={channelid} />
   	<InputText  setRandomText={setRandomText} setInputText={setParentInputText} />
