@@ -16,8 +16,6 @@ import { cloneDeep } from 'lodash';
 
 
 export default function ButtonAppBar() {
-  const [appHeight, setAppHeight] = useState(window.innerHeight);
-
   const dispatch = useDispatch();
   const { channelid } = useParams();
   const userId = useSelector((state)=>{return state.usrinfo.id});

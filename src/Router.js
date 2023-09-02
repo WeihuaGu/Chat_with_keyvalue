@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
 import { useDispatch ,useSelector} from 'react-redux'
 import { usrInfo, newUsrInfo,receivedMsg,inCleanTime } from './actions/index';
 import { genuserinfo } from './genuserinfo';
@@ -14,8 +14,10 @@ import { cloneDeep } from 'lodash';
 
 function router(){
 const { i18n } = useTranslation();
+const systemLanguage = useRef(navigator.language);
 const dispatch = useDispatch();
 const userId = useSelector((state)=>{return state.usrinfo.id});
+const pubKey = useSelector((state)=>{return state.usrinfo.pubkey});
 const chatingid = useSelector((state)=>{return state.onchatingid});
 const [openToast, setOpenToast] = useState(false);
 const [toastMessage, setToastMessage] = useState('');
@@ -33,19 +35,16 @@ const handleCloseToast = (event, reason) => {
     setOpenToast(false);
   };
 
-
-//循环及初始化
+//初始化
 useEffect(() => {
     var storedUserId = localStorage.getItem('userId');
     var storedPublicKey = localStorage.getItem('publicKey');
     let storedPrivateKey;
-    let channelinfo;
     if (storedUserId && storedPublicKey) {
       const u_info = {
 	      id: storedUserId,
 	      pubkey: storedPublicKey
       }
-      channelinfo = u_info;
       dispatch(new usrInfo(u_info)); 
     }
     else{
@@ -60,13 +59,10 @@ useEffect(() => {
 	      id: storedUserId,
 	      pubkey: storedPublicKey
             }
-	    channelinfo = u_info;
 	    dispatch(new newUsrInfo(u_info));
     }
-    const pubinfo = publisheInfo2Channel(channelinfo.id,channelinfo);
-    pubinfo.then((result)=>console.log('update usrinfo to server'));
 
-    // cleantime
+    // 截至接收消息时间
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - 1);
     const public_cleantimestr = currentDate.toISOString();
@@ -80,21 +76,38 @@ useEffect(() => {
     const me_cleantime = new inCleanTime(userId,me_cleantimestr);
     if(getState().incleantime[userId] === undefined)
       dispatch(me_cleantime);
-    
 
+}, [pubKey]);
+
+//发送自己频道消息
+useEffect(() => {
+    if(userId!==undefined && pubKey!==undefined){
+      const u_info = {
+	 id: userId,
+	 pubkey: pubKey
+      }
+      const pubinfo = publisheInfo2Channel(u_info.id,u_info);
+      pubinfo.then((result)=>console.log('update usrinfo to server'));
+    }
+
+}, [pubKey]);
+
+//循环消息体
+useEffect(() => {
     var times = 0;
     const interval = setInterval(() => {
       // 在这里执行接收消息的逻辑
+      if(userId===undefined && pubKey===undefined){
+	    return;
+      }
       times=times+1;
-      if(times % 4 === 0)
-         console.log('loop ...'+times);
+      console.log('loop ...'+times);
 
-      const mymsglist = subscribeChannel(userId);
+        const mymsglist = subscribeChannel(userId);
               //很大的坑 上面useSelector获取的状态不是新的，时常获取到undefined
         const rawlocalList = getState().received;
         const localList = cloneDeep(rawlocalList);
 	delete localList.public;
-
 	
         mymsglist.then((list)=>{
               //过滤掉fromid=usrid的就行,这样就不显示自己已经发过了的
@@ -134,25 +147,22 @@ useEffect(() => {
 
                       }
 
-
-
               }
         });
     }, 6000); // 每5秒轮询一次
 
     return () => {
-      // 清理函数在组件卸载时会被调用
-      // 在这里清除轮询定时器或取消其他轮询相关的操作
+            // 清除轮询定时器或取消其他轮询相关的操作
             console.log('Stop polling');
 	    clearInterval(interval);
     };
-  }, []);
+}, []);
+
 //国际化
 useEffect(() => {
-    const systemLanguage = navigator.language; // 获取系统语言
-    i18n.changeLanguage(systemLanguage);
+    i18n.changeLanguage(systemLanguage.current);
     document.title = i18n.t('app'); // 设置应用的标题
-  }, []);
+}, [systemLanguage]);
 
 return (
 <Router>
