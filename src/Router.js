@@ -47,6 +47,9 @@ useEffect(() => {
     	        localStorage.setItem('publicKey',storedPublicKey);
     	        localStorage.setItem('privateKey',storedPrivateKey);
 		dispatch(new quickUsrInfoPubkey(storedPublicKey));
+		setTimeout(() => {
+      			window.location.reload();
+    		}, 1000);
 	    });
     }
 
