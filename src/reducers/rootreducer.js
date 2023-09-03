@@ -149,6 +149,12 @@ const onchatingid = (state = 0,action)=>{
 		return action.id;
 	return state
 }
+const newalert = (state = 0,action)=>{
+	if(action.type === 'newalert')
+		return action.id;
+	return state
+}
+
 
 
 const test = (state = '',action)=>{
@@ -170,6 +176,7 @@ const rootReducer = combineReducers({
 	incleantime:incleantime,
 	viewcleantime:viewcleantime,
 	onchatingid:onchatingid,
+	newalert:newalert,
 	test:test
 });
 

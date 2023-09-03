@@ -3,12 +3,11 @@ import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useState,useEffect,useRef } from 'react';
 import { useDispatch ,useSelector} from 'react-redux'
-import { usrInfo, quickUsrInfoId, quickUsrInfoPubkey ,receivedMsg,inCleanTime } from './actions/index';
+import { usrInfo, quickUsrInfoId, quickUsrInfoPubkey,newAlert ,receivedMsg,inCleanTime } from './actions/index';
 import { genuserinfo } from './genuserinfo';
 import { publisheInfo2Channel,subscribeChannel } from './subscriber-publisher.js';
 import Home from './Home';
 import ChatSurface from './ChatSurface';
-import MyToast from './MyToast';
 import { getState, getA_not_in_B,itemInList } from './util.js';
 import { cloneDeep } from 'lodash';
 
@@ -19,21 +18,7 @@ const dispatch = useDispatch();
 const userId = useSelector((state)=>{return state.usrinfo.id});
 const pubKey = useSelector((state)=>{return state.usrinfo.pubkey});
 const chatingid = useSelector((state)=>{return state.onchatingid});
-const [openToast, setOpenToast] = useState(false);
-const [toastMessage, setToastMessage] = useState('');
-const [toastSeverity, setToastSeverity] = useState('info');
 
-const handleOpenToast = (message, severity='info') => {
-    setToastMessage(message);
-    setToastSeverity(severity);
-    setOpenToast(true);
-  };
-const handleCloseToast = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenToast(false);
-  };
 
 //初始化
 useEffect(() => {
@@ -139,9 +124,9 @@ useEffect(() => {
                        filterednewList.map((msg)=>{
                             if(!itemInList(msg,mergedLocal,'id')){
                                 dispatch(new receivedMsg(msg));
-				if(msg.fromid === chatingid){
+				if(msg.fromid !== chatingid){
 				   console.log('新消息从:'+msg.fromid);
-				   //handleOpenToast('新消息从:'+msg.fromid,'success');
+				   dispatch(new newAlert(msg.fromid));
 				}
 			    }
 			    return msg.id
@@ -168,12 +153,6 @@ useEffect(() => {
 
 return (
 <Router>
-	<MyToast
-          open={openToast}
-          onClose={handleCloseToast}
-          message={toastMessage}
-          severity={toastSeverity}
-        />
 <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/chat/:channelid" element={<ChatSurface />} />

@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { sendingMsg, sendedMsg ,receivedPubMsg, onChatingId } from './actions/index';
+import { sendingMsg, sendedMsg , newAlert ,receivedPubMsg, onChatingId } from './actions/index';
 import { publisheChannel } from './subscriber-publisher.js';
 import { subscribeChannel,subscribeChannelInfo } from './subscriber-publisher.js';
 import { getA_not_in_B, itemInList,getState } from './util';
@@ -18,11 +18,15 @@ import { cloneDeep } from 'lodash';
 export default function ButtonAppBar() {
   const dispatch = useDispatch();
   const { channelid } = useParams();
+  const newalertid = useSelector((state)=>state.newalert);
+  const chatingid = useSelector((state)=>{return state.onchatingid});
   const userId = useSelector((state)=>{return state.usrinfo.id});
   const fromId = useSelector((state)=>{return state.usrinfo.id});
   const [parentInputText, setParentInputText] = useState('');
   const [randomText, setRandomText] = useState('');
   const channelInfo = useRef({});
+  const onin = useRef(true);
+
 
   const handleClick = () => {
      const sendinginfo = {
@@ -63,6 +67,17 @@ export default function ButtonAppBar() {
     if(parentInputText!=='')
     	handleClick();
   }, [randomText,parentInputText]);
+
+  useEffect(() => {
+      onin.current = true;
+      if(newalertid === chatingid && onin.current){
+	if(newalertid!==0)
+		dispatch(new newAlert(0));
+      }
+      return ()=>{
+	 onin.current = false;
+      }
+  }, [chatingid]);
 
   useEffect(() => {
     dispatch(new onChatingId(channelid)); 

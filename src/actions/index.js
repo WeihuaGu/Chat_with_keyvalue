@@ -144,6 +144,13 @@ const onChatingId = (id) => {
 	}
 	return action;
 }
+const newAlert = (id) => {
+	const action = {
+		type: 'newalert',
+		id: id
+	}
+	return action;
+}
 
 
 
@@ -156,7 +163,7 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { quickUsrInfoId, quickUsrInfoPubkey ,onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
+export { newAlert, quickUsrInfoId, quickUsrInfoPubkey ,onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
 
 
 
