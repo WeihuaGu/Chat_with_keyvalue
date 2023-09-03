@@ -3,7 +3,7 @@ import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useState,useEffect,useRef } from 'react';
 import { useDispatch ,useSelector} from 'react-redux'
-import { usrInfo, newUsrInfo,receivedMsg,inCleanTime } from './actions/index';
+import { usrInfo, quickUsrInfoId, quickUsrInfoPubkey ,receivedMsg,inCleanTime } from './actions/index';
 import { genuserinfo } from './genuserinfo';
 import { publisheInfo2Channel,subscribeChannel } from './subscriber-publisher.js';
 import Home from './Home';
@@ -37,6 +37,7 @@ const handleCloseToast = (event, reason) => {
 
 //初始化
 useEffect(() => {
+    //初始化用户信息
     var storedUserId = localStorage.getItem('userId');
     var storedPublicKey = localStorage.getItem('publicKey');
     let storedPrivateKey;
@@ -48,21 +49,23 @@ useEffect(() => {
       dispatch(new usrInfo(u_info)); 
     }
     else{
-	    const info = genuserinfo();
-	    storedUserId = info.id;
-	    storedPublicKey =info.keypair.publickey;
-	    storedPrivateKey = info.keypair.privatekey;
-    	    localStorage.setItem('userId',storedUserId);
-    	    localStorage.setItem('publicKey',storedPublicKey);
-    	    localStorage.setItem('privateKey',storedPrivateKey);
-      	    const u_info = {
-	      id: storedUserId,
-	      pubkey: storedPublicKey
-            }
-	    dispatch(new newUsrInfo(u_info));
+	    const usrinfogen = genuserinfo();
+	    usrinfogen.id.then((theid)=>{
+	        storedUserId = theid;
+    	        localStorage.setItem('userId',storedUserId);
+		dispatch(new quickUsrInfoId(theid));
+
+	    });
+	    usrinfogen.keypair.then((thekeypair)=>{
+	        storedPublicKey =thekeypair.publickey;
+	        storedPrivateKey = thekeypair.privatekey;
+    	        localStorage.setItem('publicKey',storedPublicKey);
+    	        localStorage.setItem('privateKey',storedPrivateKey);
+		dispatch(new quickUsrInfoPubkey(storedPublicKey));
+	    });
     }
 
-    // 截至接收消息时间
+    // 设置截止接收消息时间
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - 1);
     const public_cleantimestr = currentDate.toISOString();
@@ -79,7 +82,7 @@ useEffect(() => {
 
 }, [pubKey]);
 
-//发送自己频道消息
+//发送自己频道信息
 useEffect(() => {
     if(userId!==undefined && pubKey!==undefined){
       const u_info = {
@@ -103,8 +106,7 @@ useEffect(() => {
       times=times+1;
       console.log('loop ...'+times);
 
-        const mymsglist = subscribeChannel(userId);
-              //很大的坑 上面useSelector获取的状态不是新的，时常获取到undefined
+        const mymsglist = subscribeChannel(userId);//很大的坑 上面useSelector获取的状态不是新的，时常获取到undefined
         const rawlocalList = getState().received;
         const localList = cloneDeep(rawlocalList);
 	delete localList.public;
@@ -116,9 +118,9 @@ useEffect(() => {
               let receivedlist;
               if(time_cleanstr!==undefined){
                 const cleanTime = new Date(time_cleanstr);
-                receivedlist = rawreceivedlist.filter(obj => {
-                        const objTime = new Date(obj.time);
-                        return objTime > cleanTime;
+                receivedlist = rawreceivedlist.filter(msg => {
+                        const msgTime = new Date(msg.time);
+                        return msgTime > cleanTime;
                 });
               }else{
                 receivedlist = rawreceivedlist;

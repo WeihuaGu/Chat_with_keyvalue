@@ -29,6 +29,20 @@ const newUsrInfo = (info) =>{
 	}
 	return action;
 }
+const quickUsrInfoId = (id) =>{
+	const action = {
+		type: 'quickusrinfoid',
+		id: id
+	}
+	return action;
+}
+const quickUsrInfoPubkey = (pubkey) =>{
+	const action = {
+		type: 'quickusrinfopubkey',
+		pubkey: pubkey
+	}
+	return action;
+}
 
 /*
  * info = {
@@ -142,7 +156,7 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
+export { quickUsrInfoId, quickUsrInfoPubkey ,onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
 
 
 

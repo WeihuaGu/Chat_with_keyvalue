@@ -3,6 +3,18 @@ import { cloneDeep } from 'lodash';
 import { combineReducers } from 'redux';
 // 其他 reducer
 const usrinfo = (state = {},action)=> {
+	if(action.type === 'quickusrinfoid'){
+		const newstate = cloneDeep(state);
+		newstate.id = action.id;
+		newstate.long = 'new';
+		return  newstate;
+	}
+	if(action.type === 'quickusrinfopubkey'){
+		const newstate = cloneDeep(state);
+		newstate.pubkey = action.pubkey;
+		newstate.long = 'new';
+		return  newstate;
+	}
 	if(action.type === 'usrinfo'){
 		const newstate = cloneDeep(state);
 		newstate.id = action.info.id;
