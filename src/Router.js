@@ -141,7 +141,7 @@ useEffect(() => {
                                 dispatch(new receivedMsg(msg));
 				if(msg.fromid === chatingid){
 				   console.log('新消息从:'+msg.fromid);
-				   handleOpenToast('新消息从:'+msg.fromid,'success');
+				   //handleOpenToast('新消息从:'+msg.fromid,'success');
 				}
 			    }
 			    return msg.id
