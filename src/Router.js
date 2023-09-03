@@ -168,16 +168,16 @@ useEffect(() => {
 
 return (
 <Router>
-<Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/chat/:channelid" element={<ChatSurface />} />
-</Routes>
 	<MyToast
           open={openToast}
           onClose={handleCloseToast}
           message={toastMessage}
           severity={toastSeverity}
         />
+<Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/chat/:channelid" element={<ChatSurface />} />
+</Routes>
 </Router>);
 }
 
