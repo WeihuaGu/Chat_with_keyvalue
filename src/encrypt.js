@@ -4,7 +4,7 @@ import NodeRSA  from 'node-rsa';
 import { pubKey, privKey } from './key.js';
 
 const genPass = () => {
-  const pass = stringRandom(32);
+  const pass = stringRandom(16);
   const iv = stringRandom(16);
   return {
     pass: pass,

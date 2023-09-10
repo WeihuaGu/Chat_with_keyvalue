@@ -1,7 +1,7 @@
 import NodeRSA from 'node-rsa';
 const genkeypair = ()=>{
   // 生成RSA密钥对
-  const key = new NodeRSA({ b: 2048 });
+  const key = new NodeRSA({ b: 1024 });
   const publicKey = key.exportKey('pkcs8-public-pem');
   const privateKey = key.exportKey('pkcs8-private-pem');
   return {
