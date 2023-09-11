@@ -185,6 +185,7 @@ const rootReducer = combineReducers({
 	viewcleantime:viewcleantime,
 	onchatingid:onchatingid,
 	newalert:newalert,
+	decryptmsg:decryptmsg,
 	test:test
 });
 

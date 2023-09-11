@@ -2,9 +2,9 @@ import stringRandom from 'string-random';
 import CryptoJS from 'crypto-js';
 import NodeRSA  from 'node-rsa';
 import { pubKey, privKey } from './key.js';
-
+const  passbytes = 16;
 const genPass = () => {
-  const pass = stringRandom(16);
+  const pass = stringRandom(passbytes);
   const iv = stringRandom(16);
   return {
     pass: pass,
@@ -49,8 +49,8 @@ const aesDecrypt = (encrypted, key, iv) => {
 const getDecryptedMessage = (encryptedPass, encryptedContent) => {
   const decryptedPass = getDecryptedPass(encryptedPass);
   const passAndIv = decryptedPass.split('');
-  const key = passAndIv.slice(0, 32).join('');
-  const iv = passAndIv.slice(32).join('');
+  const key = passAndIv.slice(0, passbytes).join('');
+  const iv = passAndIv.slice(passbytes).join('');
   const decryptedContent = aesDecrypt(encryptedContent, key, iv);
   return decryptedContent;
 };

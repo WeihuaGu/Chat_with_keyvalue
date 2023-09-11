@@ -1,5 +1,7 @@
 import { encrypt, decrypt} from './encrypt.js';
 import { pushKeyValue ,pushToList,getKeyValue,getList } from './keyvalue.js';
+import { getState,dispatch } from './util.js';
+import { newDecryptMsg } from './actions/index.js';
 
 
 const subscribeChannel = (channel)=>{
@@ -14,18 +16,28 @@ const subscribeChannel = (channel)=>{
 			reject();
 			return;
 		}
+		const localdecryptdic = getState().decryptmsg;
 		const decryptlist = infolist.map((itemstr)=>{
 			const item = JSON.parse(itemstr);
 			const type = item.type;
+			const msgid = item.id;
 			if(type === 'secret'){
-				const enmsg = item.msg;
-				const pass = item.encryptedpass;
-				const enmsgobj = { 
-					encryptedpass:pass, 
-					encryptedcontent:enmsg
+				if(msgid in localdecryptdic){
+                        	    const decryptedlocalmsg = localdecryptdic[msgid];
+				    if(decryptedlocalmsg)
+				    	return JSON.parse(decryptedlocalmsg);
+                		}else{
+
+					const enmsg = item.msg;
+					const pass = item.encryptedpass;
+					const enmsgobj = { 
+						encryptedpass:pass, 
+						encryptedcontent:enmsg
+					}
+					const decryptedmsg = decrypt(enmsgobj);
+					dispatch(new newDecryptMsg(msgid,decryptedmsg));
+					return JSON.parse(decryptedmsg);
 				}
-				const decryptedmsg = decrypt(enmsgobj);
-				return JSON.parse(decryptedmsg);
 			}
 			if(type === 'pub'){
 				return item.msg;
