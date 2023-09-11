@@ -93,10 +93,11 @@ export default function ButtonAppBar({cleanwhat}) {
             <ClearIcon sx={{ marginRight: 1 }} />
 	      {t('clear')} 
           </MenuItem>
+          {cleanwhat === 'all' && (
           <MenuItem onClick={handleClearCompletelyClick}>
             <ClearIcon sx={{ marginRight: 1 }} />
 	      {t('clearcompletely')} 
-          </MenuItem>
+          </MenuItem>)}
         </Menu>
 
         </Toolbar>
