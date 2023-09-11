@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { delChannel } from './subscriber-publisher';
 
 export default function ButtonAppBar({cleanwhat}) {
+  const channelid = cleanwhat;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const userId = useSelector((state)=>{return state.usrinfo.id});
@@ -71,6 +72,10 @@ export default function ButtonAppBar({cleanwhat}) {
 	  {cleanwhat === 'all' && (
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
 		  {t('your')}id: {userId}
+          </Typography>)}
+	  {cleanwhat !== 'all' && (
+	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
+		  {t('his')}id: {channelid}
           </Typography>)}
 	  <IconButton
           edge="end"
