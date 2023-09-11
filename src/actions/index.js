@@ -159,6 +159,12 @@ const newDecryptMsg = (id,msg) =>{
 	}
 	return action;
 }
+const StateClean = () => {
+	const action = {
+		type: 'state_clean'
+	}
+	return action;
+}
 
 
 
@@ -171,9 +177,5 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { newDecryptMsg, newAlert, quickUsrInfoId, quickUsrInfoPubkey ,onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
-
-
-
-
+export { StateClean, newDecryptMsg, newAlert, quickUsrInfoId, quickUsrInfoPubkey ,onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
 

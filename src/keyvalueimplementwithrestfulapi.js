@@ -30,6 +30,10 @@ const setjsonurl = (key) =>{
 	const url = restfulurl+'/redis/setjson/chat/'+key;
 	return url
 }
+const delkeyurl = (key) => {
+	const url = restfulurl+'/redis/del/chat/'+key;
+	return url
+}
 
 const getkeyvalue = (key)=>{
 	const geted = axios.get(getvalueurl(key),{headers});
@@ -48,12 +52,18 @@ const pushtolist = (key,msg)=>{
    const pushed = axios.post(pushlisturl(key),msg,{headers})
    return pushed;
 }
+const delkey = (key)=>{
+	const geted = axios.get(delkeyurl(key),{headers});
+	return geted;
+}
+
 
 const restfulapimethod = {
 	getlist:getlist,
 	pushtolist:pushtolist,
 	setkeyjson:setkeyjson,
-	getkeyvalue:getkeyvalue
+	getkeyvalue:getkeyvalue,
+	delkey:delkey
 }
 
 export { restfulapimethod  }

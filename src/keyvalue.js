@@ -30,10 +30,14 @@ const getList = (key)=>{
 		result.then((result)=>resolve(result.data)).catch((err)=>reject(err));
 	});
 
-
-
-
+}
+const delKey = (key)=>{
+	return new Promise((resolve,reject)=>{
+		const result = apimethod.delkey(key);
+		result.then((result)=>resolve(result.data)).catch((err)=>reject(err));
+	});
 }
 
 
-export { pushKeyValue,getKeyValue,pushToList,getList  }
+
+export { pushKeyValue,getKeyValue,pushToList,getList,delKey  }

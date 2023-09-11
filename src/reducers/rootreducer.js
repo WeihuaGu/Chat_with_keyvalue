@@ -176,7 +176,7 @@ const test = (state = '',action)=>{
 
 	
 
-const rootReducer = combineReducers({
+const getcombineReducer = combineReducers({
 	usrinfo:usrinfo,
 	sending:sending,
 	received:received,
@@ -188,5 +188,15 @@ const rootReducer = combineReducers({
 	decryptmsg:decryptmsg,
 	test:test
 });
+const rootInitialState = getcombineReducer(undefined, {});
+
+const rootReducer = (state, action) => {
+  if (action.type === 'state_clean') {
+    return rootInitialState;
+  } else {
+    return getcombineReducer(state, action);
+  }
+};
+
 
 export default rootReducer;

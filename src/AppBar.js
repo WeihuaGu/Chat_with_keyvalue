@@ -8,8 +8,9 @@ import HomeIcon from '@mui/icons-material/Home';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Menu, MenuItem } from '@mui/material';
 import { useDispatch ,useSelector} from 'react-redux'
-import { viewCleanTime,inCleanTime,cleanSending,cleanReceived  } from './actions/index';
+import { StateClean,viewCleanTime,inCleanTime,cleanSending,cleanReceived  } from './actions/index';
 import { useTranslation } from 'react-i18next';
+import { delChannel } from './subscriber-publisher';
 
 export default function ButtonAppBar({cleanwhat}) {
   const { t } = useTranslation();
@@ -38,12 +39,26 @@ export default function ButtonAppBar({cleanwhat}) {
 	    // cleantime
       const currentDate = new Date();
       const cleantimestr = currentDate.toISOString();
-      dispatch(new inCleanTime('public',cleantimestr));
-      dispatch(new inCleanTime(userId,cleantimestr));
       dispatch(new cleanSending());
       dispatch(new cleanReceived());
+      dispatch(new inCleanTime('public',cleantimestr));
+      dispatch(new inCleanTime(userId,cleantimestr));
     }
 
+    setAnchorEl(null);
+  };
+  const handleClearCompletelyClick = () => {
+    // 彻底清除操作
+    const delchannel = delChannel(userId);
+    const delchannelinfo = delChannel('info-'+userId);
+    delchannel.then((clean)=>{
+	    console.log(clean);
+    });
+    dispatch(new StateClean());
+    localStorage.clear();
+    setTimeout(() => {
+            window.location.reload();
+    }, 2000);
     setAnchorEl(null);
   };
   
@@ -77,6 +92,10 @@ export default function ButtonAppBar({cleanwhat}) {
           <MenuItem onClick={handleClearClick}>
             <ClearIcon sx={{ marginRight: 1 }} />
 	      {t('clear')} 
+          </MenuItem>
+          <MenuItem onClick={handleClearCompletelyClick}>
+            <ClearIcon sx={{ marginRight: 1 }} />
+	      {t('clearcompletely')} 
           </MenuItem>
         </Menu>
 

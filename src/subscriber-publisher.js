@@ -1,5 +1,5 @@
 import { encrypt, decrypt} from './encrypt.js';
-import { pushKeyValue ,pushToList,getKeyValue,getList } from './keyvalue.js';
+import { pushKeyValue ,pushToList,getKeyValue,getList,delKey } from './keyvalue.js';
 import { getState,dispatch } from './util.js';
 import { newDecryptMsg } from './actions/index.js';
 
@@ -50,6 +50,10 @@ const subscribeChannel = (channel)=>{
 }
 const getchannelpubkey = async(channel) =>{
 	const cinfostr = await subscribeChannelInfo(channel);
+	if(cinfostr === undefined || cinfostr === null)
+		return undefined;
+	if(cinfostr['info-'+channel] === undefined || cinfostr['info-'+channel] === null)
+		return undefined;
 	const cinfo = JSON.parse(cinfostr['info-'+channel])
 	return cinfo.pubkey;
 
@@ -64,8 +68,15 @@ const publisheChannel = async(channel,msg,type,pubkey)=>{
 		}
 	}
 	if(type === 'secret'){
-	  if(pubkey===undefined)
+	  if(pubkey===undefined){
 		pubkey = await getchannelpubkey(channel);
+		if(pubkey === undefined){
+			return new Promise((resolve, reject) => {
+				reject('can not get receiver info');
+			});
+
+		}
+	  }
 	  // 加密数据
 	  const encryptedData = encrypt(JSON.stringify (msg),pubkey);
 	  premsg = {
@@ -103,5 +114,11 @@ const publisheInfo2Channel = (channel,msg)=>{
 	});
 
 }
-export { publisheChannel,subscribeChannel, publisheInfo2Channel,subscribeChannelInfo,getchannelpubkey }
+const delChannel = (channel)=>{
+	return new Promise((resolve, reject) => {
+		resolve(delKey(channel));
+	});
+}
+
+export { publisheChannel,subscribeChannel, publisheInfo2Channel,subscribeChannelInfo,delChannel,getchannelpubkey }
 

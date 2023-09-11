@@ -44,6 +44,11 @@ export default function ButtonAppBar() {
      if(sendinginfo.toid==='public')
      	sendresult = publisheChannel(sendinginfo.toid,postinfo,'pub');
      else{
+        if(channelInfo.current === null){
+	     const sended = sendedMsg(channelid,postinfo.id,'failed');
+	     dispatch(sended);
+	     return;
+	}
 	if(channelInfo.current['pubkey']!==undefined)
      		sendresult = publisheChannel(sendinginfo.toid,postinfo,'secret');
 	else
@@ -86,6 +91,9 @@ export default function ButtonAppBar() {
     	const getchannelinfo = subscribeChannelInfo(channelid)
     	getchannelinfo.then((result)=>{
 	    channelInfo.current = JSON.parse(result['info-'+channelid]);
+	    if(channelInfo.current === undefined)
+		channelInfo.current = {};
+
     	});
     }
 
