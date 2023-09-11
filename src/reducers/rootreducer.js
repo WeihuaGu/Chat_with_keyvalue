@@ -154,6 +154,14 @@ const newalert = (state = 0,action)=>{
 		return action.id;
 	return state
 }
+const decryptmsg = (state = {},action) => {
+	if(action.type === 'newdecryptmsg'){
+		const newstate = cloneDeep(state);
+		newstate[action.id]=action.msg;
+		return newstate;
+	}
+	return state;
+}
 
 
 

@@ -28,8 +28,11 @@ function printStoreState() {
 function getState(){
 	return store.getState();
 }
+function dispatch(action){
+        return store.dispatch(action)
+}
 
 export default printStoreState
 
 
-export { getA_not_in_B, printList,itemInList,printState,getState };
+export { getA_not_in_B, printList,itemInList,printState,getState,dispatch };

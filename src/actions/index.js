@@ -151,6 +151,14 @@ const newAlert = (id) => {
 	}
 	return action;
 }
+const newDecryptMsg = (id,msg) =>{
+	const action = {
+		type: 'newdecryptmsg',
+		id: id,
+		msg: msg
+	}
+	return action;
+}
 
 
 
