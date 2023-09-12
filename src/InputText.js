@@ -17,19 +17,19 @@ export default function InputText({ setInputText,setRandomText }) {
 	ref_input.current.value='';
   }
 	
-  const [isControlKeyPressed, setIsControlKeyPressed] = useState(false);
+  const isControlKeyPressed = useRef(false);
   // 处理键盘按下事件
   const handleKeyDown = (event) => {
     if (event.key === 'Control') {
-    	setIsControlKeyPressed(true);
-    } else if (event.key === 'Enter' && isControlKeyPressed) {
+	isControlKeyPressed.current = true;
+    } else if (event.key === 'Enter' && isControlKeyPressed.current) {
     	handleButtonClick(); // 调用发送消息的函数
     }
   };
   // 处理键盘释放事件
   const handleKeyUp = (event) => {
     if (event.key === 'Control') {
-    	setIsControlKeyPressed(false);
+	isControlKeyPressed.current = false;
     }
   };
 
