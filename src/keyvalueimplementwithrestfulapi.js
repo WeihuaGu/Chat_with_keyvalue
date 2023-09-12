@@ -18,8 +18,8 @@ const pushlisturl = (key) =>{
 	const url = restfulurl+'/redis/push/chat/'+key;
 	return url
 }
-const getlisturl = (key) =>{
-	const url = restfulurl+'/redis/list/chat/'+key;
+const getlisturl = (key,start,stop) =>{
+	const url = restfulurl+'/redis/list/chat/'+key+'/'+start+'/'+stop;
 	return url
 }
 const getvalueurl = (key) =>{
@@ -43,8 +43,8 @@ const setkeyjson = (key,msg)=>{
    const pushed = axios.post(setjsonurl(key),msg,{headers})
    return pushed;
 }
-const getlist = (key)=>{
-	const geted = axios.get(getlisturl(key),{headers});
+const getlist = (key,start=0,stop=-1)=>{
+	const geted = axios.get(getlisturl(key,start,stop),{headers});
 	return geted;
 }
 

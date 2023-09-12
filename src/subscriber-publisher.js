@@ -4,9 +4,9 @@ import { getState,dispatch } from './util.js';
 import { newDecryptMsg } from './actions/index.js';
 
 
-const subscribeChannel = (channel)=>{
+const subscribeChannel = (channel,start=0,stop=-1)=>{
 	return new Promise(async(resolve, reject) => {
-		const clist = await getList(channel);
+		const clist = await getList(channel,start,stop);
 		let infolist;
 		if(channel!=='public')
 			infolist = clist[Number(channel)];
@@ -47,6 +47,9 @@ const subscribeChannel = (channel)=>{
 		});
 		resolve(decryptlist);
 	});
+}
+const subscribeChannelOne = (channel,oneindex)=>{
+   return subscribeChannel(channel,oneindex,oneindex);
 }
 const getchannelpubkey = async(channel) =>{
 	const cinfostr = await subscribeChannelInfo(channel);
@@ -120,5 +123,5 @@ const delChannel = (channel)=>{
 	});
 }
 
-export { publisheChannel,subscribeChannel, publisheInfo2Channel,subscribeChannelInfo,delChannel,getchannelpubkey }
+export { publisheChannel,subscribeChannel,subscribeChannelOne, publisheInfo2Channel,subscribeChannelInfo,delChannel,getchannelpubkey }
 

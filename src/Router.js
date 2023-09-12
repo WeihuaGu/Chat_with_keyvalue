@@ -5,7 +5,7 @@ import { useState,useEffect,useRef } from 'react';
 import { useDispatch ,useSelector} from 'react-redux'
 import { usrInfo, quickUsrInfoId, quickUsrInfoPubkey,newAlert ,receivedMsg,inCleanTime } from './actions/index';
 import { genuserinfo } from './genuserinfo';
-import { publisheInfo2Channel,subscribeChannel } from './subscriber-publisher.js';
+import { publisheInfo2Channel,subscribeChannel,subscribeChannelOne } from './subscriber-publisher.js';
 import Home from './Home';
 import ChatSurface from './ChatSurface';
 import { getState, getA_not_in_B,itemInList } from './util.js';
@@ -18,6 +18,9 @@ const dispatch = useDispatch();
 const userId = useSelector((state)=>{return state.usrinfo.id});
 const pubKey = useSelector((state)=>{return state.usrinfo.pubkey});
 const chatingid = useSelector((state)=>{return state.onchatingid});
+
+const env_pollinginterval = process.env.REACT_APP_Polling_Interval;
+const pollinginterval = env_pollinginterval || 5;
 
 
 //初始化
@@ -94,12 +97,22 @@ useEffect(() => {
       times=times+1;
       console.log('loop ...'+times);
 
-        const mymsglist = subscribeChannel(userId);//很大的坑 上面useSelector获取的状态不是新的，时常获取到undefined
-        const rawlocalList = getState().received;
-        const localList = cloneDeep(rawlocalList);
-	delete localList.public;
+      const rawlocalList = getState().received;
+      const localList = cloneDeep(rawlocalList);
+      delete localList.public;
+      const oneremotepromise = subscribeChannelOne(userId,0,0);
+      oneremotepromise.then((remotenewone)=>{
+        const mergedLocal = [].concat(...Object.values(localList));
+        const newone =  getA_not_in_B(remotenewone,mergedLocal,'id');
+	var needgetall_flag=false;
+	if(localList===undefined || newone.length>0)
+		needgetall_flag = true;
 	
-        mymsglist.then((list)=>{
+	console.log('need get all list: '+needgetall_flag);
+	if(needgetall_flag){
+            const mymsglist = subscribeChannel(userId);//很大的坑 上面useSelector获取的状态不是新的，时常获取到undefined
+
+            mymsglist.then((list)=>{
               //过滤掉fromid=usrid的就行,这样就不显示自己已经发过了的
               const rawreceivedlist = list.filter((msg) => msg.fromid !==userId );
 	      const time_cleanstr = getState().incleantime[userId];
@@ -110,12 +123,9 @@ useEffect(() => {
                         const msgTime = new Date(msg.time);
                         return msgTime > cleanTime;
                 });
-              }else{
+              }else
                 receivedlist = rawreceivedlist;
-              }
 
-              if(true){
-		      const mergedLocal = [].concat(...Object.values(localList));
 		      if(localList===undefined){
                         console.log('received list get null');
                         receivedlist.map((msg)=>{
@@ -135,11 +145,14 @@ useEffect(() => {
 			    return msg.id
                        });
 
-                      }
+                    }
 
-              }
-        });
-    }, 6000); // 每5秒轮询一次
+	   });
+	 }
+	 //check msg done
+	
+      });
+    }, parseInt(pollinginterval)*1000); // 每5秒轮询一次
 
     return () => {
             // 清除轮询定时器或取消其他轮询相关的操作

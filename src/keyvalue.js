@@ -24,9 +24,9 @@ const pushToList = (key,value)=>{
 	});
 
 }
-const getList = (key)=>{
+const getList = (key,start=0,stop=-1)=>{
 	return new Promise((resolve,reject)=>{
-		const result = apimethod.getlist(key);
+		const result = apimethod.getlist(key,start,stop);
 		result.then((result)=>resolve(result.data)).catch((err)=>reject(err));
 	});
 
