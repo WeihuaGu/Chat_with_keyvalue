@@ -162,6 +162,11 @@ const decryptmsg = (state = {},action) => {
 	}
 	return state;
 }
+const lastsendtime = (state = '',action) => {
+	if(action.type === 'lastsendtime')
+		return action.time;
+	return state;
+}
 
 
 
@@ -186,6 +191,7 @@ const getcombineReducer = combineReducers({
 	onchatingid:onchatingid,
 	newalert:newalert,
 	decryptmsg:decryptmsg,
+	lastsendtime,lastsendtime,
 	test:test
 });
 const rootInitialState = getcombineReducer(undefined, {});

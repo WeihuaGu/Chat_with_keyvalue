@@ -159,6 +159,15 @@ const newDecryptMsg = (id,msg) =>{
 	}
 	return action;
 }
+const lastSendTime = ()=>{
+	const currentTime = new Date().toISOString();
+	const action = {
+		type: 'lastsendtime',
+		time: currentTime
+	}
+	return action;
+}
+
 const StateClean = () => {
 	const action = {
 		type: 'state_clean'
@@ -177,5 +186,5 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { StateClean, newDecryptMsg, newAlert, quickUsrInfoId, quickUsrInfoPubkey ,onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
+export { lastSendTime, StateClean, newDecryptMsg, newAlert, quickUsrInfoId, quickUsrInfoPubkey ,onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
 

@@ -38,6 +38,7 @@ export default function ButtonAppBar({cleanwhat}) {
     }
     if(cleanwhat==='all'){
 	    // cleantime
+      const delchannel = delChannel(userId);
       const currentDate = new Date();
       const cleantimestr = currentDate.toISOString();
       dispatch(new cleanSending());

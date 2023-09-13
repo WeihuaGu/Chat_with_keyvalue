@@ -3,15 +3,18 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import stringRandom from 'string-random';
-//import { useState } from 'react';
+import { lastSendTime } from './actions/index';
 import { useRef,useState } from 'react';
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next';
 
 export default function InputText({ setInputText,setRandomText }) {
   const { t } = useTranslation();
   const boxid = "inputbox";
   const ref_input = useRef('');
+  const dispatch = useDispatch();
   const handleButtonClick = () => {
+	dispatch(new lastSendTime());
 	setRandomText(stringRandom(5));
 	setInputText(ref_input.current.value);
 	ref_input.current.value='';

@@ -18,9 +18,11 @@ const dispatch = useDispatch();
 const userId = useSelector((state)=>{return state.usrinfo.id});
 const pubKey = useSelector((state)=>{return state.usrinfo.pubkey});
 const chatingid = useSelector((state)=>{return state.onchatingid});
+const lastsendtime = useSelector((state)=>{return state.lastsendtime});
 
 const env_pollinginterval = process.env.REACT_APP_Polling_Interval;
 const pollinginterval = env_pollinginterval || 5;
+const skipCount = useRef(0);
 
 
 //初始化
@@ -90,13 +92,37 @@ useEffect(() => {
 useEffect(() => {
     var times = 0;
     const interval = setInterval(() => {
-      // 在这里执行接收消息的逻辑
+      //跳过轮询的逻辑
+      skipCount.current  =  skipCount.current + 1;
       if(userId===undefined && pubKey===undefined){
 	    return;
       }
+      var shouldSkipPolling = false;
+      if(lastsendtime !== ''){
+	const lastsendDate = new Date(lastsendtime);
+	const now = new Date();
+	// 计算时间差（以毫秒为单位）
+	const timeDiff = now.getTime() - lastsendDate.getTime();
+	const minutesDiff = Math.floor(timeDiff / (1000 * 60));
+	if (minutesDiff > 15) 
+	    shouldSkipPolling = true;
+	else
+	    shouldSkipPolling = false;
+      }else
+	shouldSkipPolling = true;
+	    
+      console.log('\n');
+      console.log('should skip this: '+shouldSkipPolling);
+      if (shouldSkipPolling && skipCount.current < 3) {
+	console.log('skip this loop ...');
+        return;
+      }
+
       times=times+1;
+      skipCount.current = 0;
       console.log('loop ...'+times);
 
+      // 在这里执行接收消息的逻辑
       const rawlocalList = getState().received;
       const localList = cloneDeep(rawlocalList);
       delete localList.public;
