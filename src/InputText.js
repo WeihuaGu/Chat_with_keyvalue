@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import stringRandom from 'string-random';
 import { lastSendTime } from './actions/index';
-import { useRef,useState } from 'react';
+import { useRef } from 'react';
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next';
 

@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { BrowserRouter as Router,Routes, Route} from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useState,useEffect,useRef } from 'react';
+import { useEffect,useRef } from 'react';
 import { useDispatch ,useSelector} from 'react-redux'
 import { usrInfo, quickUsrInfoId, quickUsrInfoPubkey,newAlert ,receivedMsg,inCleanTime } from './actions/index';
 import { genuserinfo } from './genuserinfo';

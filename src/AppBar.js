@@ -38,7 +38,7 @@ export default function ButtonAppBar({cleanwhat}) {
     }
     if(cleanwhat==='all'){
 	    // cleantime
-      const delchannel = delChannel(userId);
+      delChannel(userId);
       const currentDate = new Date();
       const cleantimestr = currentDate.toISOString();
       dispatch(new cleanSending());
@@ -51,9 +51,9 @@ export default function ButtonAppBar({cleanwhat}) {
   };
   const handleClearCompletelyClick = () => {
     // 彻底清除操作
-    const delchannel = delChannel(userId);
+    delChannel(userId);
     const delchannelinfo = delChannel('info-'+userId);
-    delchannel.then((clean)=>{
+    delchannelinfo.then((clean)=>{
 	    console.log(clean);
     });
     dispatch(new StateClean());

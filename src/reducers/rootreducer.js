@@ -191,7 +191,7 @@ const getcombineReducer = combineReducers({
 	onchatingid:onchatingid,
 	newalert:newalert,
 	decryptmsg:decryptmsg,
-	lastsendtime,lastsendtime,
+	lastsendtime:lastsendtime,
 	test:test
 });
 const rootInitialState = getcombineReducer(undefined, {});

@@ -11,7 +11,19 @@ const getA_not_in_B = (A, B, keyname) => {
   });
   return resultlist;
 };
+function removeDuplicates(list) {
+  const uniqueSet = new Set();
+  const result = [];
 
+  for (const obj of list) {
+    if (!uniqueSet.has(obj.id)) {
+      uniqueSet.add(obj.id);
+      result.push(obj);
+    }
+  }
+
+  return result;
+}
 const printList = (list) => {
   list.forEach((item) => {
     console.log(item);
@@ -35,4 +47,4 @@ function dispatch(action){
 export default printStoreState
 
 
-export { getA_not_in_B, printList,itemInList,printState,getState,dispatch };
+export { removeDuplicates,getA_not_in_B, printList,itemInList,printState,getState,dispatch };
