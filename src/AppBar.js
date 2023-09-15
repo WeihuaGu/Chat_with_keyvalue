@@ -73,7 +73,7 @@ export default function ButtonAppBar({cleanwhat}) {
           </IconButton>
 	  {cleanwhat === 'all' && (
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
-		  {t('your')}id: {userId}
+		  {t('yourid')} {userId}
           </Typography>)}
 	  {cleanwhat !== 'all' && cleanwhat !== userId && (
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>

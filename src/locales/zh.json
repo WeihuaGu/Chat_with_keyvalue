@@ -2,9 +2,9 @@
   "app": "聊至",
   "send": "发送",
   "chat": "聊天",
-  "clear": "清除",
-  "clearcompletely": "彻底清空",
-  "your": "你的",
+  "clear": "清空",
+  "clearcompletely": "彻底清除",
+  "yourid": "你的id:",
   "his": "对方",
   "note": "本地笔记",
   "publicchat": "公共聊天室"
