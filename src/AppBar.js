@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import HomeIcon from '@mui/icons-material/Home';
 import ClearIcon from '@mui/icons-material/Clear';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { Menu, MenuItem } from '@mui/material';
 import { useDispatch ,useSelector} from 'react-redux'
 import { StateClean,viewCleanTime,inCleanTime,cleanSending,cleanReceived  } from './actions/index';
@@ -74,9 +75,13 @@ export default function ButtonAppBar({cleanwhat}) {
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
 		  {t('your')}id: {userId}
           </Typography>)}
-	  {cleanwhat !== 'all' && (
+	  {cleanwhat !== 'all' && cleanwhat !== userId && (
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
 		  {t('his')}id: {channelid}
+          </Typography>)}
+	  {cleanwhat === userId && (
+	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
+		  {t('note')} <DriveFileRenameOutlineIcon sx={{ marginBottom: '-5px' }}/>
           </Typography>)}
 	  <IconButton
           edge="end"

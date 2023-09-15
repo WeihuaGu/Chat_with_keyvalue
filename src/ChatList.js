@@ -18,6 +18,7 @@ import { removeDuplicates } from './util';
 
 export default function BasicList() {
   const { t } = useTranslation();
+  const userId = useSelector((state)=>{return state.usrinfo.id});
   const newalertid = useSelector((state)=>state.newalert);
   const chatingid = useSelector((state)=>{return state.onchatingid});
   const selectSendingReceived = createSelector(
@@ -72,6 +73,14 @@ export default function BasicList() {
                 <InboxIcon />
               </ListItemIcon>
               <ListItemText primary={t('publicchat')} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton component="a" href={"/chat/"+userId}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary={t('note')} />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
