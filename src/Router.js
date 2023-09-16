@@ -7,6 +7,7 @@ import { usrInfo, quickUsrInfoId, quickUsrInfoPubkey,newAlert ,receivedMsg,inCle
 import { genuserinfo } from './genuserinfo';
 import { publisheInfo2Channel,subscribeChannel,subscribeChannelOne } from './subscriber-publisher.js';
 import Home from './Home';
+import About from './About';
 import ChatSurface from './ChatSurface';
 import { getState, getA_not_in_B,itemInList } from './util.js';
 import { cloneDeep } from 'lodash';
@@ -198,6 +199,7 @@ return (
 <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/chat/:channelid" element={<ChatSurface />} />
+    <Route path="/about" element={<About />} />
 </Routes>
 </Router>);
 }
