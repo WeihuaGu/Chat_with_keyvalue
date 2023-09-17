@@ -18,6 +18,7 @@ export default function InputText({ setInputText,setRandomText }) {
 	setRandomText(stringRandom(5));
 	setInputText(ref_input.current.value);
 	ref_input.current.value='';
+	ref_input.current.focus();
   }
 	
   const isControlKeyPressed = useRef(false);
