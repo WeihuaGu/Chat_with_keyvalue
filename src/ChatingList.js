@@ -108,12 +108,12 @@ export default function ChatingList({ channelid }) {
     scrollToBottom();
   }, [selectSendingAndReceived]);
   return (
-    <Box ref={chatListContainerRef} sx={{ maxHeight: 'calc(100vh - 120px)',width: '100%', bottom: '20px', bgcolor: 'background.paper', flexGrow: 1, overflowY: 'auto' }}>
+    <Box ref={chatListContainerRef} sx={{ maxHeight: 'calc(100vh - 130px)',width: '100%', bottom: '20px', bgcolor: 'background.paper', flexGrow: 1, overflowY: 'auto' }}>
       <Divider />
       <List sx={{ height: '100%', display: 'flex', flexDirection: 'column',justifyContent: 'flex-end' }}>
 	  {SendingItems}
       </List>
-      <Box width={'100%'} height={15} />
+      <Box width={'100%'} height={20} />
     </Box>
   );
 }
