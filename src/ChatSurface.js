@@ -154,7 +154,7 @@ export default function ButtonAppBar() {
 	
   return (
       <Box sx={{ position: 'fixed',top: 0,left: 0,width:'100%' ,height:'100vh', display: 'flex',flexDirection: 'column' }}>
-      <AppBar cleanwhat={channelid} />
+        <AppBar cleanwhat={channelid} />
   	<ChatingList channelid={channelid} />
   	<InputText  setRandomText={setRandomText} setInputText={setParentInputText} />
       </Box>

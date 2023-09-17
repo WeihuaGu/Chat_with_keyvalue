@@ -45,7 +45,6 @@ export default function InputText({ setInputText,setRandomText }) {
         width: '100%',
         bgcolor: 'background.paper',
         alignItems: 'center',
-        padding: '10px',
 	display: 'grid',
         gridAutoColumns: '1fr',
         gap: 1,
