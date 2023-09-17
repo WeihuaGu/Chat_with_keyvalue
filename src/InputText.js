@@ -41,7 +41,7 @@ export default function InputText({ setInputText,setRandomText }) {
       <Box 
 	sx={{
 	position: 'sticky',
-        bottom: '10px',
+        bottom: '5px',
         width: '100%',
         bgcolor: 'background.paper',
         alignItems: 'center',
