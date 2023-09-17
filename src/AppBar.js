@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
 import ClearIcon from '@mui/icons-material/Clear';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import { Menu, MenuItem } from '@mui/material';
@@ -64,6 +65,10 @@ export default function ButtonAppBar({cleanwhat}) {
     }, 2000);
     setAnchorEl(null);
   };
+  const gotoAbout = () => {
+    window.location.href = '/about'
+    setAnchorEl(null);
+  };
   
   return (
       <AppBar position="static" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
@@ -75,7 +80,7 @@ export default function ButtonAppBar({cleanwhat}) {
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
 		  {t('yourid')} {userId}
           </Typography>)}
-	  {cleanwhat !== 'all' && cleanwhat !== userId && (
+	  {cleanwhat !== 'all' && cleanwhat !== userId && cleanwhat !== 'about' && (
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
 		  {t('his')}id: {channelid}
           </Typography>)}
@@ -83,7 +88,8 @@ export default function ButtonAppBar({cleanwhat}) {
 	   <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
 		  {t('note')} <DriveFileRenameOutlineIcon sx={{ marginBottom: '-5px' }}/>
           </Typography>)}
-	  <IconButton
+        {cleanwhat !== 'about' && (
+	<IconButton
           edge="end"
           color="inherit"
           aria-label="more-vert"
@@ -92,7 +98,8 @@ export default function ButtonAppBar({cleanwhat}) {
           onClick={handleMenuOpen}
          >
           <MoreVertIcon />
-        </IconButton>
+        </IconButton>)}
+        {cleanwhat !== 'about' && (
         <Menu
           id="menu"
           anchorEl={anchorEl}
@@ -100,16 +107,27 @@ export default function ButtonAppBar({cleanwhat}) {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
+          {cleanwhat !== 'all' && (
           <MenuItem onClick={handleClearClick}>
             <ClearIcon sx={{ marginRight: 1 }} />
 	      {t('clear')} 
-          </MenuItem>
+          </MenuItem>)}
+          {cleanwhat === 'all' && (
+          <MenuItem onClick={handleClearClick}>
+            <ClearIcon sx={{ marginRight: 1 }} />
+	      {t('clear')} 
+          </MenuItem>)}
           {cleanwhat === 'all' && (
           <MenuItem onClick={handleClearCompletelyClick}>
             <ClearIcon sx={{ marginRight: 1 }} />
 	      {t('clearcompletely')} 
           </MenuItem>)}
-        </Menu>
+          {cleanwhat === 'all' && (
+          <MenuItem onClick={gotoAbout}>
+            <InfoIcon sx={{ marginRight: 1 }} />
+	      {t('about')} 
+          </MenuItem>)}
+        </Menu>)}
 
         </Toolbar>
       </AppBar>
