@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { useEffect,useRef } from 'react';
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect';
+import { determineType } from './util';
 
 
 export default function ChatingList({ channelid }) {
@@ -48,6 +49,7 @@ export default function ChatingList({ channelid }) {
    const time = new Date(sendingitem.time);
    let textAlignment = '';
    let listItemStyle = {};
+   const text_type = determineType(sendingitem.text);
    if (sendingitem.fromid === userId) {
     textAlignment = 'right';
     listItemStyle = { paddingLeft: '50px', paddingRight: '10px',
@@ -81,7 +83,7 @@ export default function ChatingList({ channelid }) {
 
    return (
           <ListItem key={sendingitem.id} disablePadding style={listItemStyle}>
-	   <ListItemButton 
+	   {text_type === 'text' && (<ListItemButton 
 	   disableRipple={true}
 	   onMouseDown={handleMouseDown}
            onMouseUp={handleMouseUp}>
@@ -94,7 +96,15 @@ export default function ChatingList({ channelid }) {
         	</Paper>
 	        </div>
 	     </ListItemText>
-	   </ListItemButton>
+	   </ListItemButton>)}
+	   {text_type === 'image' && (<div align={textAlignment}><img src={sendingitem.text} width={'45%'} height={'auto'} alt={sendingitem.text} /></div>)}
+	   {text_type === 'audio' && (
+           <div align={textAlignment}>
+              <audio controls>
+                  <source src={sendingitem.text} type="audio/mpeg" />
+                  Your browser does not support the audio element.
+              </audio>
+           </div>)}
           </ListItem>
    );
   });

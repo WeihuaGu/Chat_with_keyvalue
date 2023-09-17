@@ -33,6 +33,18 @@ const itemInList = (theitem,list,keyname)=>{
     const isItemInlist = list.some((item) => item[keyname] === theitem[keyname]);
     return isItemInlist;
 }
+const determineType = (str)=> {
+  var imageRegex = /^(http|https):\/\/.*\.(png|jpg|jpeg|gif|bmp|svg)(\?.*)?$/i;
+  var audioRegex = /^(http|https):\/\/.*\.(mp3|wav|ogg)(\?.*)?$/i;
+
+  if (imageRegex.test(str)) {
+    return 'image';
+  } else if (audioRegex.test(str)) {
+    return 'audio';
+  } else {
+    return 'text';
+  }
+}
 
 function printStoreState() {
   console.log('Current Store State:', store.getState())
@@ -47,4 +59,4 @@ function dispatch(action){
 export default printStoreState
 
 
-export { removeDuplicates,getA_not_in_B, printList,itemInList,printState,getState,dispatch };
+export { determineType,removeDuplicates,getA_not_in_B, printList,itemInList,printState,getState,dispatch };
