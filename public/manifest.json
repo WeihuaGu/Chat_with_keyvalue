@@ -1,12 +1,6 @@
 {
-  "short_name": {
-	  "zh": "聊至",
-	  "en": "Chat"
-  },
-  "name": {
-	  "zh": "聊至",
-	  "en": "chat come"
-  },
+  "short_name": "聊至",
+  "name": "聊至",
   "icons": [
     { 
       "src": "favicon.ico",
