@@ -89,11 +89,9 @@ export default function BasicList() {
         </List>
       </nav>
       <Divider />
-      <nav aria-label="secondary mailbox folders">
-        <List>
+      <List>
 	  {ChatingItems}
-        </List>
-      </nav>
+      </List>
     </Box>
   );
 }

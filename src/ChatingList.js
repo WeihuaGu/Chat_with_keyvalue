@@ -108,13 +108,11 @@ export default function ChatingList({ channelid }) {
     scrollToBottom();
   }, [selectSendingAndReceived]);
   return (
-    <Box ref={chatListContainerRef} sx={{ maxHeight: 'calc(100vh - 160px)',width: '100%', bgcolor: 'background.paper', flexGrow: 1, overflowY: 'auto' }}>
+    <Box ref={chatListContainerRef} sx={{ maxHeight: 'calc(100vh - 160px)',width: '100%', bottom: '20px', bgcolor: 'background.paper', flexGrow: 1, overflowY: 'auto' }}>
       <Divider />
-      <nav aria-label="secondary mailbox folders">
-        <List>
+      <List sx={{ height: '100%', display: 'flex', flexDirection: 'column',justifyContent: 'flex-end' }}>
 	  {SendingItems}
-        </List>
-      </nav>
+      </List>
     </Box>
   );
 }
