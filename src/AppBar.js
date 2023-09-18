@@ -69,6 +69,13 @@ export default function ButtonAppBar({cleanwhat}) {
     window.location.href = '/about'
     setAnchorEl(null);
   };
+  const handlePichubClick = () => {
+    const pichuburl = process.env.REACT_APP_PIC_HUB;
+    if(pichuburl)
+    	window.location.href = pichuburl;
+    setAnchorEl(null);
+  };
+
   
   return (
       <AppBar position="static" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
@@ -111,6 +118,11 @@ export default function ButtonAppBar({cleanwhat}) {
           <MenuItem onClick={handleClearClick}>
             <ClearIcon sx={{ marginRight: 1 }} />
 	      {t('clear')} 
+          </MenuItem>)}
+          {cleanwhat !== 'all' && (
+          <MenuItem onClick={handlePichubClick}>
+            <ClearIcon sx={{ marginRight: 1 }} />
+	      {t('pichub')} 
           </MenuItem>)}
           {cleanwhat === 'all' && (
           <MenuItem onClick={handleClearClick}>

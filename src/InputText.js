@@ -5,16 +5,19 @@ import Button from '@mui/material/Button';
 import stringRandom from 'string-random';
 import { lastSendTime } from './actions/index';
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
 
 export default function InputText({ setInputText,setRandomText }) {
+  const onchatingid = useSelector((state)=>{return state.onchatingid});
+  const userId = useSelector((state)=>{return state.usrinfo.id});
   const { t } = useTranslation();
   const boxid = "inputbox";
   const ref_input = useRef('');
   const dispatch = useDispatch();
   const handleButtonClick = () => {
-	dispatch(new lastSendTime());
+	if(onchatingid!==userId)
+	    dispatch(new lastSendTime());
 	setRandomText(stringRandom(5));
 	setInputText(ref_input.current.value);
 	ref_input.current.value='';
