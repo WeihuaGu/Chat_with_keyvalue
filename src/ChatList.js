@@ -13,7 +13,6 @@ import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect';
 import { useTranslation } from 'react-i18next';
 import { iconsArray } from './faceiconarray';
-import { removeDuplicates } from './util';
 
 
 export default function BasicList() {
@@ -42,7 +41,7 @@ export default function BasicList() {
   };
 
 
-  const chatinglistwithnopublic = removeDuplicates(chatinglist.filter((channelid) => channelid !== 'public'));
+  const chatinglistwithnopublic = chatinglist.filter((channelid) => channelid !== 'public');
   const ChatingItems = chatinglistwithnopublic.map((channelid) => {
      var hasNewMessage = (channelid === newalertid && chatingid!==newalertid);
      return (

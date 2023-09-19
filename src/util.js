@@ -12,6 +12,8 @@ const getA_not_in_B = (A, B, keyname) => {
   return resultlist;
 };
 function removeDuplicates(list) {
+	console.log(list);
+	console.log('-----');
   const uniqueSet = new Set();
   const result = [];
 
@@ -21,7 +23,7 @@ function removeDuplicates(list) {
       result.push(obj);
     }
   }
-
+	console.log(result);
   return result;
 }
 const printList = (list) => {

@@ -121,7 +121,7 @@ export default function ButtonAppBar({cleanwhat}) {
           </MenuItem>)}
           {cleanwhat !== 'all' && (
           <MenuItem onClick={handlePichubClick}>
-            <ClearIcon sx={{ marginRight: 1 }} />
+            <InfoIcon sx={{ marginRight: 1 }} />
 	      {t('pichub')} 
           </MenuItem>)}
           {cleanwhat === 'all' && (
