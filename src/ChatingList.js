@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ChatingListItem  from './ChatingListItem';
+import BottomAlignedList from './BottomAlignedList';
 import { useEffect,useRef,useState } from 'react';
 import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect';
@@ -55,11 +56,11 @@ export default function ChatingList({ channelid }) {
     scrollToBottom();
   }, [selectSendingAndReceived]);
   return (
-    <Box ref={chatListContainerRef} sx={{ maxHeight: 'calc(100vh - 130px)',width: '100%', bottom: '20px', bgcolor: 'background.paper', flexGrow: 1, overflowY: 'auto' }}>
+    <Box ref={chatListContainerRef} sx={{ width: '100%', bottom: '20px', bgcolor: 'background.paper', flexGrow: 1,overflowY: 'auto'  }}>
       <Divider />
-      <List sx={{ height: '100%', display: 'flex', flexDirection: 'column',justifyContent: 'flex-end' }}>
+      <BottomAlignedList>
 	  {SendingItems}
-      </List>
+      </BottomAlignedList>
       <Box width={'100%'} height={20} />
     </Box>
   );
