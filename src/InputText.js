@@ -7,6 +7,7 @@ import { lastSendTime } from './actions/index';
 import { useRef } from 'react';
 import { useDispatch,useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
+import { convertText } from './util';
 
 export default function InputText({ setInputText,setRandomText }) {
   const onchatingid = useSelector((state)=>{return state.onchatingid});
@@ -19,7 +20,9 @@ export default function InputText({ setInputText,setRandomText }) {
 	if(onchatingid!==userId)
 	    dispatch(new lastSendTime());
 	setRandomText(stringRandom(5));
-	setInputText(ref_input.current.value);
+	//const sstr = convertText(ref_input.current.value);
+	const sstr = ref_input.current.value;
+	setInputText(sstr);
 	ref_input.current.value='';
 	ref_input.current.focus();
   }

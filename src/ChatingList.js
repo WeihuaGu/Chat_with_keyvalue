@@ -52,7 +52,7 @@ export default function ChatingList({ channelid }) {
 	  {SendingItems}
       </BottomAlignedList>
       <Divider />
-      <Box height={15} width={'100%'} />
+      <Box height={5} width={'100%'} />
     </Box>
   );
 }

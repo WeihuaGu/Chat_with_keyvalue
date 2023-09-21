@@ -36,6 +36,8 @@ const determineType = (str)=> {
   var imageRegex = /^(http|https):\/\/.*\.(png|jpg|jpeg|gif|bmp|svg)(\?.*)?$/i;
   var audioRegex = /^(http|https):\/\/.*\.(mp3|wav|ogg)(\?.*)?$/i;
   var videoRegex = /^(http|https):\/\/.*\.(mp4|avi|mov|flv)(\?.*)?$/i;
+	// Emoji Cheat Sheet 正则表达式
+  const emojiRegex = /^:.+?:$/;
 
   if (imageRegex.test(str)) {
     return 'image';
@@ -43,9 +45,41 @@ const determineType = (str)=> {
     return 'audio';
   } else if (videoRegex.test(str)) {
     return 'video';
+  } else if (emojiRegex.test(str)) {
+    return 'emoji';
   } else {
     return 'text';
   }
+}
+
+const convertText = (text) => {
+  const translations = {
+    '笑脸': ':smile:',
+    '心形': ':heart:',
+    '火箭': ':rocket:',
+    '点赞': ':thumbsup:',
+    '反对': ':thumbsdown:',
+    '火焰': ':fire:',
+    '星星': ':star:',
+    '太阳': ':sunny:',
+    '月亮': ':moon:',
+    '云': ':cloud:',
+    '彩虹': ':rainbow:',
+    '雨伞': ':umbrella:',
+    '咖啡': ':coffee:',
+    '比萨': ':pizza:',
+    '猫': ':cat:',
+    '狗': ':dog:',
+    '鸟': ':bird:',
+    '乌龟': ':turtle:',
+    '花朵': ':flower:'
+  };
+
+  const convertedText = text.replace(/\/(.+?)\b/g, (match, key) => {
+    return translations[key] || match;
+  });
+
+  return convertedText;
 }
 
 function printStoreState() {
@@ -61,4 +95,4 @@ function dispatch(action){
 export default printStoreState
 
 
-export { determineType,removeDuplicates,getA_not_in_B, printList,itemInList,printState,getState,dispatch };
+export { convertText,determineType,removeDuplicates,getA_not_in_B, printList,itemInList,printState,getState,dispatch };

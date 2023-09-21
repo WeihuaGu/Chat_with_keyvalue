@@ -5,6 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
 import Dialog  from '@mui/material/Dialog';
 import QuickPinchZoom, { make3dTransformValue } from "react-quick-pinch-zoom";
+import Emoji from './Emoji';
 import { useRef,useState,useCallback } from 'react';
 import { useDispatch,useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
@@ -74,7 +75,7 @@ export default function ChatingListItem({ sendingitem }) {
            onMouseDown={handleMouseDown}
            onMouseUp={handleMouseUp}>
              <ListItemText align={textAlignment}>
-                <div style={{ display: 'block',userSelect: 'text' }}>
+                <div style={{ display: 'block',userSelect: 'text',whiteSpace: 'pre-wrap' }}>
                 <span>{sendingitem.text}</span>
                 <span> </span>
                 <Paper elevation={0} style={{ display: 'inline-block',padding: '5px',fontSize: '10px', color: 'gray',whiteSpace: 'nowrap' }}>
@@ -84,8 +85,8 @@ export default function ChatingListItem({ sendingitem }) {
              </ListItemText>
            </ListItemButton>)}
            {text_type === 'image' && (<div align={textAlignment}><img src={sendingitem.text} width={'45%'} height={'auto'} alt={sendingitem.text}onClick={handleImageClick} style={{ cursor: 'pointer' }} /></div>)}
-            <Dialog open={isFullscreen} onClose={handleCloseFullscreen}>
-	  <QuickPinchZoom onUpdate={onUpdate}>
+            <Dialog width={'100%'} open={isFullscreen} onClose={handleCloseFullscreen}>
+	       <QuickPinchZoom onUpdate={onUpdate}>
                 <img ref={imgRef} src={sendingitem.text} alt={sendingitem.text} style={{ width: '100%', height: 'auto' }} />
 	       </QuickPinchZoom>
             </Dialog>
@@ -95,6 +96,10 @@ export default function ChatingListItem({ sendingitem }) {
                   <source src={sendingitem.text} type="audio/mpeg" />
                   Your browser does not support the audio element.
               </audio>
+           </div>)}
+           {text_type === 'emoji' && (
+           <div align={textAlignment}>
+		   <Emoji symbol={sendingitem.text} />
            </div>)}
     </ListItem>
   );
