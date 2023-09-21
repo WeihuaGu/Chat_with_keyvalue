@@ -13,7 +13,6 @@ import { removeDuplicates } from './util';
 export default function ChatingList({ channelid }) {
    const userId = useSelector((state)=>{return state.usrinfo.id});
    const view_cleanstr = useSelector((state)=>{return state.viewcleantime[channelid]});
-   const chatListContainerRef = useRef(null);
    const selectSendingAndReceived = createSelector(
         state => {return state.sending[channelid]},
         state => {return state.received[channelid]},
@@ -47,21 +46,13 @@ export default function ChatingList({ channelid }) {
     return (<ChatingListItem sendingitem={sendingitem} />)
   });
 
-  const scrollToBottom = () => {
-    if (chatListContainerRef.current) {
-      chatListContainerRef.current.scrollTop = chatListContainerRef.current.scrollHeight;
-    }
-  };
-  useEffect(() => {
-    scrollToBottom();
-  }, [selectSendingAndReceived]);
   return (
-    <Box ref={chatListContainerRef} sx={{ width: '100%', bottom: '20px', bgcolor: 'background.paper', flexGrow: 1,overflowY: 'auto'  }}>
-      <Divider />
-      <BottomAlignedList>
+    <Box sx={{ overflowY: 'auto',display: 'flex',flexDirection: 'column',justifyContent: 'flex-end',flexGrow: 6, height:0, width: '100%', bottom: '20px', bgcolor: 'background.paper'}}>
+      <BottomAlignedList sx={{ overflowY: 'auto'}}>
 	  {SendingItems}
       </BottomAlignedList>
-      <Box width={'100%'} height={20} />
+      <Divider />
+      <Box height={15} width={'100%'} />
     </Box>
   );
 }

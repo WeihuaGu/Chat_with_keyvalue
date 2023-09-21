@@ -43,7 +43,7 @@ export default function InputText({ setInputText,setRandomText }) {
   return (
       <Box 
 	sx={{
-	position: 'sticky',
+	flexGrow: 1,
         bottom: '5px',
         width: '100%',
         bgcolor: 'background.paper',
@@ -51,9 +51,9 @@ export default function InputText({ setInputText,setRandomText }) {
 	display: 'grid',
         gridAutoColumns: '1fr',
         gap: 1,
-      }}
+        }}
 	  id={boxid}
-	  >
+       >
 	  <TextField inputRef={ref_input} onKeyUp={handleKeyUp} onKeyDown={handleKeyDown} variant="outlined" multiline sx={{ gridRow: '1', gridColumn: '1/12' }}/>
 
 	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '12/15',color:'#ab003c' }}>

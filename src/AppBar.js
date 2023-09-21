@@ -78,7 +78,7 @@ export default function ButtonAppBar({cleanwhat}) {
 
   
   return (
-      <AppBar position="static" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+      <AppBar sx={{position: 'sticky', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
         <Toolbar>
 	  <IconButton color="inherit" component="a" href="/">
 	  	<HomeIcon sx={{ marginLeft: '-10px' }}/>

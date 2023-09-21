@@ -41,7 +41,7 @@ export default function BasicList() {
   };
 
 
-  const chatinglistwithnopublic = chatinglist.filter((channelid) => channelid !== 'public');
+  const chatinglistwithnopublic = chatinglist.filter((channelid) => channelid !== 'public' && channelid !== userId);
   const ChatingItems = chatinglistwithnopublic.map((channelid) => {
      var hasNewMessage = (channelid === newalertid && chatingid!==newalertid);
      return (
