@@ -8,9 +8,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import ClearIcon from '@mui/icons-material/Clear';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+import FormDialog from './FormDialog';
 import { Menu, MenuItem } from '@mui/material';
 import { useDispatch ,useSelector} from 'react-redux'
-import { StateClean,viewCleanTime,inCleanTime,cleanSending,cleanReceived  } from './actions/index';
+import { channelRemark,StateClean,viewCleanTime,inCleanTime,cleanSending,cleanReceived  } from './actions/index';
 import { useTranslation } from 'react-i18next';
 import { delChannel } from './subscriber-publisher';
 
@@ -20,6 +21,7 @@ export default function ButtonAppBar({cleanwhat}) {
   const dispatch = useDispatch();
   const userId = useSelector((state)=>{return state.usrinfo.id});
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openremark, setOpenremark] = React.useState(false);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -75,9 +77,17 @@ export default function ButtonAppBar({cleanwhat}) {
     	window.location.href = pichuburl;
     setAnchorEl(null);
   };
+  const handleRemarkClick = () => {
+    setOpenremark(true);
+    setAnchorEl(null);
+  };
+  const handleRemarkSuccess = (remarkname) => {
+      dispatch(new channelRemark(channelid,remarkname));	
+  };
 
   
   return (
+   <>
       <AppBar sx={{position: 'sticky', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
         <Toolbar>
 	  <IconButton color="inherit" component="a" href="/">
@@ -124,6 +134,11 @@ export default function ButtonAppBar({cleanwhat}) {
             <InfoIcon sx={{ marginRight: 1 }} />
 	      {t('pichub')} 
           </MenuItem>)}
+          {cleanwhat !== 'all' && (
+          <MenuItem onClick={handleRemarkClick}>
+            <InfoIcon sx={{ marginRight: 1 }} />
+	      {t('remark')} 
+          </MenuItem>)}
           {cleanwhat === 'all' && (
           <MenuItem onClick={handleClearClick}>
             <ClearIcon sx={{ marginRight: 1 }} />
@@ -143,5 +158,7 @@ export default function ButtonAppBar({cleanwhat}) {
 
         </Toolbar>
       </AppBar>
+      <FormDialog title={t('remark')} open={openremark} setOpen={setOpenremark} success={handleRemarkSuccess} />
+   </>
   );
 }

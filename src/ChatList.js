@@ -20,6 +20,7 @@ export default function BasicList() {
   const userId = useSelector((state)=>{return state.usrinfo.id});
   const newalertid = useSelector((state)=>state.newalert);
   const chatingid = useSelector((state)=>{return state.onchatingid});
+  const remarklist = useSelector((state)=>{return state.channelremark});
   const selectSendingReceived = createSelector(
   	state => state.sending,
   	state => state.received,
@@ -44,12 +45,17 @@ export default function BasicList() {
   const chatinglistwithnopublic = chatinglist.filter((channelid) => channelid !== 'public' && channelid !== userId);
   const ChatingItems = chatinglistwithnopublic.map((channelid) => {
      var hasNewMessage = (channelid === newalertid && chatingid!==newalertid);
+     let hasRemark;
+     if(remarklist[channelid]===undefined || remarklist[channelid]===undefined)
+	  hasRemark=false;
+     else
+	  hasRemark=true;
      return (
           <ListItem key={channelid} disablePadding>
            <ListItemButton component="a" href={"/chat/"+channelid}>
 	     {getRandomIcon()}
              <ListItemText>
-                {channelid}
+                {channelid} {hasRemark && (<span>[{remarklist[channelid]}]</span>)}
              </ListItemText>
 	     {hasNewMessage && (
             		<span style={{ color: 'green', marginLeft: '1px' }}>

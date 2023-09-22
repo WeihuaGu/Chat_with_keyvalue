@@ -162,6 +162,15 @@ const decryptmsg = (state = {},action) => {
 	}
 	return state;
 }
+const channelremark = (state = {},action) => {
+	if(action.type === 'channelremark'){
+		const newstate = cloneDeep(state);
+		console.log(action);
+		newstate[action.id]=action.remark;
+		return newstate;
+	}
+	return state;
+}
 const lastsendtime = (state = '',action) => {
 	if(action.type === 'lastsendtime')
 		return action.time;
@@ -192,6 +201,7 @@ const getcombineReducer = combineReducers({
 	newalert:newalert,
 	decryptmsg:decryptmsg,
 	lastsendtime:lastsendtime,
+	channelremark:channelremark,
 	test:test
 });
 const rootInitialState = getcombineReducer(undefined, {});

@@ -34,7 +34,7 @@ const itemInList = (theitem,list,keyname)=>{
 
 const determineType = (str)=> {
   var imageRegex = /^(http|https):\/\/.*\.(png|jpg|jpeg|gif|bmp|svg)(\?.*)?$/i;
-  var audioRegex = /^(http|https):\/\/.*\.(mp3|wav|ogg)(\?.*)?$/i;
+  var audioRegex = /^(http|https):\/\/.*\.(mp3|wav|ape|ogg)(\?.*)?$/i;
   var videoRegex = /^(http|https):\/\/.*\.(mp4|avi|mov|flv)(\?.*)?$/i;
 	// Emoji Cheat Sheet 正则表达式
   const emojiRegex = /^:.+?:$/;
@@ -55,6 +55,7 @@ const determineType = (str)=> {
 const convertText = (text) => {
   const translations = {
     '笑脸': ':smile:',
+    '微笑': ':smile:',
     '心形': ':heart:',
     '火箭': ':rocket:',
     '点赞': ':thumbsup:',

@@ -5,6 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
 import Dialog  from '@mui/material/Dialog';
 import QuickPinchZoom, { make3dTransformValue } from "react-quick-pinch-zoom";
+import ReactPlayer from './ReactPlayer';
 import Emoji from './Emoji';
 import { useRef,useState,useCallback } from 'react';
 import { useDispatch,useSelector } from 'react-redux'
@@ -16,15 +17,18 @@ export default function ChatingListItem({ sendingitem }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const time = new Date(sendingitem.time);
   let textAlignment = '';
+  let divAlignment = '';
   let listItemStyle = {};
   const text_type = determineType(sendingitem.text);
   if (sendingitem.fromid === userId) {
     textAlignment = 'right';
-    listItemStyle = { paddingLeft: '50px', paddingRight: '10px',
+    divAlignment = 'flex-end';
+    listItemStyle = { display: 'flex',justifyContent: divAlignment, paddingLeft: '50px', paddingRight: '10px',
     backgroundColor: sendingitem.msgstatus === 'sending' ? '#87CEFA' : sendingitem.msgstatus === 'sended' ? '#eaeaea' : sendingitem.msgstatus === 'failed' ? '#ffcccc' : ''};
   }else {
     textAlignment = 'left';
-    listItemStyle = { paddingLeft: '10px', paddingRight: '50px' };
+    divAlignment = 'flex-start';
+    listItemStyle = { display: 'flex',justifyContent: divAlignment,paddingLeft: '10px', paddingRight: '50px' };
   }
 
    let pressTimer = null;
@@ -91,16 +95,21 @@ export default function ChatingListItem({ sendingitem }) {
 	       </QuickPinchZoom>
             </Dialog>
            {text_type === 'audio' && (
-           <div style={{ float: textAlignment}}>
+           <div align={textAlignment}>
               <audio controls>
                   <source src={sendingitem.text} type="audio/mpeg" />
                   Your browser does not support the audio element.
               </audio>
            </div>)}
            {text_type === 'emoji' && (
-           <div align={textAlignment}>
-		   <Emoji symbol={sendingitem.text} />
+           <div align={textAlignment} style={{paddingRight: '17px'}} >
+		<Emoji symbol={sendingitem.text} />
+                <Paper elevation={0} style={{ display: 'inline-block',padding: '5px',fontSize: '10px', color: 'gray',whiteSpace: 'nowrap' }}>
+                 {time.toLocaleTimeString([],{hour: '2-digit',minute: '2-digit',hour12: false})}
+                </Paper>
            </div>)}
+           {text_type === 'video' && (
+	   <ReactPlayer url={sendingitem.text} />)}
     </ListItem>
   );
 }

@@ -21,7 +21,7 @@ export default function ChatWith() {
           gridAutoColumns: '1fr',
           gap: 1,
         }}>
-	  <TextField id="channelid" variant="outlined" value={inputText} onChange={handleInputChange} sx={{ gridRow: '1', gridColumn: '1 / 6' }}/>
+	  <TextField id="channelid" variant="outlined" label="id" type="number" value={inputText} onChange={handleInputChange} sx={{ gridRow: '1', gridColumn: '1 / 6' }}/>
 
 	  <Button color="inherit" component="a" href={"/chat/"+inputText} sx={{ gridRow: '1', gridColumn: '6 / 7' }}>
 	  {t('chat')}

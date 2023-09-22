@@ -159,6 +159,14 @@ const newDecryptMsg = (id,msg) =>{
 	}
 	return action;
 }
+const channelRemark = (id,remark) =>{
+	const action = {
+		type: 'channelremark',
+		id: id,
+		remark: remark
+	}
+	return action;
+}
 const lastSendTime = ()=>{
 	const currentTime = new Date().toISOString();
 	const action = {
@@ -186,5 +194,5 @@ const testAction = () =>{
 	return testaction;
 }
 
-export { lastSendTime, StateClean, newDecryptMsg, newAlert, quickUsrInfoId, quickUsrInfoPubkey ,onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
+export { channelRemark, lastSendTime, StateClean, newDecryptMsg, newAlert, quickUsrInfoId, quickUsrInfoPubkey ,onChatingId, cleanSending, cleanReceived, usrInfo , newUsrInfo, sendedMsg, sendingMsg, receivedMsg,testAction,receivedPubMsg,genMd5,inCleanTime,viewCleanTime }
 

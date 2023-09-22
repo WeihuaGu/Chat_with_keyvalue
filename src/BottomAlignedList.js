@@ -1,4 +1,5 @@
 import React, { useEffect, useRef,useState } from 'react';
+import Box from '@mui/material/Box';
 import { List } from '@mui/material';
 
 function BottomAlignedList({ children, ...props }) {
@@ -15,13 +16,16 @@ function BottomAlignedList({ children, ...props }) {
 
 
   return (
+    <Box sx={{ overflowY: 'auto'}}
+         ref={listRef} 
+    >
     <List 
       sx={{justifyContent: 'flex-end'}}
-      ref={listRef} 
       {...props}
     >
       {children}
     </List>
+    </Box>
   );
 }
 
