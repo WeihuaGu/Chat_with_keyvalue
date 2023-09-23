@@ -63,7 +63,7 @@ export default function InputText({ setInputText,setRandomText }) {
     if (event.key === 'Control') {
 	isControlKeyPressed.current = false;
     }
-    if (event.target.value.endsWith(t('mark_emo'))) {
+    if (event.target.value.endsWith('/emo')) {
     	setShowEmojiPicker(true);
     	event.target.value = event.target.value.slice(0, -4);
     }
