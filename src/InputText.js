@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import stringRandom from 'string-random';
 import { useState } from 'react';
 import EmojiPicker   from 'emoji-picker-react';
+import FileUploader from './FileUploader';
 import { lastSendTime } from './actions/index';
 import { useRef } from 'react';
 import { useDispatch,useSelector } from 'react-redux'
@@ -20,7 +21,14 @@ export default function InputText({ setInputText,setRandomText }) {
   const ref_input = useRef('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
+  const [openfileup, setOpenfileup] = useState(false);
+  const [upfiletype, setUpfiletype] = useState('');
+
   const dispatch = useDispatch();
+  const gethubImplement = () => {
+
+
+  }
   const handleButtonClick = () => {
 	if(onchatingid!==userId)
 	    dispatch(new lastSendTime());
@@ -48,6 +56,10 @@ export default function InputText({ setInputText,setRandomText }) {
     const inputEvent = new Event('input', { bubbles: true });
     input.dispatchEvent(inputEvent);
   }; 
+  const onFileUploaded = (getedsource) => {
+    const input = ref_input.current;
+    input.value = getedsource;
+  }
 	
   const isControlKeyPressed = useRef(false);
   // 处理键盘按下事件
@@ -66,6 +78,13 @@ export default function InputText({ setInputText,setRandomText }) {
     if (event.target.value.endsWith('/emo')) {
     	setShowEmojiPicker(true);
     	event.target.value = event.target.value.slice(0, -4);
+    }
+    if (event.target.value.endsWith('/pic')) {
+      if(process.env.REACT_APP_PICHUB_GITHUB_URL){
+        setUpfiletype('image/*');
+    	setOpenfileup(true);
+    	event.target.value = event.target.value.slice(0, -4);
+      }
     }
   };
 
@@ -93,6 +112,7 @@ export default function InputText({ setInputText,setRandomText }) {
 	  {showEmojiPicker && (
  	     <EmojiPicker onEmojiClick={handleEmojiSelect} />
 	  )}
+	  <FileUploader filetype={upfiletype} open={openfileup} setOpen={setOpenfileup} onFileUploaded={onFileUploaded} />
 
       </Box>
   );

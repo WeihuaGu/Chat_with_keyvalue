@@ -14,5 +14,7 @@
   "remark": "Remark name",
   "cancel": "cancel",
   "ok": "ok",
-  "mark_emo": "/emo"
+  "mark_emo": "/emo",
+  "selectfile": "select file",
+  "selectimg": "tap to select pic"
 }

@@ -5,13 +5,18 @@ const token = process.env.REACT_APP_TOKEN;
 const headers = {
   token: token
 };
+const pichub_githuburl = () =>{
+        const url = pichub_github_url+'/pichub/github';
+        return url
+}
+
 const pichub_github = (base64img)=>{
    const msg = {
 	base64Img:base64img
    }
    return new Promise((resolve,reject)=>{
        if(pichub_github_url){
-   		const pushed = axios.post(pichub_github_url,msg,{headers})
+   		const pushed = axios.post(pichub_githuburl(),msg,{headers})
                 pushed.then((result)=>resolve(result)).catch((err)=>reject(err));
        }else
 	   reject('pichub_github_url not set');

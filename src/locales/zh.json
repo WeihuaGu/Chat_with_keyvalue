@@ -14,6 +14,8 @@
   "remark": "备注名",
   "cancel": "取消",
   "ok": "确定",
-  "mark_emo": "/表情"
+  "mark_emo": "/表情",
+  "selectfile": "选择文件",
+  "selectpic": "选择图片"
   
 }

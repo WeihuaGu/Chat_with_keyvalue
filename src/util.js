@@ -1,4 +1,5 @@
 import { store } from './store'
+import Resizer from 'react-image-file-resizer';
 
 const printState = () => {
   console.log('Current Store State:', store.getState());
@@ -83,6 +84,28 @@ const convertText = (text) => {
   return convertedText;
 }
 
+const compressImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const maxWidth = 800;
+      const maxHeight = 800;
+      const quality = 80;
+      const outputFormat = 'webp';
+
+      Resizer.imageFileResizer(
+        file,
+        maxWidth,
+        maxHeight,
+        outputFormat,
+        quality,
+        0,
+        (compressedFile) => {
+          resolve(compressedFile);
+        },
+        'blob'
+      );
+    });
+};
+
 function printStoreState() {
   console.log('Current Store State:', store.getState())
 }
@@ -96,4 +119,4 @@ function dispatch(action){
 export default printStoreState
 
 
-export { convertText,determineType,removeDuplicates,getA_not_in_B, printList,itemInList,printState,getState,dispatch };
+export { compressImage,convertText,determineType,removeDuplicates,getA_not_in_B, printList,itemInList,printState,getState,dispatch };
