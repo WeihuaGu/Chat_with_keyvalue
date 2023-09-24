@@ -22,7 +22,7 @@ export default function InputText({ setInputText,setRandomText }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [openfileup, setOpenfileup] = useState(false);
-  const [upfiletype, setUpfiletype] = useState('');
+  const [imgfileup, setImgfileup] = useState(false);
 
   const dispatch = useDispatch();
   const gethubImplement = () => {
@@ -57,8 +57,10 @@ export default function InputText({ setInputText,setRandomText }) {
     input.dispatchEvent(inputEvent);
   }; 
   const onFileUploaded = (getedsource) => {
+    const cdn_url = 'https://jsd.cdn.zzko.cn/gh/';
+    const source = getedsource.replace("https://raw.githubusercontent.com/", "").replace("/main", "@main");
     const input = ref_input.current;
-    input.value = getedsource;
+    input.value = cdn_url+source;
   }
 	
   const isControlKeyPressed = useRef(false);
@@ -81,7 +83,7 @@ export default function InputText({ setInputText,setRandomText }) {
     }
     if (event.target.value.endsWith('/pic')) {
       if(process.env.REACT_APP_PICHUB_GITHUB_URL){
-        setUpfiletype('image/*');
+	setImgfileup(true);
     	setOpenfileup(true);
     	event.target.value = event.target.value.slice(0, -4);
       }
@@ -112,7 +114,9 @@ export default function InputText({ setInputText,setRandomText }) {
 	  {showEmojiPicker && (
  	     <EmojiPicker onEmojiClick={handleEmojiSelect} />
 	  )}
-	  <FileUploader filetype={upfiletype} open={openfileup} setOpen={setOpenfileup} onFileUploaded={onFileUploaded} />
+	  {imgfileup && (
+		  <FileUploader filetype={'image/*'} open={openfileup} setOpen={setOpenfileup} onFileUploaded={onFileUploaded} />
+	  )}
 
       </Box>
   );

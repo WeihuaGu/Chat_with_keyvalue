@@ -31,8 +31,10 @@ function FileUploader({ open, setOpen, filetype,onFileUploaded }) {
 		     hubresult.then((imgcontent)=>{
 			     const result = imgcontent.data;
 			     setLoading(false);
-			     if(result['err']!==undefined)
+			     if(result['err']!==undefined){
+				 console.log(result['err']);
 				 handleCancel();
+			     }
 			     else{
 				     onFileUploaded(result['result']['download_url']);
 				     handleCancel();
@@ -78,11 +80,12 @@ function FileUploader({ open, setOpen, filetype,onFileUploaded }) {
     if(ftype==='image/*'){
 	    return ['image/jpeg','image/png','image/webp','image/gif'];
     }
+    return '*/*';
 
   }
 
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop,accept: getMIME_types(filetype) });
+  const mimetypes = getMIME_types(filetype);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop,accept:filetype });
 
   return (
     <Dialog open={open}>
