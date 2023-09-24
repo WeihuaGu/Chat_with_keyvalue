@@ -105,7 +105,7 @@ useEffect(() => {
 	// 计算时间差（以毫秒为单位）
 	const timeDiff = now.getTime() - lastsendDate.getTime();
 	const minutesDiff = Math.floor(timeDiff / (1000 * 60));
-	      console.log('timediff'+minutesDiff);
+	      //console.log('timediff'+minutesDiff);
 	if (minutesDiff > 15) 
 	    shouldSkipPolling = true;
 	else

@@ -5,26 +5,32 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
+import LinearProgress from '@mui/material/LinearProgress';
 import { useTranslation } from 'react-i18next';
 import { compressImage } from './util';
 import { pichub } from './extendrestfulserver';
 
 function FileUploader({ open, setOpen, filetype,onFileUploaded }) {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
+  const [compressing, setCompressing] = useState(false);
   const gethubimplement = (ftype) =>{
     if(ftype==='image/*')
 	  return pichub.github;
   }
   const fileimghandle = (file) =>{
+     setCompressing(true);
      const compressedImage = compressImage(file);
      compressedImage.then((compressedfile)=>{
 	     const base64img = convertToBase64(compressedfile);
 	     base64img.then((imgstr)=>{
+     	             setCompressing(false);
+     	     	     setLoading(true);
 		     const hubmethod = gethubimplement(filetype);
 		     const hubresult = hubmethod(imgstr.replace("data:image/webp;base64,", ""));
 		     hubresult.then((imgcontent)=>{
-			     console.log(imgcontent.data);
 			     const result = imgcontent.data;
+			     setLoading(false);
 			     if(result['err']!==undefined)
 				 handleCancel();
 			     else{
@@ -35,6 +41,12 @@ function FileUploader({ open, setOpen, filetype,onFileUploaded }) {
 
 
 		     });
+		     hubresult.catch((err)=>{
+			     setLoading(false);
+			     handleCancel();
+			     console.log(err);
+		     });
+
 		     
 	     })
      });
@@ -62,14 +74,22 @@ function FileUploader({ open, setOpen, filetype,onFileUploaded }) {
   const handleCancel = () => {
     setOpen(false);
   };
+  const getMIME_types = (ftype) => {
+    if(ftype==='image/*'){
+	    return ['image/jpeg','image/png','image/webp','image/gif'];
+    }
+
+  }
 
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop,accept: filetype });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop,accept: getMIME_types(filetype) });
 
   return (
     <Dialog open={open}>
       <DialogTitle>{t('selectfile')}</DialogTitle>
       <DialogContent>
+	{loading && <LinearProgress color="secondary" />}
+	{compressing && <LinearProgress />}
         <div {...getRootProps()}>
           <input {...getInputProps()} />
           {filetype==='image/*' ? <p>{t('selectpic')}</p> : <p>{t('selectfile')}</p>}

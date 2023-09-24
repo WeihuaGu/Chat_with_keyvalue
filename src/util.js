@@ -88,7 +88,7 @@ const compressImage = (file) => {
     return new Promise((resolve, reject) => {
       const maxWidth = 800;
       const maxHeight = 800;
-      const quality = 80;
+      const quality = 70;
       const outputFormat = 'webp';
 
       Resizer.imageFileResizer(
