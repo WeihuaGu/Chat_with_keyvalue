@@ -27,7 +27,7 @@ function FileUploader({ open, setOpen, filetype,onFileUploaded }) {
      	             setCompressing(false);
      	     	     setLoading(true);
 		     const hubmethod = gethubimplement(filetype);
-		     const hubresult = hubmethod(imgstr.replace("data:image/webp;base64,", ""));
+		     const hubresult = hubmethod(imgstr.replace("data:image/jpeg;base64,", ""));
 		     hubresult.then((imgcontent)=>{
 			     const result = imgcontent.data;
 			     setLoading(false);

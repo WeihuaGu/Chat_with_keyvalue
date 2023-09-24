@@ -1,5 +1,8 @@
 import { store } from './store'
+import imageCompression from 'browser-image-compression';
 import Resizer from 'react-image-file-resizer';
+
+
 
 const printState = () => {
   console.log('Current Store State:', store.getState());
@@ -85,25 +88,17 @@ const convertText = (text) => {
 }
 
 const compressImage = (file) => {
-    return new Promise((resolve, reject) => {
-      const maxWidth = 800;
-      const maxHeight = 800;
-      const quality = 70;
-      const outputFormat = 'webp';
-
-      Resizer.imageFileResizer(
-        file,
-        maxWidth,
-        maxHeight,
-        outputFormat,
-        quality,
-        0,
-        (compressedFile) => {
-          resolve(compressedFile);
-        },
-        'blob'
-      );
-    });
+  return new Promise((resolve, reject) => {
+    	  const options = {
+    		maxSizeMB: 0.1,
+    		maxWidthOrHeight: 920,
+    		useWebWorker: false,
+    	  }
+          const press = imageCompression(file, options);
+          press.then((morecompress)=>{
+            resolve(morecompress);
+	  });
+    })
 };
 
 function printStoreState() {

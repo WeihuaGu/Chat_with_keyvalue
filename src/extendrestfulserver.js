@@ -1,9 +1,13 @@
 import axios from 'axios';
+import lzString from 'lz-string';
 const pichub_github_url = process.env.REACT_APP_PICHUB_GITHUB_URL;
 const token = process.env.REACT_APP_TOKEN;
 // 设置自定义 Header
 const headers = {
   token: token
+};
+const axiosconfig = {
+  maxContentLength: 5242880, // 设置请求有效负载的最大长度，单位为字节
 };
 const pichub_githuburl = () =>{
         const url = pichub_github_url+'/pichub/github';
@@ -11,12 +15,13 @@ const pichub_githuburl = () =>{
 }
 
 const pichub_github = (base64img)=>{
+   const comprestr = lzString.compress(base64img);
    const msg = {
-	base64Img:base64img
+	base64Img:comprestr
    }
    return new Promise((resolve,reject)=>{
        if(pichub_github_url){
-   		const pushed = axios.post(pichub_githuburl(),msg,{headers})
+   		const pushed = axios.post(pichub_githuburl(),msg,{headers,...axiosconfig})
                 pushed.then((result)=>resolve(result)).catch((err)=>reject(err));
        }else
 	   reject('pichub_github_url not set');
