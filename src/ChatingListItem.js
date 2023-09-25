@@ -7,6 +7,7 @@ import Dialog  from '@mui/material/Dialog';
 import QuickPinchZoom, { make3dTransformValue } from "react-quick-pinch-zoom";
 import ReactPlayer from './ReactPlayer';
 import Emoji from './Emoji';
+import Base64Img from './Base64Img';
 import { useRef,useState,useCallback } from 'react';
 import { useDispatch,useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
@@ -88,9 +89,9 @@ export default function ChatingListItem({ sendingitem }) {
                 </div>
              </ListItemText>
            </ListItemButton>)}
-           {text_type === 'image' && (<div align={textAlignment}><img src={sendingitem.text} width={'45%'} height={'auto'} alt={sendingitem.text}onClick={handleImageClick} style={{ cursor: 'pointer' }} /></div>)}
-            <Dialog width={'100%'} open={isFullscreen} onClose={handleCloseFullscreen}>
-	       <QuickPinchZoom onUpdate={onUpdate}>
+           {text_type === 'image' && (<div align={textAlignment}><img src={sendingitem.text} width={'45%'} height={'auto'} alt={sendingitem.text} onClick={handleImageClick} style={{ cursor: 'pointer' }} /></div>)}
+            <Dialog contentStyle={{width: '100%'}} style={{ width: '100%'}} open={isFullscreen} onClose={handleCloseFullscreen}>
+	       <QuickPinchZoom onUpdate={onUpdate} style={{ width: '100%', height: '100%' }}>
                 <img ref={imgRef} src={sendingitem.text} alt={sendingitem.text} style={{ width: '100%', height: 'auto' }} />
 	       </QuickPinchZoom>
             </Dialog>
@@ -110,6 +111,8 @@ export default function ChatingListItem({ sendingitem }) {
            </div>)}
            {text_type === 'video' && (
 	   <ReactPlayer url={sendingitem.text} />)}
+           {text_type === 'tpic' && (<div align={textAlignment}>
+	   <Base64Img url={sendingitem.text} width={'45%'} height={'auto'}  onClick={handleImageClick} style={{ cursor: 'pointer' }} /></div>)}
     </ListItem>
   );
 }

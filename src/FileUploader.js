@@ -8,15 +8,19 @@ import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useTranslation } from 'react-i18next';
 import { compressImage } from './util';
-import { pichub } from './extendrestfulserver';
+import { pichub,textcontent } from './extendrestfulserver';
 
-function FileUploader({ open, setOpen, filetype,onFileUploaded }) {
+function FileUploader({ open, setOpen,uptype, filetype,onFileUploaded }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [compressing, setCompressing] = useState(false);
-  const gethubimplement = (ftype) =>{
-    if(ftype==='image/*')
-	  return pichub.github;
+  const gethubimplement = (ftype,uptype) =>{
+    if(ftype==='image/*'){
+	  if(uptype === 'pic')
+	    return pichub.github;
+	  if(uptype === 'tpic')
+	    return textcontent.github;
+    }
   }
   const fileimghandle = (file) =>{
      setCompressing(true);
@@ -26,7 +30,7 @@ function FileUploader({ open, setOpen, filetype,onFileUploaded }) {
 	     base64img.then((imgstr)=>{
      	             setCompressing(false);
      	     	     setLoading(true);
-		     const hubmethod = gethubimplement(filetype);
+		     const hubmethod = gethubimplement(filetype,uptype);
 		     const hubresult = hubmethod(imgstr.replace("data:image/webp;base64,", ""));
 		     hubresult.then((imgcontent)=>{
 			     const result = imgcontent.data;
@@ -36,7 +40,10 @@ function FileUploader({ open, setOpen, filetype,onFileUploaded }) {
 				 handleCancel();
 			     }
 			     else{
-				     onFileUploaded(result['result']['download_url']);
+				     if(uptype === 'pic')
+				        onFileUploaded(result['result']['download_url'],'pic');
+				     if(uptype === 'tpic')
+				        onFileUploaded(result['result']['download_url'],'tpic');
 				     handleCancel();
 
 			     }

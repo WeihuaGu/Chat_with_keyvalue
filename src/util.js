@@ -2,7 +2,7 @@ import { store } from './store'
 import imageCompression from 'browser-image-compression';
 import Resizer from 'react-image-file-resizer';
 
-
+const TPIC_MARK = 'ZGXdgnwhFU';
 
 const printState = () => {
   console.log('Current Store State:', store.getState());
@@ -40,8 +40,8 @@ const determineType = (str)=> {
   var imageRegex = /^(http|https):\/\/.*\.(png|jpg|jpeg|gif|bmp|svg)(\?.*)?$/i;
   var audioRegex = /^(http|https):\/\/.*\.(mp3|wav|ape|ogg)(\?.*)?$/i;
   var videoRegex = /^(http|https):\/\/.*\.(mp4|avi|mov|flv)(\?.*)?$/i;
-	// Emoji Cheat Sheet 正则表达式
-  const emojiRegex = /^:.+?:$/;
+  var emojiRegex = /^:.+?:$/;
+  var tpicRegex = new RegExp(`.*${TPIC_MARK}$`);
 
   if (imageRegex.test(str)) {
     return 'image';
@@ -51,6 +51,8 @@ const determineType = (str)=> {
     return 'video';
   } else if (emojiRegex.test(str)) {
     return 'emoji';
+  } else if (tpicRegex.test(str)) {
+    return 'tpic';
   } else {
     return 'text';
   }
@@ -122,4 +124,4 @@ function dispatch(action){
 export default printStoreState
 
 
-export { compressImage,convertText,determineType,removeDuplicates,getA_not_in_B, printList,itemInList,printState,getState,dispatch };
+export { TPIC_MARK,compressImage,convertText,determineType,removeDuplicates,getA_not_in_B, printList,itemInList,printState,getState,dispatch };

@@ -10,7 +10,7 @@ import { lastSendTime } from './actions/index';
 import { useRef } from 'react';
 import { useDispatch,useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next';
-import { convertText } from './util';
+import { convertText,TPIC_MARK } from './util';
 
 export default function InputText({ setInputText,setRandomText }) {
  
@@ -23,6 +23,7 @@ export default function InputText({ setInputText,setRandomText }) {
   const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [openfileup, setOpenfileup] = useState(false);
   const [imgfileup, setImgfileup] = useState(false);
+  const [timgfileup, setTimgfileup] = useState(false);
 
   const dispatch = useDispatch();
   const gethubImplement = () => {
@@ -56,7 +57,7 @@ export default function InputText({ setInputText,setRandomText }) {
     const inputEvent = new Event('input', { bubbles: true });
     input.dispatchEvent(inputEvent);
   }; 
-  const onFileUploaded = (getedsource) => {
+  const onFileUploaded = (getedsource,uptype) => {
     const cdn_url = 'https://jsd.cdn.zzko.cn/gh/';
     const source = getedsource.replace("https://raw.githubusercontent.com/", "").replace("/main", "@main");
     const input = ref_input.current;
@@ -88,6 +89,13 @@ export default function InputText({ setInputText,setRandomText }) {
     	event.target.value = event.target.value.slice(0, -4);
       }
     }
+    if (event.target.value.endsWith('/tpic')) {
+      if(process.env.REACT_APP_PICHUB_GITHUB_URL){
+	setTimgfileup(true);
+    	setOpenfileup(true);
+    	event.target.value = event.target.value.slice(0, -5);
+      }
+    }
   };
 
   return (
@@ -115,7 +123,10 @@ export default function InputText({ setInputText,setRandomText }) {
  	     <EmojiPicker onEmojiClick={handleEmojiSelect} />
 	  )}
 	  {imgfileup && (
-		  <FileUploader filetype={'image/*'} open={openfileup} setOpen={setOpenfileup} onFileUploaded={onFileUploaded} />
+		  <FileUploader filetype={'image/*'} uptype={'pic'} open={openfileup} setOpen={setOpenfileup} onFileUploaded={onFileUploaded} />
+	  )}
+	  {timgfileup && (
+		  <FileUploader filetype={'image/*'} uptype={'tpic'} open={openfileup} setOpen={setOpenfileup} onFileUploaded={onFileUploaded} />
 	  )}
 
       </Box>
