@@ -89,16 +89,24 @@ const convertText = (text) => {
 
 const compressImage = (file) => {
   return new Promise((resolve, reject) => {
-    	  const options = {
-    		maxSizeMB: 0.1,
-    		maxWidthOrHeight: 920,
-    		useWebWorker: false,
-    	  }
-          const press = imageCompression(file, options);
-          press.then((morecompress)=>{
-            resolve(morecompress);
-	  });
-    })
+      const maxWidth = 800;
+      const maxHeight = 800;
+      const quality = 80;
+      const outputFormat = 'webp';
+
+      Resizer.imageFileResizer(
+        file,
+        maxWidth,
+        maxHeight,
+        outputFormat,
+        quality,
+        0,
+        (compressedFile) => {
+          resolve(compressedFile);
+        },
+        'blob'
+      );
+  });
 };
 
 function printStoreState() {
