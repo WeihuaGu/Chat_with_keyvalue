@@ -26,10 +26,6 @@ export default function InputText({ setInputText,setRandomText }) {
   const [timgfileup, setTimgfileup] = useState(false);
 
   const dispatch = useDispatch();
-  const gethubImplement = () => {
-
-
-  }
   const handleButtonClick = () => {
 	if(onchatingid!==userId)
 	    dispatch(new lastSendTime());
