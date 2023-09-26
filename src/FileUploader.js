@@ -102,7 +102,9 @@ function FileUploader({ open, setOpen,uptype, filetype,onFileUploaded }) {
 	{compressing && <LinearProgress />}
         <div {...getRootProps()}>
           <input {...getInputProps()} />
-	  {!loading && ({filetype==='image/*' ? <p>{t('selectpic')}</p> : <p>{t('selectfile')}</p>})}
+	  {!loading && ( 
+		  {filetype==='image/*' ? (<p>{t('selectpic')}</p>) : (<p>{t('selectfile')}</p>)}
+	  )}
         </div>
       </DialogContent>
       <DialogActions>
