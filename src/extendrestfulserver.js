@@ -10,6 +10,7 @@ const headers = {
   token: token
 };
 const axiosconfig = {
+  timeout: 5920000,
   maxContentLength: 5242880, // 设置请求有效负载的最大长度，单位为字节
 };
 const pichub_githuburl = () =>{

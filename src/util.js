@@ -114,16 +114,23 @@ const compressImage = (file) => {
 		   const options = {
     			maxSizeMB: 0.3,
     			maxWidthOrHeight: 900,
-    			useWebWorker: true,
+    			useWebWorker: false,
   		   }
 		   const morecompressedFile = imageCompression(file, options);
 	           morecompressedFile.then((finalcompress)=>{
 	                console.log('the more compress');
 			console.log(originalSize);
 			console.log(finalcompress.size);
-
-			resolve(finalcompress);
+			if (finalcompress.size < originalSize)
+			    resolve(finalcompress);
+			else{
+			    reject('no compress...');
+			}
 		   });
+		   morecompressedFile.catch((err)=>{
+			reject(err);
+		   });
+
 
 	   }
         },

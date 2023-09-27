@@ -6,6 +6,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
+import Paper from '@mui/material/Paper';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { useTranslation } from 'react-i18next';
 import { compressImage } from './util';
 import { pichub,textcontent } from './extendrestfulserver';
@@ -26,9 +28,9 @@ function FileUploader({ open, setOpen,uptype, filetype,onFileUploaded }) {
      setCompressing(true);
      const compressedImage = compressImage(file);
      compressedImage.then((compressedfile)=>{
+     	     setCompressing(false);
 	     const base64img = convertToBase64(compressedfile);
 	     base64img.then((imgstr)=>{
-     	             setCompressing(false);
      	     	     setLoading(true);
 		     const hubmethod = gethubimplement(filetype,uptype);
 		     const hubresult = hubmethod(imgstr.replace(/data:image\/[^;]+;base64,/g, ""));
@@ -36,7 +38,7 @@ function FileUploader({ open, setOpen,uptype, filetype,onFileUploaded }) {
 			     const result = imgcontent.data;
 			     setLoading(false);
 			     if(result['err']!==undefined){
-				 console.log(result['err']);
+			         onFileUploaded(result['err'],'err');
 				 handleCancel();
 			     }
 			     else{
@@ -52,12 +54,21 @@ function FileUploader({ open, setOpen,uptype, filetype,onFileUploaded }) {
 		     });
 		     hubresult.catch((err)=>{
 			     setLoading(false);
+			     onFileUploaded(err,'err');
 			     handleCancel();
-			     console.log(err);
 		     });
 
 		     
 	     })
+	     base64img.catch((err)=>{
+		onFileUploaded(err,'err');
+	        handleCancel();
+	     });
+
+     });
+     compressedImage.catch((err)=>{
+     	setCompressing(false);
+	onFileUploaded(err,'err');
      });
 
   }
@@ -95,8 +106,8 @@ function FileUploader({ open, setOpen,uptype, filetype,onFileUploaded }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop,accept:filetype });
   const DialogTip = function(){
      if(filetype ==='image/*')
-	  return (<p>{t('selectpic')}</p>);
-     return (<p>{t('selectfile')}</p>);
+	  return (<Paper elevation={0}><CloudUploadOutlinedIcon /> {t('selectpic')}</Paper>);
+     return (<Paper elevation={0}><CloudUploadOutlinedIcon /> {t('selectfile')}</Paper>);
   }
   return (
     <Dialog open={open}>

@@ -54,10 +54,16 @@ export default function InputText({ setInputText,setRandomText }) {
     input.dispatchEvent(inputEvent);
   }; 
   const onFileUploaded = (getedsource,uptype) => {
-    const cdn_url = 'https://jsd.cdn.zzko.cn/gh/';
-    const source = getedsource.replace("https://raw.githubusercontent.com/", "").replace("/main", "@main");
     const input = ref_input.current;
-    input.value = cdn_url+source;
+    const forlog = JSON.stringify(getedsource);
+    if( uptype!== 'err'){
+      const cdn_url = 'https://jsd.cdn.zzko.cn/gh/';
+      const source = getedsource.replace("https://raw.githubusercontent.com/", "").replace("/main", "@main");
+      input.value = cdn_url+source;
+    }else{
+       console.log(forlog);
+    }
+
   }
 	
   const isControlKeyPressed = useRef(false);
