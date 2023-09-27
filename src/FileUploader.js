@@ -31,7 +31,7 @@ function FileUploader({ open, setOpen,uptype, filetype,onFileUploaded }) {
      	             setCompressing(false);
      	     	     setLoading(true);
 		     const hubmethod = gethubimplement(filetype,uptype);
-		     const hubresult = hubmethod(imgstr.replace("data:image/webp;base64,", ""));
+		     const hubresult = hubmethod(imgstr.replace(/data:image\/[^;]+;base64,/g, ""));
 		     hubresult.then((imgcontent)=>{
 			     const result = imgcontent.data;
 			     setLoading(false);
@@ -93,7 +93,11 @@ function FileUploader({ open, setOpen,uptype, filetype,onFileUploaded }) {
 
   const mimetypes = getMIME_types(filetype);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop,accept:filetype });
-
+  const DialogTip = function(){
+     if(filetype ==='image/*')
+	  return (<p>{t('selectpic')}</p>);
+     return (<p>{t('selectfile')}</p>);
+  }
   return (
     <Dialog open={open}>
       <DialogTitle>{t('selectfile')}</DialogTitle>
@@ -102,9 +106,7 @@ function FileUploader({ open, setOpen,uptype, filetype,onFileUploaded }) {
 	{compressing && <LinearProgress />}
         <div {...getRootProps()}>
           <input {...getInputProps()} />
-	  {!loading && ( 
-		  {filetype==='image/*' ? (<p>{t('selectpic')}</p>) : (<p>{t('selectfile')}</p>)}
-	  )}
+	  {!loading && (<DialogTip />)}
         </div>
       </DialogContent>
       <DialogActions>

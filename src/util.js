@@ -91,10 +91,12 @@ const convertText = (text) => {
 
 const compressImage = (file) => {
   return new Promise((resolve, reject) => {
+      const originalSize = file.size;
       const maxWidth = 800;
       const maxHeight = 800;
       const quality = 80;
       const outputFormat = 'webp';
+
 
       Resizer.imageFileResizer(
         file,
@@ -104,7 +106,26 @@ const compressImage = (file) => {
         quality,
         0,
         (compressedFile) => {
-          resolve(compressedFile);
+	  const compressedSize = compressedFile.size;
+	   if (compressedSize < originalSize) {
+              // 压缩成功
+              resolve(compressedFile);
+	   }else{
+		   const options = {
+    			maxSizeMB: 0.3,
+    			maxWidthOrHeight: 900,
+    			useWebWorker: true,
+  		   }
+		   const morecompressedFile = imageCompression(file, options);
+	           morecompressedFile.then((finalcompress)=>{
+	                console.log('the more compress');
+			console.log(originalSize);
+			console.log(finalcompress.size);
+
+			resolve(finalcompress);
+		   });
+
+	   }
         },
         'blob'
       );

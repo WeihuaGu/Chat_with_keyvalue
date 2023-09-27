@@ -13,7 +13,6 @@ const Base64Img = ({ url,width,height,onClick,style }) => {
           const dataUrl = reader.result;
           // 提取 base64 编码的图像数据部分
           const imageDataWithoutPrefix = dataUrl.replace('data:application/octet-stream;base64,', '');
-	  console.log(imageDataWithoutPrefix); 
           setImageData(imageDataWithoutPrefix);
         };
         reader.readAsDataURL(blob);
