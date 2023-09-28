@@ -107,7 +107,7 @@ const compressImage = (file) => {
         0,
         (compressedFile) => {
 	  const compressedSize = compressedFile.size;
-	   if (compressedSize > originalSize) {
+	   if (compressedSize < originalSize) {
               // 压缩成功
               resolve(compressedFile);
 	   }else{
@@ -119,9 +119,7 @@ const compressImage = (file) => {
 		   const morecompressedFile = imageCompression(file, options);
 	           morecompressedFile.then((finalcompress)=>{
 	                console.log('the more compress');
-			console.log(originalSize);
-			console.log(finalcompress.size);
-			if (finalcompress.size > originalSize)
+			if (finalcompress.size < originalSize)
 			    resolve(finalcompress);
 			else{
 			    const grayimg = convertGray(file);
@@ -148,6 +146,7 @@ function convertGray(file) {
   return new Promise((resolve, reject) => {
     const originalSize = file.size;
     const grayScaleImage = new Image();
+    grayScaleImage.src = URL.createObjectURL(file);
     grayScaleImage.onload = () => {
               const canvas = document.createElement('canvas');
               canvas.width = grayScaleImage.width;
@@ -165,14 +164,15 @@ function convertGray(file) {
               context.putImageData(imageData, 0, 0);
               canvas.toBlob((blob) => {
                     if (blob.size < originalSize) {
+			console.log(originalSize);
+			console.log(blob.size);
                       // 第3次压缩成功
                       resolve(blob);
                     } else {
                       reject('No compression achieved.');
                     }
-              }, 'image/jpeg');
+              }, 'image/jpeg',0.3);
             }
-   grayScaleImage.src = URL.createObjectURL(file);
   });
 
 }
