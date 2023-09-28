@@ -107,7 +107,7 @@ const compressImage = (file) => {
         0,
         (compressedFile) => {
 	  const compressedSize = compressedFile.size;
-	   if (compressedSize < originalSize) {
+	   if (compressedSize > originalSize) {
               // 压缩成功
               resolve(compressedFile);
 	   }else{
@@ -121,10 +121,16 @@ const compressImage = (file) => {
 	                console.log('the more compress');
 			console.log(originalSize);
 			console.log(finalcompress.size);
-			if (finalcompress.size < originalSize)
+			if (finalcompress.size > originalSize)
 			    resolve(finalcompress);
 			else{
-			    reject('no compress...');
+			    const grayimg = convertGray(file);
+			    grayimg.then((img_gray)=>{
+				    resolve(img_gray);
+			    });
+			    grayimg.catch((err)=>{
+				    reject(err);
+			    });
 			}
 		   });
 		   morecompressedFile.catch((err)=>{
@@ -138,7 +144,38 @@ const compressImage = (file) => {
       );
   });
 };
+function convertGray(file) {
+  return new Promise((resolve, reject) => {
+    const originalSize = file.size;
+    const grayScaleImage = new Image();
+    grayScaleImage.onload = () => {
+              const canvas = document.createElement('canvas');
+              canvas.width = grayScaleImage.width;
+              canvas.height = grayScaleImage.height;
+              const context = canvas.getContext('2d');
+              context.drawImage(grayScaleImage, 0, 0);
+              const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+              const data = imageData.data;
+              for (let i = 0; i < data.length; i += 4) {
+                const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                data[i] = avg; // Red
+                data[i + 1] = avg; // Green
+                data[i + 2] = avg; // Blue
+              }
+              context.putImageData(imageData, 0, 0);
+              canvas.toBlob((blob) => {
+                    if (blob.size < originalSize) {
+                      // 第3次压缩成功
+                      resolve(blob);
+                    } else {
+                      reject('No compression achieved.');
+                    }
+              }, 'image/jpeg');
+            }
+   grayScaleImage.src = URL.createObjectURL(file);
+  });
 
+}
 function printStoreState() {
   console.log('Current Store State:', store.getState())
 }
