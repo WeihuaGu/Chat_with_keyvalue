@@ -112,7 +112,7 @@ const compressImage = (file) => {
               resolve(compressedFile);
 	   }else{
 		   const options = {
-    			maxSizeMB: 0.3,
+    			maxSizeMB: 0.07,
     			maxWidthOrHeight: 900,
     			useWebWorker: false,
   		   }
