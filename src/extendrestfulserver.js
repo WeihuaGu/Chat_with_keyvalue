@@ -32,7 +32,7 @@ const pichub_github = (base64img)=>{
    });
 }
 const textcontent_githuburl = () =>{
-        const url = textcontent_github_url+'/github/upcontent/textcontent/compress';
+        const url = textcontent_github_url+'/github/upcontent/textcontent/compress/lock';
         return url
 }
 

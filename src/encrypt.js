@@ -11,6 +11,19 @@ const genPass = () => {
     iv: iv
   };
 };
+const getAESpassAndIv = (passiv) =>{
+  const passAndIv = passiv.split('');
+  const key = passAndIv.slice(0, passbytes).join('');
+  const iv = passAndIv.slice(passbytes).join('');
+  return {
+    pass: key,
+    iv: iv
+  };
+}
+const base64toBytes = (encryptedBase64)=>{
+   const bytes = CryptoJS.enc.Base64.parse(encryptedBase64);
+   return bytes;
+}
 const aesEncrypt = (text, key, iv) => {
   const encrypted = CryptoJS.AES.encrypt(text, key, { iv: iv });
   return encrypted.toString();
@@ -45,6 +58,10 @@ const aesDecrypt = (encrypted, key, iv) => {
   const decrypted = CryptoJS.AES.decrypt(encrypted, key, { iv: iv });
   return decrypted.toString(CryptoJS.enc.Utf8);
 };
+const aesDecryptFromBytes = (encrypted, key, iv) => {
+  const decrypted = CryptoJS.AES.decrypt({ciphertext:encrypted}, key, { iv: iv });
+  return CryptoJS.enc.Base64.stringify(decrypted);
+};
 
 const getDecryptedMessage = (encryptedPass, encryptedContent) => {
   const decryptedPass = getDecryptedPass(encryptedPass);
@@ -60,4 +77,4 @@ const decrypt = (encryptedData) => {
   const decryptedMessage = getDecryptedMessage(encryptedpass, encryptedcontent);
   return decryptedMessage;
 };
-export { encrypt, decrypt, getEncryptedPass , getDecryptedPass }
+export { aesDecryptFromBytes,base64toBytes, getAESpassAndIv, encrypt, decrypt, getEncryptedPass , getDecryptedPass,aesDecrypt }
