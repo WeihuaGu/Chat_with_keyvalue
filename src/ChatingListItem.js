@@ -4,6 +4,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Paper from '@mui/material/Paper';
 import Dialog  from '@mui/material/Dialog';
+import Box from '@mui/material/Box';
 import QuickPinchZoom, { make3dTransformValue } from "react-quick-pinch-zoom";
 import ReactPlayer from './ReactPlayer';
 import Emoji from './Emoji';
@@ -16,6 +17,7 @@ import { determineType } from './util';
 export default function ChatingListItem({ sendingitem }) {
   const userId = useSelector((state)=>{return state.usrinfo.id});
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [picsrc, setPicsrc] = useState('');
   const time = new Date(sendingitem.time);
   let textAlignment = '';
   let divAlignment = '';
@@ -61,6 +63,7 @@ export default function ChatingListItem({ sendingitem }) {
 
    const handleCloseFullscreen = () => {
     setIsFullscreen(false);
+    setPicsrc('');
    };
    const imgRef = useRef();
    const onUpdate = useCallback(({ x, y, scale }) => {
@@ -90,11 +93,6 @@ export default function ChatingListItem({ sendingitem }) {
              </ListItemText>
            </ListItemButton>)}
            {text_type === 'image' && (<div align={textAlignment}><img src={sendingitem.text} width={'45%'} height={'auto'} alt={sendingitem.text} onClick={handleImageClick} style={{ cursor: 'pointer' }} /></div>)}
-            <Dialog contentStyle={{width: '100%'}} style={{ width: '100%'}} open={isFullscreen} onClose={handleCloseFullscreen}>
-	       <QuickPinchZoom onUpdate={onUpdate} style={{ width: '100%', height: '100%' }}>
-                <img ref={imgRef} src={sendingitem.text} alt={sendingitem.text} style={{ width: '100%', height: 'auto' }} />
-	       </QuickPinchZoom>
-            </Dialog>
            {text_type === 'audio' && (
            <div align={textAlignment}>
               <audio controls>
@@ -112,7 +110,18 @@ export default function ChatingListItem({ sendingitem }) {
            {text_type === 'video' && (
 	   <ReactPlayer url={sendingitem.text} />)}
            {text_type === 'tpic' && (<div align={textAlignment}>
-	   <Base64Img url={sendingitem.text} width={'45%'} height={'auto'}  onClick={handleImageClick} style={{ cursor: 'pointer' }} /></div>)}
+	   <Base64Img sourceurl={sendingitem.text} width={'45%'} height={'auto'}  setpicsrc={setPicsrc} onClick={handleImageClick} style={{ cursor: 'pointer' }} /></div>)}
+	  
+           <Dialog contentStyle={{width: '100%'}} style={{ width: '100%', height: 'auto' }} open={isFullscreen} onClose={handleCloseFullscreen}>
+	       <QuickPinchZoom onUpdate={onUpdate} style={{ width: '100%', height: 'auto' }}>
+	       <>
+                {text_type === 'image' && (
+                <img ref={imgRef} src={sendingitem.text} alt={sendingitem.text} style={{ width: '100%', height: 'auto' }} />)}
+                {text_type === 'tpic' && (
+                <img ref={imgRef} src={picsrc} style={{ width: '100%', height: 'auto' }} />)}
+	       </>
+	       </QuickPinchZoom>
+           </Dialog>
     </ListItem>
   );
 }

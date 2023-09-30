@@ -59,7 +59,15 @@ const aesDecrypt = (encrypted, key, iv) => {
   return decrypted.toString(CryptoJS.enc.Utf8);
 };
 const aesDecryptFromBytes = (encrypted, key, iv) => {
-  const decrypted = CryptoJS.AES.decrypt({ciphertext:encrypted}, key, { iv: iv });
+	console.log('key');
+	console.log(key);
+	console.log('iv');
+	console.log(iv);
+	console.log('encrypted to utf8');
+	console.log(encrypted.toString());
+  const decrypted = CryptoJS.AES.decrypt(encrypted.toString(), key, { iv: iv });
+	console.log('decrypted to utf8');
+	console.log(decrypted.toString());
   return CryptoJS.enc.Base64.stringify(decrypted);
 };
 
