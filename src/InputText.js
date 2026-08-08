@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import stringRandom from 'string-random';
 import { useState } from 'react';
+import { useEffect } from 'react';
+
 import EmojiPicker   from 'emoji-picker-react';
 import FileUploader from './FileUploader';
 import { lastSendTime } from './actions/index';
@@ -24,6 +26,9 @@ export default function InputText({ setInputText,setRandomText }) {
   const [openfileup, setOpenfileup] = useState(false);
   const [imgfileup, setImgfileup] = useState(false);
   const [timgfileup, setTimgfileup] = useState(false);
+
+  const [bottomOffset, setBottomOffset] = useState('5px');
+  const boxRef = useRef(null);
 
   const dispatch = useDispatch();
   const handleButtonClick = () => {
@@ -100,12 +105,29 @@ export default function InputText({ setInputText,setRandomText }) {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.visualViewport) {
+        // 键盘弹出时，visualViewport.offsetTop 即为键盘高度
+        const keyboardHeight = window.visualViewport.offsetTop;
+        // 保持原有的 5px 间距，并加上键盘高度
+        setBottomOffset(`${keyboardHeight + 5}px`);
+      }
+    };
+
+    // 初始计算一次
+    handleResize();
+
+    window.visualViewport?.addEventListener('resize', handleResize);
+    return () => window.visualViewport?.removeEventListener('resize', handleResize);
+  }, []);
   return (
       <Box 
+	 ref={boxRef}
 	sx={{
 	flexGrow: 1,
-        bottom: '5px',
-        width: '100%',
+        bottom: bottomOffset,
+        width: '90%',
         bgcolor: 'background.paper',
         alignItems: 'center',
 	display: 'grid',
