@@ -106,21 +106,28 @@ export default function InputText({ setInputText,setRandomText }) {
   };
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.visualViewport) {
-        // 键盘弹出时，visualViewport.offsetTop 即为键盘高度
-        const keyboardHeight = window.visualViewport.offsetTop;
-        // 保持原有的 5px 间距，并加上键盘高度
-        setBottomOffset(`${keyboardHeight + 5}px`);
-      }
-    };
+  const handleResize = () => {
+    if (window.visualViewport) {
+      const keyboardHeight = window.visualViewport.offsetTop;
+      setBottomOffset(`${keyboardHeight + 5}px`);
+    }
+  };
 
-    // 初始计算一次
-    handleResize();
+  // 初始计算一次
+  handleResize();
 
-    window.visualViewport?.addEventListener('resize', handleResize);
-    return () => window.visualViewport?.removeEventListener('resize', handleResize);
-  }, []);
+  // 使用 if 条件注册监听
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', handleResize);
+  }
+
+  // 清理时也要判断
+  return () => {
+    if (window.visualViewport) {
+      window.visualViewport.removeEventListener('resize', handleResize);
+    }
+  };
+}, []);
   return (
       <Box 
 	 ref={boxRef}
