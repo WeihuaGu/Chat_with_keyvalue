@@ -133,7 +133,7 @@ export default function InputText({ setInputText,setRandomText }) {
 	 ref={boxRef}
 	 sx={{
         bottom: bottomOffset,
-        width: '90%',
+        width: '100%',
         bgcolor: 'background.paper',
         alignItems: 'center',
 	    display: 'grid',
@@ -143,12 +143,11 @@ export default function InputText({ setInputText,setRandomText }) {
 	  id={boxid}
        >
 	  <TextField inputRef={ref_input} onKeyUp={handleKeyUp} onKeyDown={handleKeyDown} variant="outlined" multiline sx={{ gridRow: '1', gridColumn: '1/13' }}/>
-
-	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '13/15',color:'#ab003c' }}>
+ 	  <Box sx={{ gridRow: '1', gridColumn: '14/15' }}></Box>
+	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '15/17',color:'#ab003c' }}>
 	    {t('send')}
           </Button>
-	  <Box sx={{ gridRow: '1', gridColumn: '15/16' }}>
-      </Box>
+	 
 	  {showEmojiPicker && (
  	     <EmojiPicker onEmojiClick={handleEmojiSelect} />
 	  )}
