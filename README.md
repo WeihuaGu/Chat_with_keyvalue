@@ -40,6 +40,11 @@ Friendly Chat is created with React and requires Node.js to run.
 ```
 REACT_APP_PUSH_URL="https://xxx.net"
 REACT_APP_TOKEN="xxxxx"
+REACT_APP_Polling_Interval
+REACT_APP_METHON
+REACT_APP_PIC_HUB
+REACT_APP_PICHUB_GITHUB_URL
+REACT_APP_EXTEND_AESPASS
 ```
 #### Start the app: `npm start`
 
