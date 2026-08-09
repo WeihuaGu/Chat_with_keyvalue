@@ -129,27 +129,26 @@ export default function InputText({ setInputText,setRandomText }) {
   };
 }, []);
   return (
-      <Box 
+    <Box 
 	 ref={boxRef}
-	sx={{
-	flexGrow: 1,
+	 sx={{
         bottom: bottomOffset,
         width: '90%',
         bgcolor: 'background.paper',
         alignItems: 'center',
-	display: 'grid',
+	    display: 'grid',
         gridAutoColumns: '1fr',
         gap: 1,
         }}
 	  id={boxid}
        >
-	  <TextField inputRef={ref_input} onKeyUp={handleKeyUp} onKeyDown={handleKeyDown} variant="outlined" multiline sx={{ gridRow: '1', gridColumn: '1/12' }}/>
+	  <TextField inputRef={ref_input} onKeyUp={handleKeyUp} onKeyDown={handleKeyDown} variant="outlined" multiline sx={{ gridRow: '1', gridColumn: '1/13' }}/>
 
-	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '12/15',color:'#ab003c' }}>
+	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '13/15',color:'#ab003c' }}>
 	    {t('send')}
           </Button>
 	  <Box sx={{ gridRow: '1', gridColumn: '15/16' }}>
-          </Box>
+      </Box>
 	  {showEmojiPicker && (
  	     <EmojiPicker onEmojiClick={handleEmojiSelect} />
 	  )}
