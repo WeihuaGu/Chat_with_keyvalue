@@ -143,8 +143,7 @@ export default function InputText({ setInputText,setRandomText }) {
 	  id={boxid}
        >
 	  <TextField inputRef={ref_input} onKeyUp={handleKeyUp} onKeyDown={handleKeyDown} variant="outlined" multiline sx={{ gridRow: '1', gridColumn: '1/13' }}/>
- 	  <Box sx={{ gridRow: '1', gridColumn: '14/15' }}></Box>
-	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '15/17',color:'#ab003c' }}>
+	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '13/15',color:'#ab003c' }}>
 	    {t('send')}
           </Button>
 	 
