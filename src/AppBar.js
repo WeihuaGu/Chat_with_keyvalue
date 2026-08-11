@@ -9,6 +9,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import ClearIcon from '@mui/icons-material/Clear';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import FormDialog from './FormDialog';
+import { deepPurple,blueGrey,pink } from '@mui/material/colors';
 import { Menu, MenuItem } from '@mui/material';
 import { useDispatch ,useSelector} from 'react-redux'
 import { channelRemark,StateClean,viewCleanTime,inCleanTime,cleanSending,cleanReceived  } from './actions/index';
@@ -88,7 +89,7 @@ export default function ButtonAppBar({cleanwhat}) {
   
   return (
    <>
-      <AppBar sx={{position: 'sticky', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+      <AppBar sx={{position: 'sticky', backgroundColor: pink[800] }}>
         <Toolbar>
 	  <IconButton color="inherit" component="a" href="/">
 	  	<HomeIcon sx={{ marginLeft: '-10px' }}/>

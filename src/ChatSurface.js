@@ -27,6 +27,8 @@ export default function ButtonAppBar() {
   const channelInfo = useRef({});
   const onin = useRef(true);
 
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+
 
   const handleClick = () => {
      const sendinginfo = {
@@ -72,6 +74,21 @@ export default function ButtonAppBar() {
     if(parentInputText!=='')
     	handleClick();
   }, [randomText,parentInputText]);
+
+  useEffect(() => {
+    if (window.visualViewport) {
+      const handleResize = () => {
+        // 2. 更新顶层容器的高度
+        setViewportHeight(window.visualViewport.height);
+      };
+      
+      window.visualViewport.addEventListener('resize', handleResize);
+      // 立即执行一次，确保初始值准确
+      handleResize();
+      
+      return () => window.visualViewport.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   useEffect(() => {
       onin.current = true;
@@ -153,11 +170,10 @@ export default function ButtonAppBar() {
   }, []);
 	
   return (
-      <Box sx={{position: 'fixed',left:0,top:0,width:'100%' ,height:'100dvh', display: 'flex',flexDirection: 'column' }}>
+      <Box sx={{position: 'fixed',left:0,top:0,width:'100%' ,height: viewportHeight, display: 'flex',flexDirection: 'column' }}>
         <AppBar cleanwhat={channelid}/>
   	<ChatingList channelid={channelid}/>
   	<InputText  setRandomText={setRandomText} setInputText={setParentInputText} />
-	<Box  sx={{ height:'2%' }} />
       </Box>
   );
 }
