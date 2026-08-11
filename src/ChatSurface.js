@@ -157,6 +157,7 @@ export default function ButtonAppBar() {
         <AppBar cleanwhat={channelid}/>
   	<ChatingList channelid={channelid}/>
   	<InputText  setRandomText={setRandomText} setInputText={setParentInputText} />
+	<Box  sx={{ height:'2%' }} />
       </Box>
   );
 }

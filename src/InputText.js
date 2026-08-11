@@ -2,6 +2,8 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+
 import stringRandom from 'string-random';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -105,43 +107,18 @@ export default function InputText({ setInputText,setRandomText }) {
     }
   };
 
-  useEffect(() => {
-  const handleResize = () => {
-    if (window.visualViewport) {
-      const keyboardHeight = window.visualViewport.offsetTop;
-      setBottomOffset(`${keyboardHeight + 5}px`);
-    }
-  };
-
-  // 初始计算一次
-  handleResize();
-
-  // 使用 if 条件注册监听
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', handleResize);
-  }
-
-  // 清理时也要判断
-  return () => {
-    if (window.visualViewport) {
-      window.visualViewport.removeEventListener('resize', handleResize);
-    }
-  };
-}, []);
   return (
     <Box 
-	 ref={boxRef}
-	 sx={{
-        bottom: bottomOffset,
-        width: '100%',
-        bgcolor: 'background.paper',
-        alignItems: 'center',
-	    display: 'grid',
-        gridAutoColumns: '1fr',
-        gap: 1,
-        }}
-	  id={boxid}
-       >
+        ref={boxRef}
+	sx={{
+          width: '100%',
+          bgcolor: 'background.paper',
+          alignItems: 'center',
+	  display: 'grid',
+          gridAutoColumns: '1fr',
+          gap: 1,
+          }}
+	id={boxid}>
 	  <TextField inputRef={ref_input} onKeyUp={handleKeyUp} onKeyDown={handleKeyDown} variant="outlined" multiline sx={{ gridRow: '1', gridColumn: '1/13' }}/>
 	  <Button onClick={handleButtonClick} sx={{ gridRow: '1', gridColumn: '13/15',color:'#ab003c' }}>
 	    {t('send')}
