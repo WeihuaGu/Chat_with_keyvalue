@@ -47,7 +47,7 @@ export default function ChatingList({ channelid }) {
   });
 
   return (
-    <Box sx={{ overflowY: 'auto',display: 'flex',flexDirection: 'column',justifyContent: 'flex-end',flexGrow: 6, height:0, width: '100%', bottom: '20px', bgcolor: 'background.paper'}}>
+    <Box sx={{ overflowY: 'auto',display: 'flex',flexDirection: 'column',justifyContent: 'flex-end',flexGrow: 6, height:0, width: '100%', bgcolor: 'background.paper'}}>
       <BottomAlignedList>
 	  {SendingItems}
       </BottomAlignedList>
